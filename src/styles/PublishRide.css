@@ -66,7 +66,7 @@
 .prh-inner {
   position: relative;
   z-index: 1;
-  max-width: 1140px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 420px 1fr;
@@ -86,6 +86,7 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  position: relative;
 }
 
 .prh-card-badge {
@@ -141,15 +142,21 @@
   gap: 10px;
   border: 1.5px solid var(--pr-border);
   border-radius: 14px;
-  overflow: hidden;
+  overflow: visible;
+}
+.prh-field--vehicle {
+  border: 1.5px solid var(--pr-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  gap: 8px;
+  font-size: 16px !important;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.192);
 }
 .prh-field {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  background: #fff;
-  /* border: 1px solid var(--pr-text-dark); */
   transition: background 0.2s;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.192);
 }
@@ -159,9 +166,7 @@
 .prh-field:last-child {
   border-top: 1.5px solid var(--pr-border);
 }
-.prh-field:hover {
-  background: #f8faff;
-}
+
 .prh-field-icon {
   flex-shrink: 0;
   display: flex;
@@ -170,23 +175,16 @@
   width: 22px;
   height: 22px;
 }
-.prh-field-icon--from {
-  color: var(--pr-primary-light);
-}
-.prh-field-icon--to {
-  color: var(--pr-primary);
-}
-
 .prh-input {
   border: none;
   outline: none;
   flex: 1;
-  font-size: 0.95rem;
+  font-size: 16px;
   font-weight: 500;
   color: var(--pr-text-dark);
   background: transparent;
   min-width: 0;
-  /* border: 1px solid var(--pr-text-dark); */
+  font-family: "Vollkorn", serif;
 }
 .prh-input::placeholder {
   color: var(--pr-text-light);
@@ -194,7 +192,6 @@
   font-family: "Vollkorn", serif;
 }
 
-/* Swap button */
 .prh-swap-btn {
   align-self: center;
   margin: 0 auto;
@@ -244,6 +241,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  font-family: "Times New Roman", Times, serif;
 }
 .prh-seats-btn {
   width: 28px;
@@ -493,6 +491,7 @@
   color: var(--pr-text-dark);
   flex: 1;
   line-height: 1.2;
+  font-family: sans-serif;
 }
 
 .prh-pref-tick {
@@ -900,7 +899,6 @@
   opacity: 0.7;
 }
 
-
 .pr-how-steps {
   display: flex;
   flex-direction: column;
@@ -1266,4 +1264,123 @@ html {
 ::selection {
   background: var(--pr-primary);
   color: white;
+}
+.underFields {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.prh-field--loc {
+  position: relative;
+}
+/* .prh-field--loc.prh-field--focused,
+.prh-field--focusable:focus-within {
+  border:1px solid  #2563eb !important;
+
+  border-radius: 10px 10px 0 0;
+} */
+.prh-field-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+.prh-field-clear:hover {
+  color: #1d4ed8;
+  background: #eff6ff;
+}
+.prh-loc-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 9999 !important;
+  overflow: hidden;
+  transform-origin: top center;
+}
+.prh-loc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.13s;
+  font-size: 0.88rem;
+  color: #1e293b;
+}
+.prh-loc-item:hover {
+  background: #eff6ff;
+}
+.prh-loc-current {
+  border-bottom: 1px solid #f1f5f9;
+  color: #2563eb;
+  font-weight: 500;
+}
+.prh-loc-pin {
+  color: #64748b;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.prh-loc-pin-blue {
+  color: #2563eb;
+}
+.prh-loc-name {
+  font-weight: 500;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prh-loc-state {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+.prh-loc-empty {
+  padding: 12px 14px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ── Vehicle select ── */
+.prh-select {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--pr-text-gray);
+  font-family: "Vollkorn", serif;
+}
+
+.prh-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Blue focus on all prh-field inputs ── */
+.prh-field input:focus,
+.prh-field select:focus {
+  outline: none !important;
+}
+
+.prh-seats-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

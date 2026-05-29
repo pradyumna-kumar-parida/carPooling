@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../styles/FindRide.css";
 import Header from "../../components/Nav";
@@ -6,148 +6,53 @@ import Footer from "../../components/Footer";
 import SearchRide from "./find-ride/SearchRide";
 import { FaCarSide } from "react-icons/fa";
 import varifiedBedge from "../../assets/Images/verifiedBedge.png";
+import rideNotFound from "../../assets/Images/no-ride.png";
 import { GiCometSpark } from "react-icons/gi";
 import { FaUserGroup } from "react-icons/fa6";
+import { IoFastFoodSharp } from "react-icons/io5";
+import { FaSmoking } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
-/* ─────────────────────────────────────────
-   MOCK DATA
-───────────────────────────────────────── */
-const RIDES = [
-  {
-    id: 1,
-    date: "Wednesday, 15 April",
-    route: "New Delhi → Chandigarh",
-    depart: "08:50",
-    arrive: "10:00",
-    duration: "3h10",
-    from: "Delhi",
-    to: "Chandigarh",
-    price: 540,
-    driver: { name: "Saumya", rating: 5.0, avatar: "SA" },
-    maxBack: 2,
-    instantBooking: false,
-    smoking: false,
-    pets: false,
-    verified: true,
-    departSlot: "06:00 - 12:00",
-  },
-  {
-    id: 2,
-    date: "Today",
-    route: "New Delhi → Chandigarh",
-    depart: "19:30",
-    arrive: "22:40",
-    duration: "3h10",
-    from: "New Delhi",
-    to: "Rajpura",
-    price: 580,
-    driver: { name: "Gurmeet", rating: 4.0, avatar: "GU" },
-    maxBack: 2,
-    instantBooking: false,
-    smoking: false,
-    pets: false,
-    verified: true,
-    departSlot: "After 18:00",
-  },
-  {
-    id: 3,
-    date: "Today",
-    route: "New Delhi → Chandigarh",
-    depart: "20:00",
-    arrive: "23:10",
-    duration: "3h10",
-    from: "New Delhi",
-    to: "Rajpura",
-    price: 760,
-    driver: { name: "Daya", rating: 1.0, avatar: "DA" },
-    maxBack: 2,
-    instantBooking: false,
-    smoking: true,
-    pets: false,
-    verified: false,
-    departSlot: "After 18:00",
-  },
-  {
-    id: 4,
-    date: "Wednesday, 15 April",
-    route: "New Delhi → Chandigarh",
-    depart: "04:00",
-    arrive: "07:20",
-    duration: "3h20",
-    from: "Badli",
-    to: "Shahzadpur",
-    price: 490,
-    driver: { name: "Ravi", rating: 4.8, avatar: "RA" },
-    maxBack: 2,
-    instantBooking: true,
-    smoking: false,
-    pets: false,
-    verified: true,
-    departSlot: "Before 06:00",
-  },
-  {
-    id: 5,
-    date: "Tomorrow",
-    route: "New Delhi → Chandigarh",
-    depart: "09:10",
-    arrive: "12:30",
-    duration: "3h20",
-    from: "Ghaziabad",
-    to: "Dera Bassi",
-    price: 550,
-    driver: { name: "Chirag", rating: 4.5, avatar: "CH" },
-    maxBack: 2,
-    instantBooking: true,
-    smoking: false,
-    pets: true,
-    verified: true,
-    departSlot: "06:00 - 12:00",
-  },
-  {
-    id: 6,
-    date: "Tomorrow",
-    route: "New Delhi → Chandigarh",
-    depart: "14:15",
-    arrive: "17:45",
-    duration: "3h30",
-    from: "New Delhi",
-    to: "Chandigarh",
-    price: 620,
-    driver: { name: "Priya", rating: 4.7, avatar: "PR" },
-    maxBack: 2,
-    instantBooking: false,
-    smoking: false,
-    pets: true,
-    verified: true,
-    departSlot: "12:01 - 18:00",
-  },
-];
-
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { API_BASE_URL } from "../../utils/api";
+import { BiSolidLocationPlus } from "react-icons/bi";
+import { LuFilter } from "react-icons/lu";
 const SORT_OPTIONS = [
   { id: "earliest", label: "Earliest departure" },
   { id: "lowest", label: "Lowest price" },
-  { id: "departure", label: "Close to departure point" },
-  { id: "arrival", label: "Close to arrival point" },
   { id: "shortest", label: "Shortest ride" },
 ];
 
 const DEPART_SLOTS = [
-  { id: "before6", label: "Before 06:00", count: 9 },
-  { id: "6to12", label: "06:00 - 12:00", count: 16 },
-  { id: "12to18", label: "12:01 - 18:00", count: 20 },
-  { id: "after18", label: "After 18:00", count: 13 },
+  { id: "before6", label: "Before 06:00" },
+  { id: "6to12", label: "06:00 - 12:00" },
+  { id: "12to18", label: "12:01 - 18:00" },
+  { id: "after18", label: "After 18:00" },
 ];
 
 const AMENITIES = [
-  { id: "maxBack", label: "Max. 2 in the back", count: 38 },
-  { id: "instantBooking", label: "Instant Booking", count: 10 },
-  { id: "smoking", label: "Smoking allowed", count: 23 },
-  { id: "pets", label: "Pets allowed", count: 24 },
+  { id: "max_two_in_back", label: "Max. 2 in the back" },
+  { id: "instant_booking", label: "Instant Booking" },
+  { id: "smoking_allowed", label: "Smoking allowed" },
+  { id: "pet_allowed", label: "Pets allowed" },
 ];
 
-/* ─────────────────────────────────────────
-   AVATAR COLORS
-───────────────────────────────────────── */
+const SLOT_MAP = {
+  before6: "Before 06:00",
+  "6to12": "06:00 - 12:00",
+  "12to18": "12:01 - 18:00",
+  after18: "After 18:00",
+};
+
+const DEFAULT_AMENITY_CHECKS = {
+  max_two_in_back: false,
+  instant_booking: false,
+  smoking_allowed: false,
+  pet_allowed: false,
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 const AVATAR_COLORS = [
   ["#dbeafe", "#1e40af"],
   ["#dcfce7", "#166534"],
@@ -156,25 +61,52 @@ const AVATAR_COLORS = [
   ["#ede9fe", "#5b21b6"],
 ];
 const avatarColor = (name) =>
-  AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
+  AVATAR_COLORS[(name || "A").charCodeAt(0) % AVATAR_COLORS.length];
 
-/* ─────────────────────────────────────────
-   STAR RATING
-───────────────────────────────────────── */
+const formatTime = (timeStr) => (timeStr ? timeStr.slice(0, 5) : "--:--");
+
+const secondsToHM = (secs) => {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  return h > 0 ? `${h}h${m > 0 ? m + "m" : ""}` : `${m}m`;
+};
+
+const getDepartSlot = (timeStr) => {
+  if (!timeStr) return "";
+  const [h] = timeStr.split(":").map(Number);
+  if (h < 6) return "Before 06:00";
+  if (h < 12) return "06:00 - 12:00";
+  if (h < 18) return "12:01 - 18:00";
+  return "After 18:00";
+};
+
+const getInitials = (name) => {
+  if (!name) return "??";
+  const parts = name.trim().split(" ");
+  return parts.length >= 2
+    ? (parts[0][0] + parts[1][0]).toUpperCase()
+    : parts[0].slice(0, 2).toUpperCase();
+};
+
+// ── Star Rating ───────────────────────────────────────────────────────────────
+
 function StarRating({ rating }) {
   return (
     <span className="ridetail-star-wrap">
       <FaStar />
-      <span className="ridetail-star-val">{rating.toFixed(1)}</span>
+      <span className="ridetail-star-val">
+        {Number(rating || 0).toFixed(1)}
+      </span>
     </span>
   );
 }
 
-/* ─────────────────────────────────────────
-   RIDE CARD
-───────────────────────────────────────── */
+// ── Ride Card ─────────────────────────────────────────────────────────────────
+
 function RideCard({ ride }) {
-  const [bg, text] = avatarColor(ride.driver.name);
+  const navigate = useNavigate();
+  const [bg, text] = avatarColor(ride.driver_name);
+
   return (
     <motion.div
       className="ridetail-card-ride"
@@ -182,92 +114,112 @@ function RideCard({ ride }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.22 }}
-      whileHover={{ y: -2, boxShadow: "0 8px 32px rgba(15,52,120,0.13)" }}
+      whileHover={{
+        y: -2,
+        boxShadow: "0 8px 32px rgba(15,52,120,0.13)",
+        border: "1px solid #1e40af",
+      }}
+      onClick={() => navigate("/ride-book")}
     >
-      {/* Time row */}
       <div className="ridetail-ride-top">
         <div className="ridetail-ride-timeline">
           <div className="ridetail-ride-point">
-            <span className="ridetail-ride-time">{ride.depart}</span>
-            <span className="ridetail-ride-city">{ride.from}</span>
+            <span className="ridetail-ride-time">
+              {formatTime(ride.departure_time)}
+            </span>
+            <span className="ridetail-ride-city">
+              {ride.source_address?.split(",")[0]}
+            </span>
           </div>
-
           <div className="ridetail-ride-line">
             <div className="ridetail-ride-dot ridetail-ride-dot--left" />
             <div className="ridetail-ride-track">
-              <span className="ridetail-ride-dur">{ride.duration}</span>
+              <span className="ridetail-ride-dur">
+                {secondsToHM(ride.duration_seconds)}
+              </span>
             </div>
             <div className="ridetail-ride-dot ridetail-ride-dot--right" />
           </div>
-
           <div className="ridetail-ride-point ridetail-ride-point--right">
-            <span className="ridetail-ride-time">{ride.arrive}</span>
-            <span className="ridetail-ride-city">{ride.to}</span>
+            <span className="ridetail-ride-time">
+              {formatTime(ride.estimated_reach_time)}
+            </span>
+            <span className="ridetail-ride-city">
+              {ride.destination_address?.split(",")[0]}
+            </span>
           </div>
         </div>
-
         <div className="ridetail-ride-price">
           <span className="ridetail-price-sym">₹</span>
-          <span className="ridetail-price-main">{ride.price}.00</span>
+          <span className="ridetail-price-main">
+            {Number(ride.price_per_seat).toFixed(2)}
+          </span>
         </div>
       </div>
 
-      {/* Driver row */}
       <div className="ridetail-ride-bottom">
         <div className="ridetail-driver-row">
-          {/* Car icon */}
           <span className="ridetail-car-icon">
             <FaCarSide />
           </span>
-
-          {/* Avatar */}
           <div
             className="ridetail-avatar"
             style={{ background: bg, color: text }}
           >
-            {ride.driver.avatar}
+            {getInitials(ride.driver_name)}
           </div>
-
-          <span className="ridetail-driver-name">{ride.driver.name}</span>
-          <StarRating rating={ride.driver.rating} />
+          <span className="ridetail-driver-name">{ride.driver_name}</span>
+          <StarRating rating={ride.driver_rating || 0} />
         </div>
-
         <div className="ridetail-badges">
-          {ride.instantBooking && (
+          {ride.instant_booking === "yes" && (
             <span className="ridetail-badge ridetail-badge--instant">
-              <GiCometSpark />
-              Instant Booking
+              <GiCometSpark /> Instant Booking
             </span>
           )}
-          <span className="ridetail-badge ridetail-badge--back">
-            <FaUserGroup />
-            Max. {ride.maxBack} in the back
-          </span>
+          {ride.max_two_in_back === "yes" && (
+            <span className="ridetail-badge ridetail-badge--back">
+              <FaUserGroup /> Max. 2 in the back
+            </span>
+          )}
+          {ride.smoking_allowed === "yes" && (
+            <span className="ridetail-badge ridetail-badge--back">
+              <FaSmoking /> Smoking allowed
+            </span>
+          )}
+          {ride.pet_allowed === "yes" && (
+            <span className="ridetail-badge ridetail-badge--back">
+              <IoFastFoodSharp /> Pets allowed
+            </span>
+          )}
         </div>
       </div>
     </motion.div>
   );
 }
 
-/* ─────────────────────────────────────────
-   GROUP RIDES BY DATE LABEL
-───────────────────────────────────────── */
+// ── Group by date ─────────────────────────────────────────────────────────────
+
 function groupByDate(rides) {
   const order = [];
   const map = {};
   rides.forEach((r) => {
-    if (!map[r.date]) {
-      map[r.date] = [];
-      order.push(r.date);
+    const label = r.ride_date || "Unknown";
+    if (!map[label]) {
+      map[label] = [];
+      order.push(label);
     }
-    map[r.date].push(r);
+    map[label].push(r);
   });
-  return order.map((d) => ({ date: d, rides: map[d], route: map[d][0].route }));
+  return order.map((d) => ({
+    date: d,
+    rides: map[d],
+    route: `${map[d][0].source_address} → ${map[d][0].destination_address}`,
+  }));
 }
 
-/* ─────────────────────────────────────────
-   SIDEBAR FILTER
-───────────────────────────────────────── */
+// ── Filter Section ────────────────────────────────────────────────────────────
+
 function FilterSection({ title, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -310,69 +262,185 @@ function FilterSection({ title, children, defaultOpen = true }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   MAIN PAGE
-───────────────────────────────────────── */
+// ── Mobile Search Bar (compact summary + search drawer) ───────────────────────
+
+function MobileSearchBar({ from, to, date, passengers, onFilterClick }) {
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  return (
+    <>
+      {/* Compact bar */}
+      <div className="mobile-search-bar">
+        <button
+          className="mobile-search-summary"
+          onClick={() => setSearchOpen(true)}
+        >
+          <span className="mobile-search-icon">
+            <BiSolidLocationPlus />
+          </span>
+          <span className="mobile-search-text">
+            <span className="mobile-search-route">
+              {from
+                ? `${from.split(",")[0]} → ${to ? to.split(",")[0] : "..."}`
+                : "Where are you going?"}
+            </span>
+            <span className="mobile-search-sub">
+              {date || "Select date"}
+              {passengers
+                ? `, ${passengers} passenger${Number(passengers) > 1 ? "s" : ""}`
+                : ""}
+            </span>
+          </span>
+        </button>
+        <button className="mobile-filter-btn" onClick={onFilterClick}>
+          <LuFilter />
+          Filter
+        </button>
+      </div>
+
+      {/* Full search drawer */}
+      <AnimatePresence>
+        {searchOpen && (
+          <>
+            <motion.div
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 200,
+                background: "rgba(11,22,41,0.45)",
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSearchOpen(false)}
+            />
+            <motion.div
+              className="mobile-search-drawer"
+              initial={{ y: -40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -40, opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+            >
+              <div className="mobile-search-drawer-head">
+                <span className="mobile-search-drawer-title">Search rides</span>
+                <button
+                  className="ridetail-mobile-close"
+                  onClick={() => setSearchOpen(false)}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+              <div className="mobile-search-drawer-body">
+                <SearchRide
+                  initialFrom={from}
+                  initialTo={to}
+                  initialDate={date}
+                  initialPassengers={passengers}
+                />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ── Main Page ─────────────────────────────────────────────────────────────────
+
 export default function RideDetails() {
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
+  const date = searchParams.get("date");
+  const passengers = searchParams.get("passengers");
+
+  const [rides, setRides] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+
   const [sortBy, setSortBy] = useState("earliest");
-  const [departChecks, setDepartChecks] = useState({
-    before6: true,
-    "6to12": true,
-    "12to18": false,
-    after18: true,
-  });
+  const [departSlot, setDepartSlot] = useState("");
   const [amenityChecks, setAmenityChecks] = useState({
-    maxBack: true,
-    instantBooking: false,
-    smoking: false,
-    pets: false,
+    ...DEFAULT_AMENITY_CHECKS,
   });
-  const [verifiedOnly, setVerifiedOnly] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [visibleCount, setVisibleCount] = useState(5);
+  const [filterOpen, setFilterOpen] = useState(false);
 
-  const slotMap = {
-    before6: "Before 06:00",
-    "6to12": "06:00 - 12:00",
-    "12to18": "12:01 - 18:00",
-    after18: "After 18:00",
-  };
+  useEffect(() => {
+    if (!from || !to || !date) return;
+    const fetchRides = async () => {
+      setLoading(true);
+      setApiError("");
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${API_BASE_URL}find-rides`,
+          {
+            source_address: from,
+            destination_address: to,
+            ride_date: date,
+            no_of_seats: passengers,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          },
+        );
+        const result = response.data;
+        setRides(Array.isArray(result.rides) ? result.rides : []);
+      } catch (err) {
+        console.error("Fetch rides error:", err);
+        setApiError("Failed to load rides. Please try again.");
+        setRides([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRides();
+  }, [from, to, date, passengers]);
 
-  const filtered = RIDES.filter((r) => {
-    if (verifiedOnly && !r.verified) return false;
-    const activeSlots = Object.entries(departChecks)
-      .filter(([, v]) => v)
-      .map(([k]) => slotMap[k]);
-    if (activeSlots.length && !activeSlots.includes(r.departSlot)) return false;
-    if (amenityChecks.instantBooking && !r.instantBooking) return false;
-    if (amenityChecks.smoking && !r.smoking) return false;
-    if (amenityChecks.pets && !r.pets) return false;
+  const filtered = rides.filter((r) => {
+    if (verifiedOnly && r.is_verified !== "1") return false;
+    if (departSlot && getDepartSlot(r.departure_time) !== departSlot)
+      return false;
+    if (amenityChecks.instant_booking && r.instant_booking !== "yes")
+      return false;
+    if (amenityChecks.smoking_allowed && r.smoking_allowed !== "yes")
+      return false;
+    if (amenityChecks.pet_allowed && r.pet_allowed !== "yes") return false;
+    if (amenityChecks.max_two_in_back && r.max_two_in_back !== "yes")
+      return false;
     return true;
   });
 
   const sorted = [...filtered].sort((a, b) => {
-    if (sortBy === "lowest") return a.price - b.price;
-    if (sortBy === "shortest") return a.duration.localeCompare(b.duration);
-    if (sortBy === "earliest") return a.depart.localeCompare(b.depart);
-    return 0;
+    if (sortBy === "lowest")
+      return Number(a.price_per_seat) - Number(b.price_per_seat);
+    if (sortBy === "shortest") return a.duration_seconds - b.duration_seconds;
+    return (a.departure_time || "").localeCompare(b.departure_time || "");
   });
 
   const groups = groupByDate(sorted.slice(0, visibleCount));
 
   const clearAll = () => {
     setSortBy("earliest");
-    setDepartChecks({
-      before6: false,
-      "6to12": false,
-      "12to18": false,
-      after18: false,
-    });
-    setAmenityChecks({
-      maxBack: false,
-      instantBooking: false,
-      smoking: false,
-      pets: false,
-    });
+    setDepartSlot("");
+    setAmenityChecks({ ...DEFAULT_AMENITY_CHECKS });
     setVerifiedOnly(false);
   };
 
@@ -380,19 +448,34 @@ export default function RideDetails() {
     <>
       <Header />
       <div className="ridetail-page">
-        {/* ── TOP BAR: empty slot for your form ── */}
-        <div className="ridetail-topbar">
+        {/* ── Desktop topbar ── */}
+        <div className="ridetail-topbar ridetail-topbar--desktop">
           <div className="ridetail-topbar-inner">
-            <SearchRide />
+            <SearchRide
+              initialFrom={from}
+              initialTo={to}
+              initialDate={date}
+              initialPassengers={passengers}
+            />
           </div>
         </div>
 
-        {/* ── BODY ── */}
+        {/* ── Mobile compact bar ── */}
+        <div className="ridetail-topbar--mobile">
+          <MobileSearchBar
+            from={from}
+            to={to}
+            date={date}
+            passengers={passengers}
+            onFilterClick={() => setFilterOpen(true)}
+          />
+        </div>
+
         <div className="ridetail-body">
-          {/* ── SIDEBAR (desktop) ── */}
+          {/* ── Sidebar (desktop) ── */}
           <aside className="ridetail-sidebar">
             <div className="ridetail-sidebar-head">
-              <span className="ridetail-sidebar-title">Sort by</span>
+              <span className="ridetail-sidebar-title">Filter</span>
               <button className="ridetail-clear-btn" onClick={clearAll}>
                 Clear all
               </button>
@@ -420,18 +503,14 @@ export default function RideDetails() {
                 <div key={d.id} className="ridetail-check-row">
                   <label className="ridetail-check-left">
                     <input
-                      type="checkbox"
-                      className="ridetail-checkbox"
-                      checked={!!departChecks[d.id]}
-                      onChange={() =>
-                        setDepartChecks((p) => ({ ...p, [d.id]: !p[d.id] }))
-                      }
+                      type="radio"
+                      className="ridetail-radio"
+                      name="depart-slot"
+                      checked={departSlot === SLOT_MAP[d.id]}
+                      onChange={() => setDepartSlot(SLOT_MAP[d.id])}
                     />
                     <span className="ridetail-check-label">{d.label}</span>
                   </label>
-                  <div className="ridetail-check-right">
-                    <span className="ridetail-check-count">{d.count}</span>
-                  </div>
                 </div>
               ))}
             </FilterSection>
@@ -448,7 +527,6 @@ export default function RideDetails() {
                   <span className="ridetail-check-label">Verified Profile</span>
                 </label>
                 <div className="ridetail-check-right">
-                  <span className="ridetail-check-count">38</span>
                   <span className="ridetail-verified-badge">
                     <img src={varifiedBedge} alt="" loading="eager" />
                   </span>
@@ -470,22 +548,21 @@ export default function RideDetails() {
                     />
                     <span className="ridetail-check-label">{a.label}</span>
                   </label>
-                  <div className="ridetail-check-right">
-                    <span className="ridetail-check-count">{a.count}</span>
-                  </div>
                 </div>
               ))}
             </FilterSection>
           </aside>
 
-          {/* ── RESULTS ── */}
+          {/* ── Results ── */}
           <main>
-            {/* Mobile filter toggle */}
+            {/* Mobile filter drawer */}
             <MobileSidebar
+              open={filterOpen}
+              setOpen={setFilterOpen}
               sortBy={sortBy}
               setSortBy={setSortBy}
-              departChecks={departChecks}
-              setDepartChecks={setDepartChecks}
+              departSlot={departSlot}
+              setDepartSlot={setDepartSlot}
               verifiedOnly={verifiedOnly}
               setVerifiedOnly={setVerifiedOnly}
               amenityChecks={amenityChecks}
@@ -494,11 +571,26 @@ export default function RideDetails() {
             />
 
             <div className="ridetail-results">
-              {groups.length === 0 ? (
-                <div className="ridetail-empty">
-                  No rides match your filters.
-                </div>
-              ) : (
+              {loading && (
+                <div className="ridetail-empty">Loading rides...</div>
+              )}
+              {!loading && apiError && (
+                <div className="ridetail-empty">{apiError}</div>
+              )}
+              {!loading && !apiError && groups.length === 0 && (
+                <>
+                  <div className="notfoundride">
+                    <img
+                      src={rideNotFound}
+                      alt="ride unavilable"
+                      height="100%"
+                      width="100%"
+                    />
+                  </div>
+                </>
+              )}
+              {!loading &&
+                !apiError &&
                 groups.map((group) => (
                   <div key={group.date} className="ridetail-date-group">
                     <div className="ridetail-date-header">
@@ -511,8 +603,7 @@ export default function RideDetails() {
                       ))}
                     </AnimatePresence>
                   </div>
-                ))
-              )}
+                ))}
             </div>
 
             {visibleCount < sorted.length && (
@@ -535,193 +626,131 @@ export default function RideDetails() {
   );
 }
 
-/* ─────────────────────────────────────────
-   MOBILE SIDEBAR DRAWER
-───────────────────────────────────────── */
+// ── Mobile Sidebar ────────────────────────────────────────────────────────────
+
 function MobileSidebar({
+  open,
+  setOpen,
   sortBy,
   setSortBy,
-  departChecks,
-  setDepartChecks,
+  departSlot,
+  setDepartSlot,
   verifiedOnly,
   setVerifiedOnly,
   amenityChecks,
   setAmenityChecks,
   clearAll,
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      <button className="ridetail-filter-toggle" onClick={() => setOpen(true)}>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        >
-          <line x1="4" y1="6" x2="20" y2="6" />
-          <line x1="4" y1="12" x2="14" y2="12" />
-          <line x1="4" y1="18" x2="10" y2="18" />
-        </svg>
-        Filters &amp; Sort
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              className="ridetail-mobile-overlay"
-              style={{
-                position: "fixed",
-                inset: 0,
-                zIndex: 100,
-                background: "rgba(11,22,41,0.45)",
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setOpen(false)}
-            />
-            <motion.div
-              className="ridetail-mobile-sidebar"
-              initial={{ x: -320 }}
-              animate={{ x: 0 }}
-              exit={{ x: -320 }}
-              transition={{ type: "spring", stiffness: 80, damping: 18 }}
-            >
-              <div className="ridetail-mobile-sidebar-head">
-                <span className="ridetail-sidebar-title">
-                  Filters &amp; Sort
-                </span>
-                <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                  <button
-                    className="ridetail-clear-btn"
-                    onClick={() => {
-                      clearAll();
-                      setOpen(false);
-                    }}
-                  >
-                    Clear all
-                  </button>
-                  <button
-                    className="ridetail-mobile-close"
-                    onClick={() => setOpen(false)}
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                  </button>
-                </div>
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 100,
+              background: "rgba(11,22,41,0.45)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+          />
+          <motion.div
+            className="ridetail-mobile-sidebar"
+            initial={{ x: -320 }}
+            animate={{ x: 0 }}
+            exit={{ x: -320 }}
+            transition={{ type: "spring", stiffness: 80, damping: 18 }}
+          >
+            <div className="ridetail-mobile-sidebar-head">
+              <span className="ridetail-sidebar-title">Filters &amp; Sort</span>
+              <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                <button
+                  className="ridetail-clear-btn"
+                  onClick={() => {
+                    clearAll();
+                    setOpen(false);
+                  }}
+                >
+                  Clear all
+                </button>
+                <button
+                  className="ridetail-mobile-close"
+                  onClick={() => setOpen(false)}
+                ></button>
               </div>
+            </div>
 
-              <FilterSection title="Sort by">
-                {SORT_OPTIONS.map((s) => (
-                  <label key={s.id} className="ridetail-radio-row">
-                    <span className="ridetail-radio-left">
-                      <input
-                        type="radio"
-                        className="ridetail-radio"
-                        name="sort-m"
-                        checked={sortBy === s.id}
-                        onChange={() => setSortBy(s.id)}
-                      />
-                      <span className="ridetail-radio-label">{s.label}</span>
-                    </span>
+            <FilterSection title="Sort by">
+              {SORT_OPTIONS.map((s) => (
+                <label key={s.id} className="ridetail-radio-row">
+                  <span className="ridetail-radio-left">
+                    <input
+                      type="radio"
+                      className="ridetail-radio"
+                      name="sort-m"
+                      checked={sortBy === s.id}
+                      onChange={() => setSortBy(s.id)}
+                    />
+                    <span className="ridetail-radio-label">{s.label}</span>
+                  </span>
+                </label>
+              ))}
+            </FilterSection>
+
+            <FilterSection title="Departure time">
+              {DEPART_SLOTS.map((d) => (
+                <div key={d.id} className="ridetail-check-row">
+                  <label className="ridetail-check-left">
+                    <input
+                      type="radio"
+                      className="ridetail-radio"
+                      name="depart-slot-m"
+                      checked={departSlot === SLOT_MAP[d.id]}
+                      onChange={() => setDepartSlot(SLOT_MAP[d.id])}
+                    />
+                    <span className="ridetail-check-label">{d.label}</span>
                   </label>
-                ))}
-              </FilterSection>
+                </div>
+              ))}
+            </FilterSection>
 
-              <FilterSection title="Departure time">
-                {DEPART_SLOTS.map((d) => (
-                  <div key={d.id} className="ridetail-check-row">
-                    <label className="ridetail-check-left">
-                      <input
-                        type="checkbox"
-                        className="ridetail-checkbox"
-                        checked={!!departChecks[d.id]}
-                        onChange={() =>
-                          setDepartChecks((p) => ({ ...p, [d.id]: !p[d.id] }))
-                        }
-                      />
-                      <span className="ridetail-check-label">{d.label}</span>
-                    </label>
-                    <span className="ridetail-check-count">{d.count}</span>
-                  </div>
-                ))}
-              </FilterSection>
+            <FilterSection title="Trust and safety">
+              <div className="ridetail-check-row">
+                <label className="ridetail-check-left">
+                  <input
+                    type="checkbox"
+                    className="ridetail-checkbox"
+                    checked={verifiedOnly}
+                    onChange={() => setVerifiedOnly((v) => !v)}
+                  />
+                  <span className="ridetail-check-label">Verified Profile</span>
+                </label>
+              </div>
+            </FilterSection>
 
-              <FilterSection title="Trust and safety">
-                <div className="ridetail-check-row">
+            <FilterSection title="Amenities">
+              {AMENITIES.map((a) => (
+                <div key={a.id} className="ridetail-check-row">
                   <label className="ridetail-check-left">
                     <input
                       type="checkbox"
                       className="ridetail-checkbox"
-                      checked={verifiedOnly}
-                      onChange={() => setVerifiedOnly((v) => !v)}
+                      checked={!!amenityChecks[a.id]}
+                      onChange={() =>
+                        setAmenityChecks((p) => ({ ...p, [a.id]: !p[a.id] }))
+                      }
                     />
-                    <span className="ridetail-check-label">
-                      Verified Profile
-                    </span>
+                    <span className="ridetail-check-label">{a.label}</span>
                   </label>
-                  <span className="ridetail-check-count">38</span>
                 </div>
-              </FilterSection>
-
-              <FilterSection title="Amenities">
-                {AMENITIES.map((a) => (
-                  <div key={a.id} className="ridetail-check-row">
-                    <label className="ridetail-check-left">
-                      <input
-                        type="checkbox"
-                        className="ridetail-checkbox"
-                        checked={!!amenityChecks[a.id]}
-                        onChange={() =>
-                          setAmenityChecks((p) => ({ ...p, [a.id]: !p[a.id] }))
-                        }
-                      />
-                      <span className="ridetail-check-label">{a.label}</span>
-                    </label>
-                    <span className="ridetail-check-count">{a.count}</span>
-                  </div>
-                ))}
-              </FilterSection>
-
-              <div style={{ padding: "16px 20px" }}>
-                <button
-                  onClick={() => setOpen(false)}
-                  style={{
-                    width: "100%",
-                    background: "#1e40af",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: 12,
-                    padding: "13px",
-                    fontSize: "0.92rem",
-                    fontWeight: 700,
-                    fontFamily: "'Outfit', sans-serif",
-                    cursor: "pointer",
-                  }}
-                >
-                  Show results
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+              ))}
+            </FilterSection>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

@@ -21,11 +21,8 @@ const BookingConfirmation = lazy(
   () => import("../pages/Rides/BookingConfirmation"),
 );
 const VehicleDetails = lazy(
-  () => import("../pages/Vechile Details/VechileDetails"),
+  () => import("../pages/Vehicle/VehicleRegistration"),
 );
-// const NotFound = lazy(() => import("./pages/NotFound"));
-
-// ── Fullscreen loader fallback ────────────────
 const PageLoader = () => (
   <div
     style={{
@@ -42,19 +39,37 @@ const PageLoader = () => (
 function App() {
   return (
     <Suspense fallback={<PageLoader />}>
-      <BrowserRouter>
+      <BrowserRouter basename="carpooling">
         <ScrollManager />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/offer-ride" element={<PublishRide />} />
-          <Route path="/find-ride" element={<FindRide />} />
+          <Route
+            path="/offer-ride"
+            element={
+              <ProtectedRoutes>
+                <RoleProtectedRoute allowedRole="driver">
+                  <PublishRide />
+                </RoleProtectedRoute>
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/find-ride"
+            element={
+              <ProtectedRoutes>
+                <RoleProtectedRoute allowedRole="passenger">
+                  <FindRide />
+                </RoleProtectedRoute>
+              </ProtectedRoutes>
+            }
+          />
           <Route path="/all-rides" element={<RideDetails />} />
           <Route path="/ride-book" element={<RideConfirmation />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route
-            path="/vechile-details"
+            path="/vehicle-registration"
             element={
               <ProtectedRoutes>
                 <RoleProtectedRoute allowedRole="driver">

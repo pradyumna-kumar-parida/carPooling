@@ -8,12 +8,13 @@ import Testimonials from "../Home page/Home-components/Testimonials";
 import Footer from "../../components/Footer";
 import SearchRide from "../Rides/find-ride/SearchRide";
 function Landingpage() {
+  const role = localStorage.getItem("role");
   return (
     <div className="App">
       <Header />
       <Hero />
       <div className="landingpage-search">
-        <SearchRide />
+        {role !== "driver" && <SearchRide />}
       </div>
       <div className="container" id="find">
         <DetailedCards />

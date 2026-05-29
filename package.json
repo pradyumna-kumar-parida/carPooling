@@ -14,6 +14,8 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^5.18.0",
     "@mui/material": "^5.18.0",
+    "@react-google-maps/api": "^2.20.8",
+    "antd": "^6.4.3",
     "apexcharts": "^5.10.6",
     "axios": "^1.15.0",
     "framer-motion": "^12.38.0",
@@ -21,7 +23,8 @@
     "react-apexcharts": "^2.1.0",
     "react-dom": "^19.2.4",
     "react-icons": "^5.6.0",
-    "react-router-dom": "^7.14.0"
+    "react-router-dom": "^7.14.0",
+    "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

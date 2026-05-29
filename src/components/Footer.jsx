@@ -68,7 +68,7 @@ const Footer = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          © 2024 Carpooling India. All rights reserved.
+          © 2026 Carpooling India. All rights reserved.
         </motion.div>
       </motion.div>
 
@@ -101,7 +101,7 @@ const Footer = () => {
         viewport={{ once: true }}
         transition={{ delay: 0.3 }}
       >
-        © 2024 Carpooling India. All rights reserved.
+        © 2026 Carpooling India. All rights reserved.
       </motion.div>
     </motion.footer>
   );

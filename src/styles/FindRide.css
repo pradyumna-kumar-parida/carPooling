@@ -1,8 +1,3 @@
-/* ==========================================
-   FIND RIDE PAGE STYLES - fr-* prefix
-   Fully Responsive Design
-   ========================================== */
-
 :root {
   --fr-primary: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
   --fr-primary-light: #3b82f6;
@@ -21,19 +16,12 @@
   --fr-radius-lg: 16px;
 }
 
-/* ==========================================
-   CONTAINER
-   ========================================== */
-
 .fr-container {
   width: 100%;
   min-height: 100vh;
   background: var(--fr-bg-white);
 }
 
-/* ==========================================
-   SEARCH SECTION
-   ========================================== */
 .fr-search-section {
   background: #fff;
   padding: 20px;
@@ -41,7 +29,7 @@
 }
 
 .fr-search-wrapper {
-  max-width: 1160px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -50,7 +38,6 @@
   font-weight: 700;
   color: #0f172a;
   text-align: center;
-  margin-bottom: 36px;
   letter-spacing: -0.5px;
 }
 
@@ -180,6 +167,7 @@
   top: calc(100% + 10px);
   left: -1px;
   min-width: 280px;
+  width: max-content;
   background: #fff;
   border-radius: 16px;
   box-shadow:
@@ -191,9 +179,12 @@
   transform-origin: top left;
   overflow: hidden;
   max-height: 320px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
-
+.fr-error {
+  color: red;
+  margin-top: 10px;
+}
 .fr-loc-dropdown::-webkit-scrollbar {
   width: 4px;
 }
@@ -276,6 +267,8 @@
 .fr-pax-counter {
   display: flex;
   align-items: center;
+  font-family: "Times New Roman", Times, serif;
+
   gap: 14px;
 }
 
@@ -340,7 +333,7 @@
   transform: scale(0.98);
 }
 
-/* ── Show stays checkbox ── */
+/* 
 .fr-checkbox-wrapper {
   margin-top: 16px;
   display: flex;
@@ -368,7 +361,7 @@
   color: #475569;
   font-size: 0.88rem;
   font-weight: 500;
-}
+} */
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
@@ -896,7 +889,6 @@
   flex-direction: column;
   gap: 2px;
   min-width: 70px;
-  align-items: flex-end;
 }
 
 .ridetail-ride-time {
@@ -911,10 +903,14 @@
   font-size: 0.98rem;
   font-weight: 500;
   color: var(--fr-text-dark);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* max-width: 80px; */
+
+  max-width: 150px;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  line-height: 1.3;
 }
 
 .ridetail-ride-line {
@@ -1050,7 +1046,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.75rem;
+  font-size: 0.75rem !important;
   font-weight: 500;
   padding: 4px 10px;
   border-radius: 20px;
@@ -1096,18 +1092,6 @@
   transform: scale(0.97);
 }
 
-.ridetail-empty {
-  text-align: center;
-  padding: 48px 20px;
-  color: #94a3b8;
-  font-size: 0.95rem;
-  font-weight: 500;
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid #e4ebf5;
-}
-
-/* ── MOBILE FILTER TOGGLE ── */
 .ridetail-filter-toggle {
   display: none;
   align-items: center;
@@ -3463,7 +3447,46 @@
 .vehicledetails-section {
   animation: vehicledetails-fadeIn 0.4s ease;
 }
-
+.registration--sucess-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 480px;
+  padding: 1rem 0;
+}
+.sucess-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #dee5f3;
+  color: #11506d;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+.sucessBedge {
+  margin: 5px 0 20px 0;
+  height: 100px;
+  width: 100px;
+}
+.sucess-heading {
+  font-size: 35px;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: #1a1a1a;
+}
+.sucess-subheading {
+  font-size: 16px;
+  color: #666;
+  max-width: 420px;
+  margin: 0 0 2rem;
+  line-height: 1.7;
+}
 @keyframes vehicledetails-fadeIn {
   from {
     opacity: 0;
@@ -3611,7 +3634,13 @@
   border-radius: var(--fr-radius);
   border: 1px solid var(--fr-border);
 }
-
+.fotter-registration-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
 .vehicledetails-preview-image {
   max-width: 200px;
   max-height: 200px;
@@ -3688,12 +3717,12 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 3rem;
   color: var(--fr-primary-light);
 }
 
 .vehicledetails-photo-label span {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--fr-text-dark);
 }
@@ -3759,11 +3788,11 @@
 }
 
 .vehicledetails-btn-back {
-  padding: 0.875rem 2rem;
-  border-radius: var(--fr-radius);
-  font-size: 1rem;
+  padding: 8px 28px !important;
+  border-radius: var(--fr-radius) !important;
+  font-size: 1rem !important;
   font-weight: 600;
-  text-transform: none;
+  text-transform: none !important;
   border-color: var(--fr-border);
   color: var(--fr-text-dark);
 }
@@ -3775,11 +3804,11 @@
 
 .vehicledetails-btn-next,
 .vehicledetails-btn-submit {
-  padding: 0.875rem 2.5rem;
-  border-radius: var(--fr-radius);
-  font-size: 1rem;
+  padding: 9px 28px !important;
+  border-radius: var(--fr-radius) !important;
+  font-size: 1rem !important;
   font-weight: 600;
-  text-transform: none;
+  text-transform: none !important;
   background: var(--fr-primary);
   box-shadow: var(--fr-shadow);
   transition: all 0.3s ease;
@@ -3857,4 +3886,167 @@
   .vehicledetails-upload-icon {
     font-size: 2rem;
   }
+}
+
+.basicDetails-registration {
+  background: #f7f7f5;
+  border: 1px solid #e8e8e4;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  width: max-content;
+  text-align: left;
+}
+.details-Items {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 14px;
+  color: #444;
+}
+.find-ride-search {
+  margin: 60px 0 0 0;
+}
+/* ── Desktop/Mobile topbar visibility ── */
+.ridetail-topbar--mobile {
+  display: none;
+}
+.ridetail-topbar--desktop {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .ridetail-topbar--desktop {
+    display: none;
+  }
+  .ridetail-topbar--mobile {
+    display: block;
+  }
+
+  /* Compact search bar */
+  .mobile-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin: 12px 16px;
+    box-shadow: 0 2px 8px rgba(15, 52, 120, 0.07);
+  }
+
+  .mobile-search-summary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .mobile-search-icon {
+    color: #6b7280;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+  }
+
+  .mobile-search-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .mobile-search-route {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #111827;
+    font-family: "Vollkorn", serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-search-sub {
+    font-size: 0.75rem;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  .mobile-filter-btn {
+    background: var(--fr-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: "Outfit", sans-serif;
+  }
+
+  /* Search drawer (drops from top) */
+  .mobile-search-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 201;
+    background: #fff;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 32px rgba(15, 52, 120, 0.15);
+  }
+
+  .mobile-search-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .mobile-search-drawer-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    font-family: "Outfit", sans-serif;
+  }
+
+  .mobile-search-drawer-body {
+    padding: 8px 0 16px;
+  }
+
+  /* Filter sidebar — full height from top */
+  .ridetail-mobile-sidebar {
+    position: fixed;
+    top: 0 !important;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 9999 !important;
+  }
+
+  .ridetail-mobile-sidebar-head {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+.notfoundride>img{
+  margin:10vh 0 0 0;
 }

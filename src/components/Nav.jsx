@@ -13,9 +13,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FaUserCircle } from "react-icons/fa";
-import { CiLogout } from "react-icons/ci";
-import { HiOutlineMenu } from "react-icons/hi";
 
+import { HiOutlineMenu } from "react-icons/hi";
+import { FiUser } from "react-icons/fi";
+import { FaRoute } from "react-icons/fa";
+import { FaCarSide } from "react-icons/fa6";
+import { FaCar } from "react-icons/fa";
+import { FiSettings } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 const Header = () => {
   const navigate = useNavigate();
 
@@ -78,11 +83,27 @@ const Header = () => {
   // Drawer content
   const DrawerList = (
     <Box sx={{ width: 260 }} role="presentation">
+      <List>
+        {user && (
+          <ListItem>
+            <div className="user-profile-text">
+              <span className="user-greeting">Hi,</span>
+              <span className="user-role">{user.split(" ")[0]}</span>
+            </div>
+          </ListItem>
+        )}
+      </List>
       {/* Nav Links */}
       <List>
         {[
-          { label: "Offer a Ride", path: "/offer-ride" },
-          { label: "Find a Ride", path: "/find-ride" },
+          ...(role === "driver" || !token
+            ? [{ label: "Offer a Ride", path: "/offer-ride" }]
+            : []),
+
+          ...(role === "passenger" || !token
+            ? [{ label: "Book a Ride", path: "/find-ride" }]
+            : []),
+
           { label: "About", path: "/about" },
           { label: "Help", path: "/help" },
         ].map((item) => (
@@ -130,11 +151,11 @@ const Header = () => {
               <ListItem disablePadding>
                 <ListItemButton
                   onClick={() => {
-                    navigate("/vechile-details");
+                    navigate("/vehicle-registration");
                     setDrawerOpen(false);
                   }}
                 >
-                  <ListItemText primary="Vehicle Details" />
+                  <ListItemText primary="Vehicle Registration" />
                 </ListItemButton>
               </ListItem>
             )}
@@ -155,7 +176,7 @@ const Header = () => {
                 onClick={handleLogout}
                 sx={{ color: "error.main" }}
               >
-                <CiLogout style={{ marginRight: 8, fontSize: 18 }} />
+                <FiLogOut style={{ marginRight: 8, fontSize: 18 }} />
                 <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
@@ -218,12 +239,17 @@ const Header = () => {
 
       {/* DESKTOP NAV — unchanged */}
       <motion.nav variants={itemVariants} className="home-menus">
-        <motion.div whileHover={{ scale: 1.05 }}>
-          <Link to="/offer-ride">Offer a Ride</Link>
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.05 }}>
-          <Link to="/find-ride">Find a Ride</Link>
-        </motion.div>
+        {(role === "driver" || !token) && (
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Link to="/offer-ride">Offer a Ride</Link>
+          </motion.div>
+        )}
+        {(role === "passenger" || !token) && (
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Link to="/find-ride">Book a Ride</Link>
+          </motion.div>
+        )}
+
         <motion.div whileHover={{ scale: 1.05 }}>
           <Link to="/about">About</Link>
         </motion.div>
@@ -255,13 +281,15 @@ const Header = () => {
             </motion.div>
           </>
         ) : (
-          <>
-            <Button
-              onClick={handleClick}
-              title={user}
-              className="user-btn-logined"
-            >
-              <FaUserCircle size={48} />
+          <div>
+            <Button onClick={handleClick} className="user-btn-logined">
+              <div className="user-profile-box">
+                <div className="user-profile-text">
+                  <span className="user-greeting">Hi,</span>
+                  <span className="user-role">{user.split(" ")[0]}</span>
+                </div>
+                <FaUserCircle size={42} />
+              </div>
             </Button>
             <Menu
               anchorEl={anchorEl}
@@ -277,48 +305,65 @@ const Header = () => {
               }}
             >
               <MenuItem
+                className="drawer-menus"
                 onClick={() => {
                   navigate("/profile");
                   handleClose();
                 }}
               >
-                Profile
+                <FiUser /> Profile
               </MenuItem>
               <hr className="hr" />
               <MenuItem
+                className="drawer-menus"
                 onClick={() => {
                   navigate("/my-rides");
                   handleClose();
                 }}
               >
-                My Rides
+                <FaRoute /> My Rides
               </MenuItem>
               <hr className="hr" />
               {role === "driver" && (
-                <MenuItem
-                  onClick={() => {
-                    navigate("/vechile-details");
-                    handleClose();
-                  }}
-                >
-                  Vechile Details
-                </MenuItem>
+                <div>
+                  <MenuItem
+                    className="drawer-menus"
+                    onClick={() => {
+                      navigate("/vehicle-registration");
+                      handleClose();
+                    }}
+                  >
+                    <FaCarSide />
+                    Vehicle Registration
+                  </MenuItem>
+                  <MenuItem
+                    className="drawer-menus"
+                    onClick={() => {
+                      navigate("/vehicle-registration");
+                      handleClose();
+                    }}
+                  >
+                    <FaCar />
+                    Vehicle Details
+                  </MenuItem>
+                </div>
               )}
               <hr className="hr" />
               <MenuItem
+                className="drawer-menus"
                 onClick={() => {
                   navigate("/settings");
                   handleClose();
                 }}
               >
-                Settings
+                <FiSettings /> Settings
               </MenuItem>
               <hr className="hr" />
               <MenuItem onClick={handleLogout} className="logout">
-                <CiLogout /> <p>Logout</p>
+                <FiLogOut /> <p>Logout</p>
               </MenuItem>
             </Menu>
-          </>
+          </div>
         )}
       </motion.div>
     </motion.header>
