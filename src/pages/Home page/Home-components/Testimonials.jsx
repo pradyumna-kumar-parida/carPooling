@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import testimonialImg1 from "../../../assets/Images/testimonial-Img1.jpg";
 import testimonialImg2 from "../../../assets/Images/testimonial-Img2.avif";
 import testimonialImg3 from "../../../assets/Images/testimonial-Img3.jpg";
+import quotation from "../../../assets/Images/quotation.png";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
-import { motion } from "framer-motion";
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -92,56 +92,24 @@ const Testimonials = () => {
 
   const renderStars = (rating) => "★".repeat(rating);
 
-  // 🔥 ANIMATION
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.4, ease: "easeOut" },
-    },
-  };
-
   return (
-    <motion.div
-      className="testimonials-section"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
+    <div className="testimonials-section">
       {/* TITLE */}
-      <motion.h2
-        initial={{ opacity: 0, y: -30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        What Our Users Say
-      </motion.h2>
+      <h2>What Our Users Say</h2>
 
       <div className="testimonials-wrapper">
         {/* LEFT BUTTON */}
-        <motion.button
+        <button
           className="arrow-btn"
           onClick={() => handleScroll("prev")}
           disabled={currentIndex === 0}
-          whileTap={{ scale: 0.9 }}
         >
           <FaAngleDoubleLeft />
-        </motion.button>
+        </button>
 
         {/* SLIDER */}
         <div className="testimonials-grid-wrapper">
-          <motion.div
+          <div
             className="testimonials-grid"
             style={{
               transform: `translateX(-${currentIndex * 100}%)`,
@@ -155,17 +123,13 @@ const Testimonials = () => {
                     slideIndex * cardsPerView + cardsPerView,
                   )
                   .map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      className="testimonial-card"
-                      variants={cardVariants}
-                    >
+                    <div key={item.id} className="testimonial-card">
                       {/* QUOTE ICON */}
                       <div className="quote-icon">
                         <img
-                          src="https://cdn-icons-png.flaticon.com/128/18094/18094527.png"
+                          src={quotation}
                           alt="quote"
-                          loading="eager"
+                          loading="lazy"
                         />
                       </div>
 
@@ -178,7 +142,7 @@ const Testimonials = () => {
                           <img
                             src={item.avatar}
                             alt={item.name}
-                            loading="eager"
+                            loading="lazy"
                           />
                         </div>
 
@@ -191,22 +155,21 @@ const Testimonials = () => {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
         {/* RIGHT BUTTON */}
-        <motion.button
+        <button
           className="arrow-btn"
           onClick={() => handleScroll("next")}
           disabled={currentIndex === totalSlides - 1}
-          whileTap={{ scale: 0.9 }}
         >
           <FaAngleDoubleRight />
-        </motion.button>
+        </button>
       </div>
 
       {/* DOTS */}
@@ -219,7 +182,7 @@ const Testimonials = () => {
           />
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

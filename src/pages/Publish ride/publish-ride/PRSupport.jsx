@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { RiCustomerServiceFill } from "react-icons/ri";
 import { FaCar } from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
@@ -28,65 +27,23 @@ const PRSupport = () => {
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
   return (
     <section className="pr-support">
-      <motion.h2
-        className="pr-support-title"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
+      <h2 className="pr-support-title">
         We're here every step of the way
-      </motion.h2>
+      </h2>
 
-      <motion.div
-        className="pr-support-grid"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <div className="pr-support-grid">
         {supports.map((support) => (
-          <motion.div
-            key={support.id}
-            className="pr-support-card"
-            variants={itemVariants}
-            whileHover={{
-              y: -10,
-              boxShadow: "0 15px 40px rgba(0,0,0,0.1)",
-            }}
-          >
-            <motion.div
-              className="pr-support-icon"
-              transition={{ duration: 0.6 }}
-            >
+          <div key={support.id} className="pr-support-card">
+            <div className="pr-support-icon">
               {support.icon}
-            </motion.div>
+            </div>
             <h3 className="pr-support-card-title">{support.title}</h3>
             <p className="pr-support-desc">{support.description}</p>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 };

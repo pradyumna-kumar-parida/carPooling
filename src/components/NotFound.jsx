@@ -22,7 +22,7 @@ const NotFound = () => {
         src={notFoundImg}
         alt="404 Not Found"
         style={{ maxWidth: "600px", width: "100%" }}
-        loading="eager"
+        loading="lazy"
       />
       <h1>Oops! Page Not Found</h1>
     </div>

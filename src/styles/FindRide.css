@@ -3825,7 +3825,10 @@
   .vehicledetails-page {
     padding: 1rem 0.75rem;
   }
-
+  .css-1hv8oq8-MuiStepLabel-label,
+  .css-1hv8oq8-MuiStepLabel-label.Mui-active {
+    display: none !important;
+  }
   .vehicledetails-stepper-wrapper,
   .vehicledetails-content {
     padding: 1.5rem;
@@ -3865,10 +3868,7 @@
   .vehicledetails-title {
     font-size: 1.5rem;
   }
-  .css-1hv8oq8-MuiStepLabel-label,
-  .css-1hv8oq8-MuiStepLabel-label.Mui-active {
-    display: none !important;
-  }
+
   .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root,
   .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
     font-size: 28px !important;
@@ -4047,6 +4047,6 @@
     border-bottom: 1px solid #e5e7eb;
   }
 }
-.notfoundride>img{
-  margin:10vh 0 0 0;
+.notfoundride > img {
+  margin: 10vh 0 0 0;
 }

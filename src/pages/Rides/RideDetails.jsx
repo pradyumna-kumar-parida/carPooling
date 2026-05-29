@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import "../../styles/FindRide.css";
 import Header from "../../components/Nav";
 import Footer from "../../components/Footer";
@@ -108,17 +107,8 @@ function RideCard({ ride }) {
   const [bg, text] = avatarColor(ride.driver_name);
 
   return (
-    <motion.div
+    <div
       className="ridetail-card-ride"
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.22 }}
-      whileHover={{
-        y: -2,
-        boxShadow: "0 8px 32px rgba(15,52,120,0.13)",
-        border: "1px solid #1e40af",
-      }}
       onClick={() => navigate("/ride-book")}
     >
       <div className="ridetail-ride-top">
@@ -194,7 +184,7 @@ function RideCard({ ride }) {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -245,19 +235,11 @@ function FilterSection({ title, children, defaultOpen = true }) {
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            style={{ overflow: "hidden" }}
-          >
-            <div className="ridetail-filter-body">{children}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open && (
+        <div style={{ overflow: "hidden" }}>
+          <div className="ridetail-filter-body">{children}</div>
+        </div>
+      )}
     </div>
   );
 }
@@ -299,60 +281,49 @@ function MobileSearchBar({ from, to, date, passengers, onFilterClick }) {
       </div>
 
       {/* Full search drawer */}
-      <AnimatePresence>
-        {searchOpen && (
-          <>
-            <motion.div
-              style={{
-                position: "fixed",
-                inset: 0,
-                zIndex: 200,
-                background: "rgba(11,22,41,0.45)",
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSearchOpen(false)}
-            />
-            <motion.div
-              className="mobile-search-drawer"
-              initial={{ y: -40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -40, opacity: 0 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-            >
-              <div className="mobile-search-drawer-head">
-                <span className="mobile-search-drawer-title">Search rides</span>
-                <button
-                  className="ridetail-mobile-close"
-                  onClick={() => setSearchOpen(false)}
+      {searchOpen && (
+        <>
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 200,
+              background: "rgba(11,22,41,0.45)",
+            }}
+            onClick={() => setSearchOpen(false)}
+          />
+          <div className="mobile-search-drawer">
+            <div className="mobile-search-drawer-head">
+              <span className="mobile-search-drawer-title">Search rides</span>
+              <button
+                className="ridetail-mobile-close"
+                onClick={() => setSearchOpen(false)}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </div>
-              <div className="mobile-search-drawer-body">
-                <SearchRide
-                  initialFrom={from}
-                  initialTo={to}
-                  initialDate={date}
-                  initialPassengers={passengers}
-                />
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="mobile-search-drawer-body">
+              <SearchRide
+                initialFrom={from}
+                initialTo={to}
+                initialDate={date}
+                initialPassengers={passengers}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
@@ -528,7 +499,7 @@ export default function RideDetails() {
                 </label>
                 <div className="ridetail-check-right">
                   <span className="ridetail-verified-badge">
-                    <img src={varifiedBedge} alt="" loading="eager" />
+                    <img src={varifiedBedge} alt="" loading="lazy" />
                   </span>
                 </div>
               </div>
@@ -585,6 +556,7 @@ export default function RideDetails() {
                       alt="ride unavilable"
                       height="100%"
                       width="100%"
+                      loading="lazy"
                     />
                   </div>
                 </>
@@ -597,25 +569,22 @@ export default function RideDetails() {
                       <span className="ridetail-date-label">{group.date}</span>
                       <span className="ridetail-date-route">{group.route}</span>
                     </div>
-                    <AnimatePresence>
-                      {group.rides.map((ride) => (
-                        <RideCard key={ride.id} ride={ride} />
-                      ))}
-                    </AnimatePresence>
+                    {group.rides.map((ride) => (
+                      <RideCard key={ride.id} ride={ride} />
+                    ))}
                   </div>
                 ))}
             </div>
 
             {visibleCount < sorted.length && (
               <div className="ridetail-load-wrap">
-                <motion.button
+                <button
+                  type="button"
                   className="ridetail-load-btn"
                   onClick={() => setVisibleCount((n) => n + 4)}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
                 >
                   Load more results
-                </motion.button>
+                </button>
               </div>
             )}
           </main>
@@ -642,28 +611,19 @@ function MobileSidebar({
   clearAll,
 }) {
   return (
-    <AnimatePresence>
+    <>
       {open && (
         <>
-          <motion.div
+          <div
             style={{
               position: "fixed",
               inset: 0,
               zIndex: 100,
               background: "rgba(11,22,41,0.45)",
             }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             onClick={() => setOpen(false)}
           />
-          <motion.div
-            className="ridetail-mobile-sidebar"
-            initial={{ x: -320 }}
-            animate={{ x: 0 }}
-            exit={{ x: -320 }}
-            transition={{ type: "spring", stiffness: 80, damping: 18 }}
-          >
+          <div className="ridetail-mobile-sidebar">
             <div className="ridetail-mobile-sidebar-head">
               <span className="ridetail-sidebar-title">Filters &amp; Sort</span>
               <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
@@ -748,9 +708,9 @@ function MobileSidebar({
                 </div>
               ))}
             </FilterSection>
-          </motion.div>
+          </div>
         </>
       )}
-    </AnimatePresence>
+    </>
   );
 }

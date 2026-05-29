@@ -420,7 +420,7 @@ const MyRides = () => {
                         src={selectedRide.driver.avatar}
                         alt={selectedRide.driver.name}
                         className="driver-avatar"
-                        loading="eager"
+                       loading="lazy"
                       />
                       <div className="driver-details">
                         <h4 className="driver-name">
@@ -454,7 +454,7 @@ const MyRides = () => {
                             src={passenger.avatar}
                             alt={passenger.name}
                             className="passenger-avatar"
-                            loading="eager"
+                           loading="lazy"
                           />
                           <div className="passenger-details">
                             <h4 className="passenger-name">{passenger.name}</h4>

@@ -114,7 +114,7 @@ const FileUploadBox = ({
             src={preview}
             alt={fieldName}
             className="vehicledetails-preview-image"
-            loading="eager"
+            loading="lazy"
           />
         ) : (
           <div className="vehicledetails-file-info">
@@ -190,7 +190,7 @@ const PhotoUploadBox = ({
       <div className="vehicledetails-photo-item">
         <FormLabel className="vehicledetails-label">{label} *</FormLabel>
         <div className="vehicledetails-photo-preview">
-          <img src={preview} alt={label} loading="eager" />
+          <img src={preview} alt={label} loading="lazy" />
           <button
             className="vehicledetails-photo-remove"
             onClick={() => onRemove(fieldKey)}
@@ -230,7 +230,7 @@ const SuccessScreen = ({ onViewDetails, onGoHome }) => (
     </div>
 
     <div className="sucessBedge">
-      <img src={sucessBedge} alt="sucess-bedge" height="100%" width="100%" />
+      <img src={sucessBedge} alt="sucess-bedge" height="100%" width="100%" loading="lazy" />
     </div>
 
     <h2 className="sucess-heading">Registration Successful!</h2>

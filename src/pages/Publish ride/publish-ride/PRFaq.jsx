@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { FaAngleDown } from "react-icons/fa6";
 const PRFaq = () => {
   const [openFaq, setOpenFaq] = useState(null);
@@ -33,76 +32,42 @@ const PRFaq = () => {
 
   return (
     <section className="pr-faq">
-      <motion.h2
-        className="pr-faq-title"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
+      <h2 className="pr-faq-title">
         Everything you need as a driver, in our Help Centre
-      </motion.h2>
+      </h2>
 
       <div className="pr-faq-grid">
         {faqs.map((faq, index) => (
-          <motion.div
-            key={faq.id}
-            className="pr-faq-item"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <motion.button
+          <div key={faq.id} className="pr-faq-item">
+            <button
               className={`pr-faq-question ${openFaq === faq.id ? "active" : ""}`}
               onClick={() => toggleFaq(faq.id)}
-              whileHover={{ backgroundColor: "#f7f9fb" }}
             >
               <span>{faq.question}</span>
-              <motion.svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="pr-faq-icon"
-                animate={{ rotate: openFaq === faq.id ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
+              <span
+                className={`pr-faq-icon ${openFaq === faq.id ? "rotated" : ""}`}
               >
                 <FaAngleDown />
-              </motion.svg>
-            </motion.button>
+              </span>
+            </button>
 
-            <AnimatePresence>
-              {openFaq === faq.id && (
-                <motion.div
-                  className="pr-faq-answer"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <p>{faq.answer}</p>
-                  <motion.a
-                    href="#"
-                    className="pr-faq-link"
-                    whileHover={{ x: 5 }}
-                  >
-                    Read more →
-                  </motion.a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+            {openFaq === faq.id && (
+              <div className="pr-faq-answer">
+                <p>{faq.answer}</p>
+                <a href="#" className="pr-faq-link">
+                  Read more →
+                </a>
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
-      <motion.div className="pr-faq-actions">
-        <motion.button
-          className="pr-btn pr-btn-secondary"
-          whileTap={{ scale: 0.98 }}
-        >
+      <div className="pr-faq-actions">
+        <button className="pr-btn pr-btn-secondary">
           See more answers
-        </motion.button>
-      </motion.div>
+        </button>
+      </div>
     </section>
   );
 };

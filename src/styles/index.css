@@ -96,9 +96,10 @@ header {
   }
 }
 .hr {
-  background-color: rgba(128, 128, 128, 0.041);
-  height: 0.9px;
+  background-color: rgba(128, 128, 128, 0.103);
+  height: 0.1px;
   border: none;
+  margin: 2px 15px;
 }
 .css-1rju2q6-MuiButtonBase-root-MuiMenuItem-root {
   font-family: "Vollkorn", serif !important;
@@ -232,17 +233,6 @@ nav a:hover::after {
   justify-content: center;
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(30px);
-  }
-}
-
 .hero-content {
   max-width: 1200px;
   width: 100%;
@@ -287,22 +277,62 @@ nav a:hover::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeInRight 0.8s ease-out;
 }
 
 .hero-image img {
   filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.3));
-  animation: slideInRight 0.8s ease-out;
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
 }
 
-@keyframes slideInRight {
+.hero-image:hover img {
+  transform: scale(1.03);
+}
+
+.hero-text h1,
+.hero-text p {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.hero-text h1 {
+  animation-delay: 0.3s;
+}
+
+.hero-text span {
+  display: inline-block;
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeInScale 0.5s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+.hero-text p {
+  animation-delay: 0.9s;
+}
+
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateX(100px);
+    transform: translateY(20px);
   }
-
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -457,6 +487,33 @@ nav a:hover::after {
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-title,
+.card-subtitle,
+.features-list li,
+.check-icon,
+.card-image {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.card-image:hover {
+  transform: scale(1.03);
+}
+
+.card .btn {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.card .btn:hover {
+  transform: translateY(-1px);
 }
 
 .card.green-theme {
@@ -655,11 +712,38 @@ nav a:hover::after {
   text-align: center;
   border: 1px solid #eee;
   transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-up 0.5s ease forwards;
+}
+
+.why-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.why-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.why-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.why-card:nth-child(4) {
+  animation-delay: 0.4s;
 }
 
 .why-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .why-card h3 {
   font-size: 21px;
@@ -851,6 +935,55 @@ nav a:hover::after {
   font-weight: 700;
   margin-bottom: 24px;
   color: #111;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.testimonial-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInCard 0.6s ease-out forwards;
+}
+
+.testimonial-card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.testimonial-card:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.testimonial-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.testimonial-card:nth-child(4) {
+  animation-delay: 0.35s;
+}
+.testimonial-card:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.testimonial-card:nth-child(6) {
+  animation-delay: 0.45s;
+}
+
+.arrow-btn {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.arrow-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.arrow-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+@keyframes fadeInCard {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .testimonials-wrapper {
@@ -1834,7 +1967,7 @@ footer {
   }
 }
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
-  width: 220px !important;
+  width: 230px !important;
   /* padding: 0 0px; */
 }
 
@@ -2606,6 +2739,11 @@ footer {
   z-index: 2;
   background: transparent;
 }
+.css-10hburv-MuiTypography-root {
+  font-family: "Vollkorn", serif !important;
+}
+.mobile-menu-sidebar,
+.mobile-menu-sidebar > p,
 .logout,
 .drawer-menus {
   display: flex;
@@ -2615,4 +2753,7 @@ footer {
 .logout {
   color: red !important;
   font-weight: 400 !important;
+}
+.mobile-menu-sidebar {
+  padding: 3px 15px;
 }

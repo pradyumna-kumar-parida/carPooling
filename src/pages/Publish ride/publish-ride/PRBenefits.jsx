@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { FaCarAlt } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
 import { MdAttachMoney } from "react-icons/md";
@@ -28,62 +27,19 @@ const PRBenefits = () => {
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
   return (
     <section className="pr-benefits">
-      <motion.h2
-        className="pr-benefits-title"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        Drive. Share. Save.
-      </motion.h2>
+      <h2 className="pr-benefits-title">Drive. Share. Save.</h2>
 
-      <motion.div
-        className="pr-benefits-grid"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <div className="pr-benefits-grid">
         {benefits.map((benefit) => (
-          <motion.div
-            key={benefit.id}
-            className="pr-benefit-card"
-            variants={itemVariants}
-            whileHover={{ y: -10, boxShadow: "0 15px 35px rgba(0,0,0,0.1)" }}
-          >
-            <motion.div
-              className="pr-benefit-icon"
-              transition={{ duration: 0.6 }}
-            >
-              {benefit.icon}
-            </motion.div>
+          <div key={benefit.id} className="pr-benefit-card">
+            <div className="pr-benefit-icon">{benefit.icon}</div>
             <h3 className="pr-benefit-title">{benefit.title}</h3>
             <p className="pr-benefit-desc">{benefit.description}</p>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 };

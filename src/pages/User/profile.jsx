@@ -123,7 +123,7 @@ const ProfilePage = () => {
                         }
                         alt="Profile"
                         className="profile-avatar"
-                        loading="eager"
+                       loading="lazy"
                       />
                       <label
                         htmlFor="profilePicture"
@@ -147,7 +147,7 @@ const ProfilePage = () => {
                       }
                       alt="Profile"
                       className="profile-avatar"
-                      loading="eager"
+                     loading="lazy"
                     />
                   )}
                 </div>
@@ -568,7 +568,7 @@ const ProfilePage = () => {
                                   src={filePreview.driverLicense}
                                   alt="Preview"
                                   className="preview-image"
-                                  loading="eager"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">
@@ -663,7 +663,7 @@ const ProfilePage = () => {
                                   src={filePreview.aadhaarCard}
                                   alt="Preview"
                                   className="preview-image"
-                                  loading="eager"
+                               loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">
@@ -756,7 +756,7 @@ const ProfilePage = () => {
                                   src={filePreview.panCard}
                                   alt="Preview"
                                   className="preview-image"
-                                  loading="eager"
+                                 loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">
@@ -847,7 +847,7 @@ const ProfilePage = () => {
                                 src={filePreview.passportPhoto}
                                 alt="Preview"
                                 className="preview-image"
-                                loading="eager"
+                               loading="lazy"
                               />
                             </div>
                           )}
@@ -940,7 +940,7 @@ const ProfilePage = () => {
                                   src={filePreview.bankAccountDetails}
                                   alt="Preview"
                                   className="preview-image"
-                                  loading="eager"
+                                 loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">

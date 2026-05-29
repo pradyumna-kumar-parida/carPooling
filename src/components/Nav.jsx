@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import logoImg from "../assets/Images/logo-Img.png";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,6 +20,9 @@ import { FaCarSide } from "react-icons/fa6";
 import { FaCar } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
 import { FiLogOut } from "react-icons/fi";
+import { FiInfo } from "react-icons/fi";
+import { FiHelpCircle } from "react-icons/fi";
+import { FaSearchLocation } from "react-icons/fa";
 const Header = () => {
   const navigate = useNavigate();
 
@@ -46,35 +48,10 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
-    localStorage.removeItem("authData");
+    localStorage.clear();
     handleClose();
     setDrawerOpen(false);
     navigate("/login");
-  };
-
-  const headerVariants = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: -20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.4 },
-    },
   };
 
   const user = JSON.parse(localStorage.getItem("user"))?.name;
@@ -83,40 +60,51 @@ const Header = () => {
   // Drawer content
   const DrawerList = (
     <Box sx={{ width: 260 }} role="presentation">
-      <List>
-        {user && (
+      {user && (
+        <List>
           <ListItem>
             <div className="user-profile-text">
               <span className="user-greeting">Hi,</span>
               <span className="user-role">{user.split(" ")[0]}</span>
             </div>
           </ListItem>
-        )}
-      </List>
+        </List>
+      )}
+      <hr className="hr" />
+
       {/* Nav Links */}
       <List>
         {[
           ...(role === "driver" || !token
-            ? [{ label: "Offer a Ride", path: "/offer-ride" }]
+            ? [{ label: "Offer a Ride", path: "/offer-ride", icon: <FaCarSide /> }]
             : []),
 
           ...(role === "passenger" || !token
-            ? [{ label: "Book a Ride", path: "/find-ride" }]
+            ? [{ label: "Book a Ride", path: "/find-ride", icon: <FaSearchLocation /> }]
             : []),
 
-          { label: "About", path: "/about" },
-          { label: "Help", path: "/help" },
+          { label: "About", path: "/about", icon: <FiInfo /> },
+          { label: "Help", path: "/help", icon: <FiHelpCircle /> },
         ].map((item) => (
-          <ListItem key={item.label} disablePadding>
-            <ListItemButton
-              onClick={() => {
-                navigate(item.path);
-                setDrawerOpen(false);
-              }}
-            >
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          </ListItem>
+          <>
+
+
+            <ListItem key={item.label} disablePadding>
+              <ListItemButton
+                class="mobile-menu-sidebar"
+                onClick={() => {
+                  navigate(item.path);
+                  setDrawerOpen(false);
+                }}
+              >
+                <p>{item.icon}</p>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </ListItem>
+            <hr className="hr" />
+
+          </>
+
         ))}
       </List>
 
@@ -127,56 +115,68 @@ const Header = () => {
           <List>
             <ListItem disablePadding>
               <ListItemButton
+                class="mobile-menu-sidebar"
                 onClick={() => {
                   navigate("/profile");
                   setDrawerOpen(false);
                 }}
               >
+                <FiUser />
                 <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
+            <hr className="hr" />
 
             <ListItem disablePadding>
               <ListItemButton
+                class="mobile-menu-sidebar"
                 onClick={() => {
                   navigate("/my-rides");
                   setDrawerOpen(false);
                 }}
               >
+                <FaRoute />
                 <ListItemText primary="My Rides" />
               </ListItemButton>
             </ListItem>
+            <hr className="hr" />
 
             {role === "driver" && (
               <ListItem disablePadding>
                 <ListItemButton
+                  class="mobile-menu-sidebar"
                   onClick={() => {
                     navigate("/vehicle-registration");
                     setDrawerOpen(false);
                   }}
                 >
+                  <FaCar />
                   <ListItemText primary="Vehicle Registration" />
                 </ListItemButton>
               </ListItem>
             )}
+            <hr className="hr" />
 
             <ListItem disablePadding>
               <ListItemButton
+                class="mobile-menu-sidebar"
                 onClick={() => {
                   navigate("/settings");
                   setDrawerOpen(false);
                 }}
               >
-                <ListItemText primary="Settings" />
+                <FiSettings /> <ListItemText primary="Settings" />
               </ListItemButton>
             </ListItem>
+            <hr className="hr" />
 
             <ListItem disablePadding>
               <ListItemButton
+                class="mobile-menu-sidebar logout"
                 onClick={handleLogout}
                 sx={{ color: "error.main" }}
               >
-                <FiLogOut style={{ marginRight: 8, fontSize: 18 }} />
+                <FiLogOut />
                 <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
@@ -216,21 +216,21 @@ const Header = () => {
   );
 
   return (
-    <motion.header variants={headerVariants} initial="hidden" animate="visible">
+    <header>
       {/* LOGO */}
       <Link className="header-logo" to="/">
-        <motion.div className="header-logo-icon">
+        <div className="header-logo-icon">
           <img src={logoImg} alt="" loading="eager" />
-        </motion.div>
+        </div>
         Carpooling
       </Link>
 
       {/* HAMBURGER ICON — opens Drawer from right */}
-      <motion.nav variants={itemVariants} className="menu-icon">
+      <nav className="menu-icon">
         <p onClick={toggleDrawer(true)} style={{ cursor: "pointer" }}>
           <HiOutlineMenu />
         </p>
-      </motion.nav>
+      </nav>
 
       {/* MUI Drawer — slides from right */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -238,59 +238,56 @@ const Header = () => {
       </Drawer>
 
       {/* DESKTOP NAV — unchanged */}
-      <motion.nav variants={itemVariants} className="home-menus">
+      <nav className="home-menus">
         {(role === "driver" || !token) && (
-          <motion.div whileHover={{ scale: 1.05 }}>
+          <div>
             <Link to="/offer-ride">Offer a Ride</Link>
-          </motion.div>
+          </div>
         )}
         {(role === "passenger" || !token) && (
-          <motion.div whileHover={{ scale: 1.05 }}>
+          <div>
             <Link to="/find-ride">Book a Ride</Link>
-          </motion.div>
+          </div>
         )}
 
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <div>
           <Link to="/about">About</Link>
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.05 }}>
+        </div>
+        <div>
           <Link to="/help">Help</Link>
-        </motion.div>
-      </motion.nav>
+        </div>
+      </nav>
 
       {/* AUTH SECTION — unchanged */}
-      <motion.div className="auth-buttons" variants={itemVariants}>
+      <div className="auth-buttons">
         {!token ? (
           <>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <div>
               <Link className="header-login-btn" to="/login">
                 Log in
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 6px 20px rgba(30, 64, 175, 0.4)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <div>
               <Link className="header-signup-btn" to="/signup">
                 Sign up
               </Link>
-            </motion.div>
+            </div>
           </>
         ) : (
           <div>
-            <Button onClick={handleClick} className="user-btn-logined">
-              <div className="user-profile-box">
-                <div className="user-profile-text">
-                  <span className="user-greeting">Hi,</span>
-                  <span className="user-role">{user.split(" ")[0]}</span>
+            {user && (
+              <Button onClick={handleClick} className="user-btn-logined">
+                <div className="user-profile-box">
+                  <div className="user-profile-text">
+                    <span className="user-greeting">Hi,</span>
+                    <span className="user-role">{user.split(" ")[0]}</span>
+                  </div>
+                  <FaUserCircle size={42} />
                 </div>
-                <FaUserCircle size={42} />
-              </div>
-            </Button>
+              </Button>
+            )}
+
             <Menu
               anchorEl={anchorEl}
               open={open}
@@ -336,6 +333,7 @@ const Header = () => {
                     <FaCarSide />
                     Vehicle Registration
                   </MenuItem>
+                  <hr className="hr" />
                   <MenuItem
                     className="drawer-menus"
                     onClick={() => {
@@ -365,8 +363,8 @@ const Header = () => {
             </Menu>
           </div>
         )}
-      </motion.div>
-    </motion.header>
+      </div>
+    </header>
   );
 };
 

@@ -16,6 +16,7 @@ import { Chip } from "@mui/material";
 import Header from "../../components/Nav";
 import Footer from "../../components/Footer";
 import { FaStar } from "react-icons/fa";
+import profile from "../../assets/Images/offer-ride-profile-1.jpg"
 const BookingConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -175,10 +176,10 @@ const BookingConfirmation = () => {
 
                 <div className="bookconf-driver">
                   <img
-                    src="https://i.pravatar.cc/150?img=33"
+                    src={profile}
                     alt={rideDetails.driverName}
                     className="bookconf-driver-avatar"
-                    loading="eager"
+                  loading="lazy"
                   />
                   <div className="bookconf-driver-info">
                     <h4 className="bookconf-driver-name">

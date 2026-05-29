@@ -227,7 +227,7 @@ const RideConfirmation = () => {
                     src="https://i.pravatar.cc/150?img=33"
                     alt="Suraj"
                     className="driver-avatar"
-                    loading="eager"
+                   loading="lazy"
                   />
                   <span className="driver-name">Suraj</span>
                 </div>
@@ -273,7 +273,7 @@ const RideConfirmation = () => {
                     src="https://i.pravatar.cc/150?img=12"
                     alt="Deepak"
                     className="passenger-avatar"
-                    loading="eager"
+                   loading="lazy"
                   />
                   <div className="passenger-details">
                     <span className="passenger-name">Deepak</span>
@@ -308,7 +308,7 @@ const RideConfirmation = () => {
                     src="https://i.pravatar.cc/150?img=33"
                     alt="Suraj"
                     className="summary-driver-avatar"
-                    loading="eager"
+                   loading="lazy"
                   />
                   <span className="summary-driver-name">
                     Suraj <i className="role-info">(Driver)</i>

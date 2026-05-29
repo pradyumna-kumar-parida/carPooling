@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { CiLocationOn } from "react-icons/ci";
 import { FaLocationDot } from "react-icons/fa6";
 import { CgArrowsExchangeV } from "react-icons/cg";
@@ -263,62 +262,49 @@ function LocationDropdown({
           <RxCross2 size={15} />
         </button>
       )}
-      <AnimatePresence>
-        {showDropdown && (
-          <motion.div
-            className="prh-loc-dropdown"
-            initial={{ opacity: 0, y: -6, scaleY: 0.93 }}
-            animate={{ opacity: 1, y: 0, scaleY: 1 }}
-            exit={{ opacity: 0, y: -6, scaleY: 0.93 }}
-            transition={{ duration: 0.16, ease: "easeOut" }}
-          >
-            {showCurrentLocation && (
-              <motion.div
-                className="prh-loc-item prh-loc-current"
-                initial={{ opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                onMouseDown={handleCurrentLocation}
+      {showDropdown && (
+        <div className="prh-loc-dropdown">
+          {showCurrentLocation && (
+            <div
+              className="prh-loc-item prh-loc-current"
+              onMouseDown={handleCurrentLocation}
+            >
+              <span className="prh-loc-pin prh-loc-pin-blue">
+                <MdMyLocation />
+              </span>
+              <span className="prh-loc-name">
+                {locating
+                  ? "Detecting your location..."
+                  : "Use current location"}
+              </span>
+            </div>
+          )}
+          {loading && <div className="prh-loc-empty">Searching...</div>}
+          {!loading &&
+            suggestions.map((s) => (
+              <div
+                key={s.place_id}
+                className="prh-loc-item"
+                onMouseDown={() => handleSelect(s)}
               >
-                <span className="prh-loc-pin prh-loc-pin-blue">
-                  <MdMyLocation />
+                <span className="prh-loc-pin">
+                  <PinIcon />
                 </span>
                 <span className="prh-loc-name">
-                  {locating
-                    ? "Detecting your location..."
-                    : "Use current location"}
+                  {s.structured_formatting?.main_text || s.description}
                 </span>
-              </motion.div>
+                <span className="prh-loc-state">
+                  {s.structured_formatting?.secondary_text || ""}
+                </span>
+              </div>
+            ))}
+          {!loading &&
+            suggestions.length === 0 &&
+            query.trim().length >= 2 && (
+              <div className="prh-loc-empty">No places found</div>
             )}
-            {loading && <div className="prh-loc-empty">Searching...</div>}
-            {!loading &&
-              suggestions.map((s, i) => (
-                <motion.div
-                  key={s.place_id}
-                  className="prh-loc-item"
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                  onMouseDown={() => handleSelect(s)}
-                >
-                  <span className="prh-loc-pin">
-                    <PinIcon />
-                  </span>
-                  <span className="prh-loc-name">
-                    {s.structured_formatting?.main_text || s.description}
-                  </span>
-                  <span className="prh-loc-state">
-                    {s.structured_formatting?.secondary_text || ""}
-                  </span>
-                </motion.div>
-              ))}
-            {!loading &&
-              suggestions.length === 0 &&
-              query.trim().length >= 2 && (
-                <div className="prh-loc-empty">No places found</div>
-              )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 }
@@ -474,8 +460,8 @@ const PRHero = () => {
 
       if (status === "success") {
         // reset form
-        setFrom(null);
-        setTo(null);
+        setFrom("");
+        setTo("");
         setDate("");
         setTime("");
         setPrice("");
@@ -529,12 +515,7 @@ const PRHero = () => {
 
         <div className="prh-inner">
           {/* LEFT — Form card */}
-          <motion.div
-            className="prh-card"
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
+          <div className="prh-card">
             <div className="prh-card-badge">
               <span className="prh-badge-dot" />
               Live rides available
@@ -748,60 +729,34 @@ const PRHero = () => {
               Save up to <strong>₹1,624</strong> on your first ride
             </div> */}
 
-            <motion.button
+            <button
               className="prh-cta"
-              whileTap={{ scale: 0.98 }}
               onClick={handlePublish}
               disabled={loading}
             >
               <span>Publish a ride</span>
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
 
           {/* RIGHT — Hero copy */}
-          <motion.div
-            className="prh-copy"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-          >
-            <motion.div
-              className="prh-tag"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-            >
+          <div className="prh-copy">
+            <div className="prh-tag">
               Trusted by 27M+ travellers
-            </motion.div>
+            </div>
 
-            <motion.h1
-              className="prh-headline"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
+            <h1 className="prh-headline">
               Travel smarter. Become a carpooling driver and save on travel
               costs.
               <br />
               <span className="prh-headline-accent">Share the ride.</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              className="prh-desc"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55, duration: 0.6 }}
-            >
+            <p className="prh-desc">
               Connect with drivers heading your way. Split fuel costs, reduce
               emissions, and arrive happier — every single journey.
-            </motion.p>
+            </p>
 
-            <motion.div
-              className="prh-stats"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.6 }}
-            >
+            <div className="prh-stats">
               {[
                 { val: "27M+", label: "Members" },
                 { val: "600K+", label: "Daily rides" },
@@ -812,14 +767,9 @@ const PRHero = () => {
                   <span className="prh-stat-label">{s.label}</span>
                 </div>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="prh-road-wrap"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.8 }}
-            >
+            <div className="prh-road-wrap">
               <svg
                 className="prh-road-svg"
                 viewBox="0 0 400 120"
@@ -898,8 +848,8 @@ const PRHero = () => {
                   strokeDasharray="8 6"
                 />
               </svg>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
     </>

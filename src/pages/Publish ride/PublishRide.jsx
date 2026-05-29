@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import PRHero from "./publish-ride/PRHero";
 import PRBenefits from "./publish-ride/PRBenefits";
 import PRTestimonials from "./publish-ride/PRTestimonials";
