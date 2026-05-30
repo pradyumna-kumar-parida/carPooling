@@ -66,7 +66,7 @@ function App() {
             }
           />
           <Route path="/all-rides" element={<RideDetails />} />
-          <Route path="/ride-book" element={<RideConfirmation />} />
+          <Route path="/ride-book/:rideId" element={<RideConfirmation />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route
             path="/vehicle-registration"

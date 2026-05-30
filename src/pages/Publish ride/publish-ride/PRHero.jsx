@@ -298,11 +298,9 @@ function LocationDropdown({
                 </span>
               </div>
             ))}
-          {!loading &&
-            suggestions.length === 0 &&
-            query.trim().length >= 2 && (
-              <div className="prh-loc-empty">No places found</div>
-            )}
+          {!loading && suggestions.length === 0 && query.trim().length >= 2 && (
+            <div className="prh-loc-empty">No places found</div>
+          )}
         </div>
       )}
     </div>
@@ -408,7 +406,13 @@ const PRHero = () => {
       navigate("/login");
       return;
     }
-
+    if (vehicles.length < 1) {
+      showAlert("error", "Please register a vehicle to publish a ride ");
+      setTimeout(() => {
+        navigate("/vehicle-registration");
+      }, 2000);
+      return;
+    }
     // validation
     if (!from) return showAlert("error", "Please select a departure location.");
     if (!to) return showAlert("error", "Please select a destination.");
@@ -417,8 +421,6 @@ const PRHero = () => {
     if (!price || isNaN(price) || Number(price) <= 0)
       return showAlert("error", "Please enter a valid price per seat.");
 
-    if (vehicles.length < 1)
-      return showAlert("error", "Please register a vehicle to publish a ride ");
     if (!selectedVehicle) return showAlert("error", "Please choose a vehicle.");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const driverId = user?.id || "";
@@ -740,9 +742,7 @@ const PRHero = () => {
 
           {/* RIGHT — Hero copy */}
           <div className="prh-copy">
-            <div className="prh-tag">
-              Trusted by 27M+ travellers
-            </div>
+            <div className="prh-tag">Trusted by 27M+ travellers</div>
 
             <h1 className="prh-headline">
               Travel smarter. Become a carpooling driver and save on travel
