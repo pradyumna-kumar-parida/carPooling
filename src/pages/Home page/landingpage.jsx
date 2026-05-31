@@ -7,11 +7,13 @@ import WhyChoose from "../Home page/Home-components/WhyChoose";
 import Testimonials from "../Home page/Home-components/Testimonials";
 import Footer from "../../components/Footer";
 import SearchRide from "../Rides/find-ride/SearchRide";
+import { useAuth } from "../../context/AuthContext";
 function Landingpage() {
   const role = localStorage.getItem("role");
+  const { user } = useAuth()
+  console.log("User in landing page:", user);
   return (
     <div className="App">
-      <Header />
       <Hero />
       <div className="landingpage-search">
         {role !== "driver" && <SearchRide />}
@@ -22,7 +24,6 @@ function Landingpage() {
         <Testimonials />
       </div>
 
-      <Footer />
     </div>
   );
 }

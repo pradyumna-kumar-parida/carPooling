@@ -7,13 +7,11 @@ import PRSupport from "./publish-ride/PRSupport";
 import PRFaq from "./publish-ride/PRFaq";
 // import PRCta from "./publish-ride/PRCta";
 import "../../styles/PublishRide.css";
-import Header from "../../components/Nav";
-import Footer from "../../components/Footer";
+
 
 const PublishRide = () => {
   return (
     <>
-      <Header />
       <div className="pr-container">
         <PRHero />
         <PRBenefits />
@@ -23,7 +21,6 @@ const PublishRide = () => {
         <PRFaq />
         {/* <PRCta /> */}
       </div>
-      <Footer />
     </>
   );
 };

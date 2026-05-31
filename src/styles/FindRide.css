@@ -1,3 +1,7 @@
+/* ==========================================
+   CSS VARIABLES & RESET
+   ========================================== */
+
 :root {
   --fr-primary: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
   --fr-primary-light: #3b82f6;
@@ -15,6 +19,10 @@
   --fr-radius: 10px;
   --fr-radius-lg: 16px;
 }
+
+/* ==========================================
+   SEARCH SECTION
+   ========================================== */
 
 .fr-container {
   width: 100%;
@@ -41,20 +49,16 @@
   letter-spacing: -0.5px;
 }
 
-/* ── Search pill container ── */
 .fr-search-container {
   background: #fff;
   border-radius: 20px;
   margin-top: 20px;
-  /* box-shadow:
-    0 4px 32px rgba(0, 0, 0, 0.1),
-    0 1px 4px rgba(0, 0, 0, 0.06); */
-  /* padding: 40px 30px; */
-  /* border: 1px solid #e8edf3; */
 }
+
 .otp-verify {
   font-family: "Vollkorn", serif !important;
 }
+
 .fr-search-bar {
   display: flex;
   align-items: stretch;
@@ -64,9 +68,10 @@
   overflow: visible;
   border: 1px solid #878787;
   position: relative;
+  font-family: sans-serif;
+  z-index: 0;
 }
 
-/* ── Individual field ── */
 .fr-field {
   flex: 1;
   min-width: 0;
@@ -79,6 +84,7 @@
   border-right: 1px solid #2f313556;
   transition: background 0.15s;
   background: transparent;
+  z-index: 0;
 }
 
 .fr-field:last-of-type {
@@ -89,15 +95,10 @@
   border-radius: 14px 0 0 14px;
 }
 
-.fr-field:hover {
-  background: #fff;
-}
-
 .fr-field:focus-within {
   background: #fff;
   box-shadow: 0 0 0 2px var(--fr-secondary);
-  /* border-radius: 14px; */
-  z-index: 1;
+  z-index: 10;
 }
 
 .fr-field-passenger {
@@ -118,12 +119,9 @@
   outline: none;
   background: transparent;
   font-size: 15px;
-  font-family: "Vollkorn", serif;
   color: #0f172a;
   font-weight: 500;
   width: 100%;
-
-  /* cursor: pointer; */
 }
 
 .fr-field-input::placeholder {
@@ -139,7 +137,6 @@
   white-space: nowrap;
 }
 
-/* Date input styling */
 .fr-date-input {
   color: #0f172a;
   position: relative;
@@ -161,33 +158,38 @@
   pointer-events: none;
 }
 
-/* ── Location dropdown ── */
-.fr-loc-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: -1px;
-  min-width: 280px;
-  width: max-content;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.14),
-    0 2px 8px rgba(0, 0, 0, 0.06);
-  z-index: 100;
-  padding: 7px 10px;
-  border: 1px solid var(--fr-secondary);
-  transform-origin: top left;
-  overflow: hidden;
-  max-height: 320px;
-  overflow-y: scroll;
-}
 .fr-error {
   color: red;
   margin-top: 10px;
 }
+
+/* ── Location dropdown ── */
+
+.fr-loc-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  min-width: 260px;
+  width: max-content;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  z-index: 1000;
+  padding: 8px 0;
+  border: 1px solid #e5e7eb;
+  transform-origin: top center;
+  overflow: hidden;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
 .fr-loc-dropdown::-webkit-scrollbar {
   width: 4px;
 }
+
 .fr-loc-dropdown::-webkit-scrollbar-thumb {
   background: #e2e8f0;
   border-radius: 4px;
@@ -196,15 +198,22 @@
 .fr-loc-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
+  gap: 6px;
+  padding: 14px 16px;
   cursor: pointer;
-  transition: background 0.12s;
+  transition:
+    background 0.15s,
+    padding-left 0.15s;
+  border-bottom: 1px solid #f0f1f3;
+}
+
+.fr-loc-item:last-child {
+  border-bottom: none;
 }
 
 .fr-loc-item:hover {
-  background: #f0f5ff;
+  background: #f8fafc;
+  padding-left: 20px;
 }
 
 .fr-loc-pin {
@@ -212,13 +221,18 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 0.95rem;
 }
 
 .fr-loc-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1f2937;
   flex: 1;
+  letter-spacing: 0.3px;
 }
 
 .fr-loc-state {
@@ -228,27 +242,30 @@
 }
 
 .fr-loc-empty {
-  padding: 16px 12px;
-  color: #94a3b8;
+  padding: 20px 16px;
+  color: #9ca3af;
   font-size: 0.95rem;
   text-align: center;
+  font-weight: 500;
 }
 
 /* ── Passenger popup ── */
+
 .fr-pax-popup {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  width: 260px;
+  left: 0;
+  width: 100%;
   background: #fff;
-  border-radius: 16px;
-  padding: 15px 15px;
+  border-radius: 12px;
+  padding: 16px 18px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.14),
-    0 2px 8px rgba(0, 0, 0, 0.06);
-  z-index: 100;
-  border: 1px solid var(--fr-secondary);
-  transform-origin: top right;
+    0 10px 40px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  z-index: 1000;
+  border: 1px solid #e5e7eb;
+  transform-origin: top center;
 }
 
 .fr-pax-row {
@@ -259,16 +276,16 @@
 }
 
 .fr-pax-label {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1f2937;
+  letter-spacing: 0.3px;
 }
 
 .fr-pax-counter {
   display: flex;
   align-items: center;
   font-family: "Times New Roman", Times, serif;
-
   gap: 14px;
 }
 
@@ -276,8 +293,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1.5px solid #cbd5e1;
-  background: #fff;
+  border: 1.5px solid #d1d5db;
+  background: #f9fafb;
   color: #1e40af;
   display: flex;
   align-items: center;
@@ -285,11 +302,12 @@
   cursor: pointer;
   transition: all 0.15s;
   flex-shrink: 0;
+  font-weight: 600;
 }
 
 .fr-pax-btn:hover:not(:disabled) {
   border-color: #1e40af;
-  background: #eff6ff;
+  background: #f0f5ff;
 }
 
 .fr-pax-btn:disabled {
@@ -306,22 +324,22 @@
 }
 
 /* ── Search button ── */
+
 .fr-search-btn {
   background: var(--fr-primary);
   color: #fff;
+  font-family: "Vollkorn", serif;
   border: none;
   padding: 0 32px;
   border-radius: 0 12px 12px 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  /* transition: all 0.2s; */
   white-space: nowrap;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 8px;
-  /* margin: 4px; */
   letter-spacing: 0.01em;
 }
 
@@ -333,91 +351,10 @@
   transform: scale(0.98);
 }
 
-/* 
-.fr-checkbox-wrapper {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  padding: 0 4px;
-  accent-color: var(--fr-secondary);
+.find-ride-search {
+  margin: 60px 0 0 0;
 }
 
-.fr-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.fr-checkbox {
-  width: 14px;
-  height: 14px;
-  accent-color: var(--fr-primary);
-  cursor: pointer;
-}
-
-.fr-checkbox-text {
-  color: #475569;
-  font-size: 0.88rem;
-  font-weight: 500;
-} */
-
-/* ── Responsive ── */
-@media (max-width: 1024px) {
-  .fr-search-bar {
-    flex-wrap: wrap;
-    border-radius: 14px;
-  }
-  .fr-search-btn {
-    border-radius: 20px;
-  }
-  .fr-field {
-    min-width: calc(50% - 0.5px);
-    border-right: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .fr-field:nth-child(even) {
-    border-right: none;
-  }
-  .fr-field:focus-within {
-    border-radius: 0;
-  }
-  .fr-field-passenger {
-    border-right: none;
-  }
-  .fr-search-btn {
-    margin: 8px;
-    width: calc(100% - 16px);
-    justify-content: center;
-    padding: 14px;
-  }
-  .fr-search-container {
-    padding: 30px 10px;
-  }
-}
-
-@media (max-width: 640px) {
-  .fr-page-title {
-    font-size: 1.9rem;
-  }
-  .fr-field {
-    min-width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .fr-field:last-of-type {
-    border-bottom: none;
-  }
-  .fr-pax-popup {
-    right: 0;
-    left: 0;
-    width: auto;
-  }
-  .fr-loc-dropdown {
-    min-width: 240px;
-  }
-}
 /* ==========================================
    POPULAR ROUTES SECTION
    ========================================== */
@@ -431,12 +368,15 @@
   max-width: 800px;
   margin: 0 auto;
 }
+
 .css-9mgopn-MuiDivider-root {
   margin: 0 10px !important;
 }
+
 .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root + .MuiDivider-root {
   margin: 4px 13px 4px !important;
 }
+
 .fr-routes-title {
   font-size: 2rem;
   font-weight: 800;
@@ -445,10 +385,6 @@
   margin-bottom: 50px;
   line-height: 1.3;
 }
-
-/* ==========================================
-   ROUTES LIST
-   ========================================== */
 
 .fr-routes-list {
   display: flex;
@@ -534,126 +470,37 @@
 }
 
 /* ==========================================
-   RESPONSIVE DESIGN
+   LANDING PAGE SEARCH
    ========================================== */
 
-/* Large Tablets and Small Desktops (1024px and below) */
-@media (max-width: 1024px) {
-  .fr-routes-title {
-    font-size: 1.8rem;
-  }
-}
-
-/* Tablets (768px and below) */
-@media (max-width: 768px) {
-  .fr-routes-section {
-    padding: 40px 15px 60px;
-  }
-
-  .fr-routes-title {
-    font-size: 1.6rem;
-    margin-bottom: 40px;
-  }
-
-  .fr-route-item {
-    padding: 18px 20px;
-  }
-
-  .fr-route-details {
-    font-size: 0.95rem;
-    gap: 10px;
-  }
-}
-
-/* Mobile Devices (480px and below) */
-@media (max-width: 480px) {
-  .fr-routes-section {
-    padding: 35px 12px 50px;
-  }
-
-  .fr-routes-title {
-    font-size: 1.4rem;
-    margin-bottom: 30px;
-    padding: 0 10px;
-  }
-
-  .fr-route-item {
-    padding: 16px 16px;
-    flex-direction: row;
-  }
-
-  .fr-route-details {
-    font-size: 0.9rem;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .fr-route-from,
-  .fr-route-to {
-    font-size: 0.9rem;
-  }
-
-  .fr-route-arrow {
-    width: 16px;
-    height: 16px;
-  }
-
-  .fr-route-btn {
-    width: 32px;
-    height: 32px;
-  }
-
-  .fr-route-btn svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* Extra Small Mobile (360px and below) */
-@media (max-width: 360px) {
-  .fr-page-title {
-    font-size: 1.4rem;
-  }
-
-  .fr-routes-title {
-    font-size: 1.2rem;
-  }
-
-  .fr-route-details {
-    font-size: 0.85rem;
-  }
+.landingpage-search {
+  position: relative;
+  z-index: 10;
+  padding: 0 50px;
+  margin-top: -61px;
+  margin-bottom: 30px;
 }
 
 /* ==========================================
-   LANDSCAPE ORIENTATION
+   RIDE DETAIL / RESULTS PAGE
    ========================================== */
 
-@media (max-height: 500px) and (orientation: landscape) {
-  .fr-page-title {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-  }
-}
 .ridetail-page {
   min-height: 100vh;
   background: #f5f7fc;
   color: #0b1629;
 }
 
-/* ── TOP FORM SLOT ── */
 .ridetail-topbar {
-  /* padding: 18px 24px; */
   position: sticky;
   top: 50px;
   z-index: 50;
 }
 
 .ridetail-topbar-inner {
-  /* max-width: 1350px; */
   margin: 0 auto;
 }
 
-/* ── BODY ── */
 .ridetail-body {
   max-width: 1200px;
   margin: 0 auto;
@@ -664,7 +511,7 @@
   align-items: start;
 }
 
-/* ── SIDEBAR ── */
+/* Sidebar */
 .ridetail-sidebar {
   background: #fff;
   border-radius: 18px;
@@ -697,6 +544,7 @@
   cursor: pointer;
   padding: 0;
 }
+
 .ridetail-clear-btn:hover {
   text-decoration: underline;
 }
@@ -704,6 +552,7 @@
 .ridetail-filter-section {
   border-bottom: 1px solid #eef2f9;
 }
+
 .ridetail-filter-section:last-child {
   border-bottom: none;
 }
@@ -817,11 +666,13 @@
   justify-content: center;
   flex-shrink: 0;
 }
+
 .ridetail-verified-badge img {
   height: 100%;
   width: 100%;
 }
-/* ── RESULTS ── */
+
+/* Results */
 .ridetail-results {
   display: flex;
   flex-direction: column;
@@ -838,22 +689,23 @@
   gap: 12px;
   margin-bottom: 12px;
   flex-wrap: wrap;
+  font-family: sans-serif;
 }
 
 .ridetail-date-label {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #64748b;
   letter-spacing: 0.03em;
 }
 
 .ridetail-date-route {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #94a3b8;
 }
 
-/* ── RIDE CARD ── */
+/* Ride Card */
 .ridetail-card-ride {
   background: #fff;
   border-radius: 16px;
@@ -865,9 +717,17 @@
     box-shadow 0.2s,
     transform 0.15s;
 }
+
 .ridetail-card-ride:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.342);
 }
+
+.ridetail-card-ride--passed {
+  opacity: 0.52;
+  filter: grayscale(35%);
+  cursor: not-allowed;
+}
+
 .ridetail-ride-top {
   display: flex;
   align-items: center;
@@ -910,13 +770,10 @@
   font-size: 0.98rem;
   font-weight: 500;
   color: var(--fr-text-dark);
-
   max-width: 150px;
-
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
-
   line-height: 1.3;
 }
 
@@ -952,7 +809,6 @@
 
 .ridetail-ride-dur {
   position: absolute;
-  /* top: -13px; */
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.92rem;
@@ -1072,7 +928,72 @@
   font-size: 0.9rem;
 }
 
-/* ── LOAD MORE ── */
+/* Status pills */
+.ridetail-status-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ridetail-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.01em;
+  font-family: sans-serif;
+}
+
+.ridetail-status-pill--active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.ridetail-status-pill--passed {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.ridetail-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ridetail-status-pill--active .ridetail-status-dot {
+  background: #16a34a;
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  animation: pulse-green 1.8s infinite;
+}
+
+.ridetail-status-pill--passed .ridetail-status-dot {
+  background: #dc2626;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+.ridetail-status-unavail {
+  font-size: 11px;
+  color: #9ca3af;
+  font-family: sans-serif;
+}
+
+/* Load more */
 .ridetail-load-wrap {
   display: flex;
   justify-content: center;
@@ -1099,6 +1020,37 @@
   transform: scale(0.97);
 }
 
+/* Loader / empty */
+.ridetail-loader-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  gap: 16px;
+}
+
+.ridetail-loader-text {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.ridetail-empty--error {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notfoundride img {
+  width: 100%;
+  margin: 10vh 0;
+}
+
+/* Filter toggle (mobile only — hidden by default) */
 .ridetail-filter-toggle {
   display: none;
   align-items: center;
@@ -1114,6 +1066,8 @@
   margin-bottom: 16px;
 }
 
+/* Mobile overlay */
+.ridetail-overlay,
 .ridetail-mobile-overlay {
   display: none;
   position: fixed;
@@ -1155,84 +1109,18 @@
   align-items: center;
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .ridetail-body {
-    grid-template-columns: 1fr;
-    padding: 20px 16px 48px;
-    gap: 0;
-  }
-
-  .ridetail-sidebar {
-    display: none;
-  }
-  .ridetail-filter-toggle {
-    display: flex;
-  }
-  .ridetail-mobile-overlay {
-    display: block;
-  }
+/* Desktop/mobile topbar */
+.ridetail-topbar--mobile {
+  display: none;
 }
 
-@media (max-width: 600px) {
-  .ridetail-topbar {
-    padding: 14px 16px;
-  }
-
-  .ridetail-ride-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .ridetail-ride-timeline {
-    width: 100%;
-  }
-  .ridetail-ride-price {
-    align-self: flex-end;
-  }
-
-  .ridetail-ride-point {
-    min-width: 56px;
-  }
-  .ridetail-ride-city {
-    /* max-width: 64px; */
-  }
-
-  .ridetail-ride-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .ridetail-price-main {
-    font-size: 1.3rem;
-  }
-  .ridetail-card-ride {
-    padding: 14px 16px 12px;
-  }
+.ridetail-topbar--desktop {
+  display: block;
 }
 
-@media (max-width: 400px) {
-  .ridetail-ride-time {
-    font-size: 0.95rem;
-  }
-  .ridetail-date-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-}
-
-.landingpage-search {
-  position: relative;
-  z-index: 10;
-  padding: 0 50px;
-  margin-top: -61px;
-  margin-bottom: 30px;
-  /* box-shadow: 10px; */
-}
-/* RideConfirmation.css */
+/* ==========================================
+   RIDE CONFIRMATION PAGE
+   ========================================== */
 
 .ride-confirm-page {
   min-height: 100vh;
@@ -1244,11 +1132,10 @@
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1.6fr 1fr;
   gap: 2rem;
 }
 
-/* Main Content */
 .ride-confirm-main {
   display: flex;
   flex-direction: column;
@@ -1262,7 +1149,6 @@
   margin: 0 0 0.5rem 0;
 }
 
-/* Card Base Style */
 .ride-confirm-card {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -1275,7 +1161,7 @@
   box-shadow: var(--fr-shadow-lg);
 }
 
-/* Timeline Card */
+/* Timeline card */
 .ride-timeline-card {
   padding: 2rem;
 }
@@ -1300,24 +1186,6 @@
   font-weight: 900;
   font-size: 1.4rem;
 }
-
-/* .timeline-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--fr-bg-white);
-  border: 3px solid var(--fr-primary-light);
-  z-index: 1;
-  flex-shrink: 0;
-}
-
-.timeline-dot-start {
-  border-color: var(--fr-primary-light);
-} */
-
-/* .timeline-dot-end {
-  border-color: var(--fr-secondary);
-} */
 
 .timeline-line {
   width: 2px;
@@ -1370,7 +1238,7 @@
   line-height: 1.5;
 }
 
-/* Driver Card */
+/* Driver card */
 .ride-driver-card {
   display: flex;
   flex-direction: column;
@@ -1418,11 +1286,13 @@
 .driver-arrow:hover {
   color: var(--fr-text-dark);
 }
+
 .driver-all-details {
   display: flex;
   justify-content: space-between;
 }
-/* Details Card */
+
+/* Details card */
 .ride-details-card {
   display: flex;
   flex-direction: column;
@@ -1440,7 +1310,6 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  /* background: var(--fr-bg-light); */
   border-radius: 8px;
   flex-shrink: 0;
   color: var(--fr-text-gray);
@@ -1455,7 +1324,7 @@
   padding-top: 0.625rem;
 }
 
-/* Passengers Card */
+/* Passengers card */
 .passengers-title {
   font-size: 1.25rem;
   font-weight: 600;
@@ -1467,7 +1336,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 0;
   cursor: pointer;
   transition: background 0.2s ease;
   border-radius: var(--fr-radius);
@@ -1509,23 +1377,7 @@
   color: var(--fr-text-gray);
 }
 
-.passenger-arrow {
-  background: none;
-  border: none;
-  color: var(--fr-text-gray);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  transition: color 0.2s ease;
-  font-size: 1.4rem;
-}
-
-.passenger-arrow:hover {
-  color: var(--fr-text-dark);
-}
-
-/* Impact Card */
+/* Impact card */
 .ride-impact-card {
   display: flex;
   gap: 1rem;
@@ -1582,31 +1434,54 @@
   background: var(--fr-bg-white);
   border: 1px solid var(--fr-border);
   border-radius: var(--fr-radius);
-  font-size: 0.875rem;
-  color: var(--fr-text-gray);
-  box-shadow: var(--fr-shadow);
   font-size: 1rem;
   font-weight: 500;
+  box-shadow: var(--fr-shadow);
 }
 
-/* Summary Card */
+/* Summary card */
 .ride-summary-card {
   position: sticky;
   top: 2rem;
 }
 
 .summary-date {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--fr-text-dark);
   margin: 0 0 1.5rem 0;
+  font-family: sans-serif;
+}
+.summary-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--fr-border);
 }
 
-.summary-timeline {
-  border-bottom: 1px solid var(--fr-border);
-  padding: 10px 0;
+.summary-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   color: var(--fr-text-gray);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.summary-feature svg {
+  color: var(--fr-primary);
+  flex-shrink: 0;
+}
+
+.driver-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--fr-border);
 }
 
 .summary-driver {
@@ -1614,40 +1489,26 @@
   align-items: center;
   gap: 0.75rem;
 }
-.driver-infos {
-  display: flex;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  flex-direction: column;
-  gap: 10px;
-  border-bottom: 1px solid var(--fr-border);
-}
-.driver-detl {
-  background: var(--fr-text-gray); /* your gradient */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text; /* for future support */
-  /* font-family: sans-serif; */
-  font-style: italic;
-  font-size: 1rem;
-  font-weight: 600;
-}
+
 .summary-driver-avatar {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .summary-driver-name {
-  font-size: 1.3rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--fr-text-dark);
 }
-.role-info {
-  font-size: 1rem;
+
+.driver-detl {
+  margin: 0;
   color: var(--fr-text-gray);
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 .summary-pricing {
   display: flex;
@@ -1656,9 +1517,10 @@
 }
 
 .summary-passengers {
-  font-size: 1.2rem;
-  color: var(--fr-text-dark);
+  font-size: 1rem;
+  color: var(--fr-text-gray);
   flex: 1;
+  font-family: sans-serif;
 }
 
 .summary-price {
@@ -1668,7 +1530,9 @@
 }
 
 .price-currency {
-  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
   color: var(--fr-text-dark);
 }
 
@@ -1695,114 +1559,16 @@
   color: var(--fr-text-dark);
 }
 
-/* Responsive Design */
-@media (min-width: 1024px) {
-  .ride-confirm-container {
-    grid-template-columns: 1fr 400px;
-  }
-}
+/* ==========================================
+   PRICE MODAL
+   ========================================== */
 
-@media (max-width: 1023px) {
-  .ride-confirm-sidebar {
-    order: -1;
-  }
-
-  .ride-summary-card {
-    position: static;
-  }
-}
-
-@media (max-width: 768px) {
-  .ride-confirm-page {
-    padding: 1rem 0.75rem;
-  }
-
-  .ride-confirm-title {
-    font-size: 1.5rem;
-    padding: 0 0.25rem;
-  }
-
-  .ride-confirm-card {
-    border-radius: var(--fr-radius);
-    padding: 1.25rem;
-  }
-
-  .ride-timeline-card {
-    padding: 1.5rem;
-  }
-
-  .timeline-content {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .timeline-time,
-  .timeline-duration {
-    display: none;
-    min-width: auto;
-  }
-
-  .location-city {
-    font-size: 1rem;
-  }
-
-  .location-address {
-    font-size: 0.8125rem;
-  }
-
-  .summary-content {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .summary-time,
-  .summary-duration {
-    min-width: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .ride-price-row {
-    gap: 60px !important;
-  }
-  .ride-confirm-page {
-    padding: 0.75rem 0.5rem;
-  }
-
-  .ride-confirm-card {
-    padding: 1rem;
-  }
-
-  .timeline-stop {
-    gap: 1rem;
-  }
-
-  .summary-pricing {
-    flex-wrap: wrap;
-  }
-
-  .price-amount {
-    font-size: 1.25rem;
-  }
-
-  .detail-item {
-    gap: 0.75rem;
-  }
-
-  .detail-icon {
-    width: 36px;
-    height: 36px;
-  }
-}
-/* ===== Modal Box ===== */
 .ride-price-modal {
   border-radius: 20px !important;
   padding: 0;
-
   width: 100%;
 }
 
-/* ===== Content ===== */
 .ride-price-content {
   position: relative;
   padding: 28px 32px;
@@ -1810,17 +1576,15 @@
   background: #fff;
 }
 
-/* ===== Title ===== */
 .ride-price-title {
   text-align: center;
   font-size: 26px;
   font-weight: 700;
   font-family: "Vollkorn", serif;
   margin-bottom: 28px;
-  color: var(--fr-text-dark); /* dark navy */
+  color: var(--fr-text-dark);
 }
 
-/* ===== List ===== */
 .ride-price-list {
   display: flex;
   flex-direction: column;
@@ -1828,7 +1592,6 @@
   font-family: "Vollkorn", serif;
 }
 
-/* ===== Row ===== */
 .ride-price-row {
   display: flex;
   padding: 0 10px;
@@ -1838,27 +1601,23 @@
   font-size: 16px;
 }
 
-/* Left text */
 .ride-price-row span:first-child {
-  color: var(--fr-text-gray); /* grey like screenshot */
+  color: var(--fr-text-gray);
   font-weight: 700;
 }
 
-/* Right price */
 .ride-price-row span:last-child {
   color: var(--fr-text-dark);
   font-weight: 600;
   font-family: sans-serif !important;
 }
 
-/* ===== Divider ===== */
 .ride-price-divider {
   height: 1px;
   background: #e5e7eb;
   margin: 20px 0;
 }
 
-/* ===== Total Section ===== */
 .ride-price-total {
   display: flex;
   justify-content: space-between;
@@ -1866,26 +1625,30 @@
   font-family: "Vollkorn", serif;
 }
 
-/* Total text */
 .ride-price-total span:first-child {
   font-size: 17px;
   font-weight: 800;
   color: var(--fr-text-dark);
 }
 
-/* Total amount */
 .ride-price-amount {
   font-size: 20px;
   font-weight: 700;
   color: var(--fr-text-dark);
   font-family: sans-serif;
+  display: flex;
+  align-items: center;
 }
+
 .book-rides-now {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-/* MyRides.css */
+
+/* ==========================================
+   MY RIDES PAGE
+   ========================================== */
 
 .myride-page {
   min-height: 100vh;
@@ -1898,7 +1661,6 @@
   margin: 0 auto;
 }
 
-/* Header */
 .myride-header {
   margin-bottom: 2rem;
   text-align: center;
@@ -1917,7 +1679,6 @@
   margin: 0;
 }
 
-/* Tabs */
 .myride-tabs {
   display: flex;
   gap: 1rem;
@@ -1949,14 +1710,12 @@
   color: white;
 }
 
-/* Grid */
 .myride-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-/* Empty State */
 .myride-empty {
   grid-column: 1 / -1;
   text-align: center;
@@ -1983,7 +1742,6 @@
   margin: 0;
 }
 
-/* Card */
 .myride-card {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -2023,7 +1781,6 @@
   color: white !important;
 }
 
-/* Simple Route */
 .myride-route-simple {
   display: flex;
   align-items: center;
@@ -2033,7 +1790,6 @@
 }
 
 .route-simple-item {
-  /* flex: 1; */
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -2057,7 +1813,6 @@
   font-weight: 700;
 }
 
-/* Card Info */
 .myride-card-info {
   display: flex;
   gap: 1.5rem;
@@ -2086,7 +1841,6 @@
   font-family: sans-serif;
 }
 
-/* Card Footer */
 .myride-card-footer {
   display: flex;
   justify-content: space-between;
@@ -2117,7 +1871,6 @@
   color: rgb(73, 68, 68);
   border: none;
   border-radius: var(--fr-radius);
-
   font-size: 0.85rem;
   display: flex;
   align-items: center;
@@ -2132,7 +1885,7 @@
   transform: translateY(-1px);
 }
 
-/* Details Modal */
+/* Modal */
 .myride-details-modal {
   border-radius: var(--fr-radius-lg) !important;
 }
@@ -2168,7 +1921,6 @@
   margin: 0 0 1rem 0;
 }
 
-/* Route Stepper */
 .myride-modal-route {
   margin-bottom: 1.5rem;
 }
@@ -2237,7 +1989,6 @@
   font-family: sans-serif;
 }
 
-/* Info Grid */
 .myride-modal-info {
   margin-bottom: 1.5rem;
 }
@@ -2277,11 +2028,9 @@
 .item-value {
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-  /* font-weight: 600; */
   font-family: sans-serif;
 }
 
-/* Driver/Passenger Cards */
 .myride-modal-driver,
 .myride-modal-passengers {
   margin-bottom: 1.5rem;
@@ -2296,22 +2045,8 @@
   border-radius: var(--fr-radius);
 }
 
-.driver-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .driver-details {
   flex: 1;
-}
-
-.driver-name {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--fr-text-dark);
-  margin: 0 0 0.5rem 0;
 }
 
 .driver-meta {
@@ -2357,13 +2092,6 @@
   border-radius: var(--fr-radius);
 }
 
-.passenger-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .passenger-details {
   flex: 1;
 }
@@ -2381,7 +2109,6 @@
   color: var(--fr-text-gray);
 }
 
-/* Cancel Info */
 .myride-modal-cancel {
   margin-bottom: 1.5rem;
 }
@@ -2399,7 +2126,6 @@
   color: #991b1b;
 }
 
-/* Price */
 .myride-modal-price {
   display: flex;
   justify-content: space-between;
@@ -2423,7 +2149,6 @@
   font-family: sans-serif;
 }
 
-/* Actions */
 .myride-modal-actions {
   display: flex;
   gap: 1rem;
@@ -2458,63 +2183,9 @@
   opacity: 0.9;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .myride-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .myride-card {
-    height: auto;
-    min-height: 170px;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .passengers-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .myride-modal-actions {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .myride-page {
-    padding: 1rem 0.5rem;
-  }
-
-  .myride-title {
-    font-size: 1.5rem;
-  }
-
-  .myride-tabs {
-    gap: 0.5rem;
-  }
-
-  .myride-tab {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.875rem;
-  }
-
-  .myride-card {
-    padding: 1rem;
-  }
-
-  .myride-route-simple {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .route-arrow {
-    transform: rotate(90deg);
-    align-self: center;
-  }
-}
-/* RidePayment.css */
+/* ==========================================
+   RIDE PAYMENT PAGE
+   ========================================== */
 
 .ridepay-page {
   min-height: 100vh;
@@ -2533,7 +2204,6 @@
   gap: 2rem;
 }
 
-/* Summary Section */
 .ridepay-summary {
   display: flex;
   flex-direction: column;
@@ -2564,7 +2234,6 @@
 }
 
 .ridepay-route-item {
-  /* flex: 1; */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -2611,7 +2280,6 @@
 
 .ridepay-info-value {
   font-size: 0.9375rem;
-  /* font-weight: 600; */
   color: var(--fr-text-dark);
   font-family: sans-serif;
 }
@@ -2664,7 +2332,6 @@
   font-family: sans-serif;
 }
 
-/* Payment Section */
 .ridepay-payment {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -2738,7 +2405,6 @@
   color: var(--fr-text-gray);
 }
 
-/* Card Form */
 .ridepay-card-form {
   padding: 1.5rem;
   background: var(--fr-bg-light);
@@ -2771,7 +2437,6 @@
   gap: 1rem;
 }
 
-/* Buttons */
 .ridepay-btn-primary {
   width: 100%;
   padding: 1rem 2rem;
@@ -2800,7 +2465,6 @@
   cursor: not-allowed;
 }
 
-/* Success State */
 .ridepay-success {
   display: flex;
   flex-direction: column;
@@ -2846,69 +2510,9 @@
   font-weight: 600;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .ridepay-content {
-    grid-template-columns: 1fr;
-  }
-
-  .ridepay-summary {
-    order: 2;
-  }
-
-  .ridepay-payment {
-    order: 1;
-  }
-}
-
-@media (max-width: 768px) {
-  .ridepay-page {
-    padding: 1rem 0.75rem;
-  }
-
-  .ridepay-summary-card,
-  .ridepay-payment {
-    padding: 1.25rem;
-  }
-
-  .ridepay-info-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .ridepay-route {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .ridepay-route-arrow {
-    transform: rotate(90deg);
-  }
-
-  .ridepay-input-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .ridepay-summary-title,
-  .ridepay-payment-title {
-    font-size: 1.25rem;
-  }
-
-  .ridepay-success-icon {
-    font-size: 4rem;
-  }
-
-  .ridepay-success-title {
-    font-size: 1.5rem;
-  }
-
-  .ridepay-method-icon {
-    font-size: 1.5rem;
-  }
-}
-/* BookingConfirmation.css */
+/* ==========================================
+   BOOKING CONFIRMATION PAGE
+   ========================================== */
 
 .bookconf-page {
   min-height: 100vh;
@@ -2921,7 +2525,6 @@
   margin: 0 auto;
 }
 
-/* Success Header */
 .bookconf-success-header {
   text-align: center;
   padding: 2rem;
@@ -2966,7 +2569,6 @@
   height: auto !important;
 }
 
-/* Content */
 .bookconf-content {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
@@ -2980,7 +2582,6 @@
   gap: 1.5rem;
 }
 
-/* Card */
 .bookconf-card {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -2997,7 +2598,6 @@
   border-bottom: 2px solid var(--fr-border);
 }
 
-/* Journey */
 .bookconf-journey {
   display: flex;
   flex-direction: column;
@@ -3066,7 +2666,6 @@
   font-family: sans-serif;
 }
 
-/* Info Grid */
 .bookconf-info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -3102,12 +2701,10 @@
 
 .bookconf-info-value {
   font-size: 0.9375rem;
-  /* font-weight: 600; */
   color: var(--fr-text-dark);
   font-family: sans-serif;
 }
 
-/* Driver */
 .bookconf-driver {
   display: flex;
   align-items: center;
@@ -3166,7 +2763,6 @@
   color: var(--fr-primary-light);
 }
 
-/* Payment Card */
 .bookconf-payment-card {
   background: linear-gradient(
     135deg,
@@ -3233,7 +2829,6 @@
   margin-top: 1rem;
   padding: 1rem;
   background: #fffbeb;
-
   border: 1px solid #fde68a;
   border-radius: var(--fr-radius);
 }
@@ -3245,7 +2840,6 @@
   font-weight: 700;
 }
 
-/* Booking Info */
 .bookconf-booking-info {
   display: flex;
   flex-direction: column;
@@ -3277,7 +2871,6 @@
   font-family: sans-serif;
 }
 
-/* Actions */
 .bookconf-actions {
   display: flex;
   flex-direction: column;
@@ -3322,68 +2915,9 @@
   background: var(--fr-bg-light);
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .bookconf-content {
-    grid-template-columns: 1fr;
-  }
-
-  .bookconf-summary-section {
-    order: -1;
-  }
-}
-
-@media (max-width: 768px) {
-  .bookconf-page {
-    padding: 1rem 0.75rem;
-  }
-
-  .bookconf-success-icon {
-    font-size: 4rem;
-  }
-
-  .bookconf-success-title {
-    font-size: 2rem;
-  }
-
-  .bookconf-card {
-    padding: 1.25rem;
-  }
-
-  .bookconf-info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .bookconf-driver-avatar {
-    width: 64px;
-    height: 64px;
-  }
-}
-
-@media (max-width: 480px) {
-  .bookconf-success-icon {
-    font-size: 3rem;
-  }
-
-  .bookconf-success-title {
-    font-size: 1.5rem;
-  }
-
-  .bookconf-success-text {
-    font-size: 0.9375rem;
-  }
-
-  .bookconf-driver {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .bookconf-driver-meta {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-/* VehicleDetails.css */
+/* ==========================================
+   VEHICLE DETAILS PAGE
+   ========================================== */
 
 .vehicledetails-page {
   min-height: 100vh;
@@ -3396,7 +2930,6 @@
   margin: 0 auto;
 }
 
-/* Header */
 .vehicledetails-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -3419,7 +2952,6 @@
   margin: 0;
 }
 
-/* Stepper */
 .vehicledetails-stepper-wrapper {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -3443,7 +2975,6 @@
   border-radius: 4px;
 }
 
-/* Content */
 .vehicledetails-content {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -3454,6 +2985,18 @@
 .vehicledetails-section {
   animation: vehicledetails-fadeIn 0.4s ease;
 }
+
+@keyframes vehicledetails-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .registration--sucess-box {
   display: flex;
   flex-direction: column;
@@ -3463,6 +3006,7 @@
   min-height: 480px;
   padding: 1rem 0;
 }
+
 .sucess-status-badge {
   display: inline-flex;
   align-items: center;
@@ -3476,33 +3020,26 @@
   margin-bottom: 1.5rem;
   letter-spacing: 0.02em;
 }
+
 .sucessBedge {
   margin: 5px 0 20px 0;
   height: 100px;
   width: 100px;
 }
+
 .sucess-heading {
   font-size: 35px;
   font-weight: 600;
   margin: 0 0 0.5rem;
   color: #1a1a1a;
 }
+
 .sucess-subheading {
   font-size: 16px;
   color: #666;
   max-width: 420px;
   margin: 0 0 2rem;
   line-height: 1.7;
-}
-@keyframes vehicledetails-fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .vehicledetails-section-title {
@@ -3529,7 +3066,6 @@
   margin: 2rem 0 1rem 0;
 }
 
-/* Form Groups */
 .vehicledetails-form-group {
   margin-bottom: 2rem;
 }
@@ -3548,7 +3084,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Inputs */
 .vehicledetails-input {
   margin-bottom: 1.5rem;
 }
@@ -3574,13 +3109,11 @@
   color: var(--fr-primary-light);
 }
 
-/* Alert */
 .vehicledetails-alert {
   margin-bottom: 1.5rem;
   border-radius: var(--fr-radius);
 }
 
-/* Upload Section */
 .vehicledetails-upload-section {
   margin-bottom: 2rem;
 }
@@ -3631,7 +3164,6 @@
   color: var(--fr-text-gray);
 }
 
-/* File Preview */
 .vehicledetails-file-preview {
   display: flex;
   align-items: center;
@@ -3641,6 +3173,7 @@
   border-radius: var(--fr-radius);
   border: 1px solid var(--fr-border);
 }
+
 .fotter-registration-btn {
   display: flex;
   flex-direction: column;
@@ -3648,6 +3181,7 @@
   width: 100%;
   max-width: 320px;
 }
+
 .vehicledetails-preview-image {
   max-width: 200px;
   max-height: 200px;
@@ -3677,7 +3211,7 @@
   margin-bottom: 0.75rem;
   display: block;
 }
-/* Photo Upload */
+
 .vehicledetails-photos-section {
   margin-top: 2rem;
 }
@@ -3771,7 +3305,6 @@
   transform: scale(1.1);
 }
 
-/* Error */
 .vehicledetails-error {
   display: block;
   color: #ef4444;
@@ -3780,7 +3313,6 @@
   font-weight: 500;
 }
 
-/* Actions */
 .vehicledetails-actions {
   display: flex;
   justify-content: space-between;
@@ -3827,74 +3359,6 @@
   box-shadow: var(--fr-shadow-lg);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .vehicledetails-page {
-    padding: 1rem 0.75rem;
-  }
-  .css-1hv8oq8-MuiStepLabel-label,
-  .css-1hv8oq8-MuiStepLabel-label.Mui-active {
-    display: none !important;
-  }
-  .vehicledetails-stepper-wrapper,
-  .vehicledetails-content {
-    padding: 1.5rem;
-  }
-
-  .vehicledetails-title {
-    font-size: 2rem;
-  }
-
-  .vehicledetails-grid-2,
-  .vehicledetails-grid-3 {
-    grid-template-columns: 1fr;
-  }
-
-  .vehicledetails-photo-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .vehicledetails-actions {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .vehicledetails-actions-right {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .vehicledetails-btn-back,
-  .vehicledetails-btn-next,
-  .vehicledetails-btn-submit {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .vehicledetails-title {
-    font-size: 1.5rem;
-  }
-
-  .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root,
-  .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
-    font-size: 28px !important;
-  }
-  .vehicledetails-stepper-wrapper,
-  .vehicledetails-content {
-    padding: 1rem;
-  }
-
-  .vehicledetails-upload-box,
-  .vehicledetails-photo-box {
-    padding: 2rem 1rem;
-  }
-
-  .vehicledetails-upload-icon {
-    font-size: 2rem;
-  }
-}
-
 .basicDetails-registration {
   background: #f7f7f5;
   border: 1px solid #e8e8e4;
@@ -3904,6 +3368,7 @@
   width: max-content;
   text-align: left;
 }
+
 .details-Items {
   display: flex;
   align-items: center;
@@ -3912,26 +3377,135 @@
   font-size: 14px;
   color: #444;
 }
-.find-ride-search {
-  margin: 60px 0 0 0;
-}
-/* ── Desktop/Mobile topbar visibility ── */
-.ridetail-topbar--mobile {
+
+/* ==========================================
+   MOBILE SEARCH BAR (hidden on desktop)
+   ========================================== */
+
+.mobile-search-bar {
   display: none;
 }
-.ridetail-topbar--desktop {
-  display: block;
+.mobile-search-drawer {
+  display: none;
 }
 
-@media (max-width: 768px) {
+/* ==========================================
+   RESPONSIVE — MAX 1200px
+   ========================================== */
+
+@media (max-width: 1200px) {
+  .ridetail-body {
+    padding: 24px 16px 48px;
+  }
+
+  .ridepay-content {
+    gap: 1.5rem;
+  }
+
+  .bookconf-content {
+    grid-template-columns: 1fr;
+  }
+
+  .bookconf-summary-section {
+    order: -1;
+  }
+
+  .ride-confirm-container {
+    grid-template-columns: 1fr 400px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE — MAX 767px (tablets)
+   ========================================== */
+
+@media (max-width: 767px) {
+  .dm-paper {
+    min-width: 330px !important;
+  }
+  /* Search bar wraps */
+  .fr-search-bar {
+    flex-wrap: wrap;
+    border-radius: 14px;
+  }
+
+  .fr-field {
+    min-width: calc(50% - 0.5px);
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .fr-field:nth-child(even) {
+    border-right: none;
+  }
+
+  .fr-field:focus-within {
+    border-radius: 0;
+  }
+
+  .fr-field-passenger {
+    border-right: none;
+  }
+
+  .fr-search-btn {
+    margin: 8px;
+    width: calc(100% - 16px);
+    justify-content: center;
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .fr-search-container {
+    padding: 30px 10px;
+  }
+
+  .fr-routes-section {
+    padding: 40px 15px 60px;
+  }
+
+  .fr-routes-title {
+    font-size: 1.6rem;
+    margin-bottom: 40px;
+  }
+
+  .fr-route-item {
+    padding: 18px 20px;
+  }
+
+  .fr-route-details {
+    font-size: 0.95rem;
+    gap: 10px;
+  }
+
+  /* Ride detail layout */
+  .ridetail-body {
+    grid-template-columns: 1fr;
+    padding: 20px 16px 48px;
+    gap: 0;
+  }
+
+  .ridetail-sidebar {
+    display: none;
+  }
+
+  .ridetail-filter-toggle {
+    display: flex;
+  }
+
+  .ridetail-mobile-overlay,
+  .ridetail-overlay {
+    display: block;
+  }
+
   .ridetail-topbar--desktop {
     display: none;
   }
+
   .ridetail-topbar--mobile {
     display: block;
   }
 
-  /* Compact search bar */
+  /* Mobile search bar */
   .mobile-search-bar {
     display: flex;
     align-items: center;
@@ -4004,8 +3578,8 @@
     font-family: "Outfit", sans-serif;
   }
 
-  /* Search drawer (drops from top) */
   .mobile-search-drawer {
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -4035,7 +3609,6 @@
     padding: 8px 0 16px;
   }
 
-  /* Filter sidebar — full height from top */
   .ridetail-mobile-sidebar {
     position: fixed;
     top: 0 !important;
@@ -4053,127 +3626,600 @@
     padding: 16px 20px;
     border-bottom: 1px solid #e5e7eb;
   }
-}
-.notfoundride > img {
-  margin: 10vh 0 0 0;
-}
-/* ─────────────────────────────────────────────────────────────
-   Paste these rules into your FindRide.css
-   ───────────────────────────────────────────────────────────── */
 
-/* Overlay (shared by search drawer + filter drawer) */
-.ridetail-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(11, 22, 41, 0.45);
+  /* Confirmation page */
+  .ride-confirm-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .ride-confirm-title {
+    font-size: 1.5rem;
+    padding: 0 0.25rem;
+  }
+
+  .ride-confirm-card {
+    border-radius: var(--fr-radius);
+    padding: 1.25rem;
+  }
+
+  .ride-confirm-container {
+    grid-template-columns: 1fr;
+  }
+
+  .ride-confirm-sidebar {
+    order: -1;
+  }
+
+  .ride-summary-card {
+    position: static;
+  }
+
+  .ride-timeline-card {
+    padding: 1.5rem;
+  }
+
+  .timeline-content {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timeline-time,
+  .timeline-duration {
+    display: none;
+  }
+
+  .location-city {
+    font-size: 1rem;
+  }
+
+  .location-address {
+    font-size: 0.8125rem;
+  }
+
+  /* My rides */
+  .myride-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .myride-modal-actions {
+    flex-direction: column;
+  }
+
+  /* Payment */
+  .ridepay-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .ridepay-content {
+    grid-template-columns: 1fr;
+  }
+
+  .ridepay-summary {
+    order: 2;
+  }
+
+  .ridepay-payment {
+    order: 1;
+  }
+
+  .ridepay-summary-card,
+  .ridepay-payment {
+    padding: 1.25rem;
+  }
+
+  .ridepay-info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .ridepay-route {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ridepay-route-arrow {
+    transform: rotate(90deg);
+  }
+
+  .ridepay-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Booking conf */
+  .bookconf-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .bookconf-success-icon {
+    font-size: 4rem;
+  }
+
+  .bookconf-success-title {
+    font-size: 2rem;
+  }
+
+  .bookconf-card {
+    padding: 1.25rem;
+  }
+
+  .bookconf-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bookconf-driver-avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  /* Vehicle details */
+  .vehicledetails-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .css-1hv8oq8-MuiStepLabel-label,
+  .css-1hv8oq8-MuiStepLabel-label.Mui-active {
+    display: none !important;
+  }
+
+  .vehicledetails-stepper-wrapper,
+  .vehicledetails-content {
+    padding: 1.5rem;
+  }
+
+  .vehicledetails-title {
+    font-size: 2rem;
+  }
+
+  .vehicledetails-grid-2,
+  .vehicledetails-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .vehicledetails-photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vehicledetails-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .vehicledetails-actions-right {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .vehicledetails-btn-back,
+  .vehicledetails-btn-next,
+  .vehicledetails-btn-submit {
+    width: 100%;
+  }
 }
 
-/* ── Passed / disabled ride card ── */
-.ridetail-card-ride--passed {
-  opacity: 0.52;
-  filter: grayscale(35%);
-  cursor: not-allowed;
-  pointer-events: auto; /* keep so the "not-allowed" cursor shows */
+/* ==========================================
+   RESPONSIVE — MAX 480px (mobile)
+   ========================================== */
+
+@media (max-width: 480px) {
+  /* Search */
+  .fr-page-title {
+    font-size: 1.9rem;
+  }
+
+  .fr-field {
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .fr-field:last-of-type {
+    border-bottom: none;
+  }
+
+  .fr-pax-popup {
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+  }
+
+  .fr-loc-dropdown {
+    min-width: 100%;
+    max-height: 280px;
+    left: 0;
+    right: 0;
+    width: calc(100% + 10px);
+    margin-left: -1px;
+  }
+
+  .fr-loc-item {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .fr-loc-item:hover {
+    padding-left: 16px;
+  }
+
+  .fr-loc-name {
+    font-size: 0.9rem;
+  }
+
+  .fr-loc-pin {
+    min-width: 18px;
+    font-size: 0.85rem;
+  }
+
+  /* Routes */
+  .fr-routes-section {
+    padding: 35px 12px 50px;
+  }
+
+  .fr-routes-title {
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+
+  .fr-route-item {
+    padding: 16px;
+    flex-direction: row;
+  }
+
+  .fr-route-details {
+    font-size: 0.9rem;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .fr-route-from,
+  .fr-route-to {
+    font-size: 0.9rem;
+  }
+
+  .fr-route-arrow {
+    width: 16px;
+    height: 16px;
+  }
+
+  .fr-route-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .fr-route-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Ride card */
+  .ridetail-card-ride {
+    padding: 14px 16px 12px;
+  }
+
+  .ridetail-ride-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ridetail-ride-timeline {
+    width: 100%;
+  }
+
+  .ridetail-ride-price {
+    align-self: flex-end;
+  }
+
+  .ridetail-ride-point {
+    min-width: 56px;
+  }
+
+  .ridetail-ride-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ridetail-price-main {
+    font-size: 1.3rem;
+  }
+
+  .ridetail-ride-time {
+    font-size: 0.95rem;
+  }
+
+  .ridetail-date-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* Price modal */
+  .ride-price-row {
+    gap: 60px !important;
+  }
+
+  /* Confirm page */
+  .ride-confirm-page {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .ride-confirm-card {
+    padding: 1rem;
+  }
+
+  .timeline-stop {
+    gap: 1rem;
+  }
+
+  .summary-pricing {
+    flex-wrap: wrap;
+  }
+
+  .price-amount {
+    font-size: 1.25rem;
+  }
+
+  .detail-item {
+    gap: 0.75rem;
+  }
+
+  .detail-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* My rides */
+  .myride-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .myride-title {
+    font-size: 1.5rem;
+  }
+
+  .myride-tabs {
+    gap: 0.5rem;
+  }
+
+  .myride-tab {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .myride-card {
+    padding: 1rem;
+    height: auto;
+    min-height: 170px;
+  }
+
+  .myride-route-simple {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .route-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .passengers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Payment */
+  .ridepay-summary-title,
+  .ridepay-payment-title {
+    font-size: 1.25rem;
+  }
+
+  .ridepay-success-icon {
+    font-size: 4rem;
+  }
+
+  .ridepay-success-title {
+    font-size: 1.5rem;
+  }
+
+  .ridepay-method-icon {
+    font-size: 1.5rem;
+  }
+
+  /* Booking conf */
+  .bookconf-success-icon {
+    font-size: 3rem;
+  }
+
+  .bookconf-success-title {
+    font-size: 1.5rem;
+  }
+
+  .bookconf-success-text {
+    font-size: 0.9375rem;
+  }
+
+  .bookconf-driver {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .bookconf-driver-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Vehicle details */
+  .vehicledetails-title {
+    font-size: 1.5rem;
+  }
+
+  .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root,
+  .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+    font-size: 28px !important;
+  }
+
+  .vehicledetails-stepper-wrapper,
+  .vehicledetails-content {
+    padding: 1rem;
+  }
+
+  .vehicledetails-upload-box,
+  .vehicledetails-photo-box {
+    padding: 2rem 1rem;
+  }
+
+  .vehicledetails-upload-icon {
+    font-size: 2rem;
+  }
+}
+/* src/pages/Rides/find-ride/ride-booking/components/DriverModal.css */
+
+/* ── Dialog paper ── */
+.dm-paper {
+  border-radius: 16px !important;
+  min-width: 500px;
+  max-width: 420px;
 }
 
-/* ── Status row at bottom of card ── */
-.ridetail-status-row {
+/* ── Dialog content padding ── */
+.dm-content {
+  padding: 28px 24px !important;
+}
+
+/* ── Driver header ── */
+.dm-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-/* Base pill */
-.ridetail-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.01em;
-}
-
-/* Active / upcoming */
-.ridetail-status-pill--active {
-  background: #dcfce7;
-  font-family: sans-serif;
-  color: #166534;
-}
-
-/* Passed */
-.ridetail-status-pill--passed {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-/* Animated dot indicator */
-.ridetail-status-dot {
-  width: 7px;
-  height: 7px;
+.dm-avatar {
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
-.ridetail-status-pill--active .ridetail-status-dot {
-  background: #16a34a;
-  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
-  animation: pulse-green 1.8s infinite;
-}
-
-.ridetail-status-pill--passed .ridetail-status-dot {
-  background: #dc2626;
-}
-
-@keyframes pulse-green {
-  0% {
-    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
-  }
-  70% {
-    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
-  }
-}
-
-/* "Not available" label */
-.ridetail-status-unavail {
-  font-size: 11px;
-  color: #9ca3af;
-  font-style: italic;
-}
-
-/* ── Loader wrapper ── */
-.ridetail-loader-wrap {
+.dm-header-info {
   display: flex;
   flex-direction: column;
+}
+
+.dm-driver-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-transform: capitalize;
+  color: #111827;
+}
+
+.dm-verified-row {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 64px 0;
-  gap: 16px;
+  gap: 6px;
 }
 
-.ridetail-loader-text {
+/* ── Body (everything below the header) ── */
+.dm-body {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Contact rows ── */
+.dm-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dm-contact-icon {
+  color: #0033a1;
+  flex-shrink: 0;
   font-size: 14px;
-  color: #6b7280;
-  font-weight: 500;
 }
 
-/* ── Empty state ── */
-.ridetail-empty--error {
-  color: #b91c1c;
-  background: #fee2e2;
-  border-radius: 10px;
-  padding: 16px 20px;
+.dm-contact-value {
   font-size: 14px;
-  font-weight: 500;
+  color: #374151;
+  font-family: sans-serif;
 }
 
+/* ── Section (vehicle + preferences) ── */
+.dm-section {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+}
 
-.notfoundride img {
-  width: 100%;
-  margin: 10vh 0;
+.dm-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: #111827;
+}
+
+/* ── Vehicle grid ── */
+.dm-vehicle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dm-vehicle-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.dm-vehicle-label {
+  font-size: 15px;
+  color: #6a6f77;
+  margin-bottom: 2px;
+}
+
+.dm-vehicle-value {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #1f2937;
+  font-family: sans-serif;
+}
+
+/* ── Preference chips ── */
+.dm-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dm-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.dm-chip--instant {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+/* ── Close button ── */
+.dm-close-btn {
+  margin-top: 16px !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
 }

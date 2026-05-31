@@ -15,8 +15,6 @@ import {
   FaLock,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Nav";
-import Footer from "../../components/Footer";
 import { ImArrowRight } from "react-icons/im";
 const RidePayment = () => {
   const navigate = useNavigate();
@@ -119,7 +117,6 @@ const RidePayment = () => {
 
   return (
     <>
-      <Header />
       <div className="ridepay-page">
         <div className="ridepay-container">
           <div className="ridepay-content">
@@ -354,7 +351,6 @@ const RidePayment = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

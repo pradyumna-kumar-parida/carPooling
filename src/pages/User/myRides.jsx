@@ -11,8 +11,7 @@ import { ImInfo } from "react-icons/im";
 // import CloseIcon from "@mui/icons-material/Close";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaCar, FaCalendarAlt, FaClock, FaUser } from "react-icons/fa";
-import Header from "../../components/Nav";
-import Footer from "../../components/Footer";
+
 import { FaLocationDot } from "react-icons/fa6";
 const MyRides = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -214,7 +213,6 @@ const MyRides = () => {
 
   return (
     <>
-      <Header />
       <div className="myride-page">
         <div className="myride-container">
           {/* Page Header */}
@@ -420,7 +418,7 @@ const MyRides = () => {
                         src={selectedRide.driver.avatar}
                         alt={selectedRide.driver.name}
                         className="driver-avatar"
-                       loading="lazy"
+                        loading="lazy"
                       />
                       <div className="driver-details">
                         <h4 className="driver-name">
@@ -454,7 +452,7 @@ const MyRides = () => {
                             src={passenger.avatar}
                             alt={passenger.name}
                             className="passenger-avatar"
-                           loading="lazy"
+                            loading="lazy"
                           />
                           <div className="passenger-details">
                             <h4 className="passenger-name">{passenger.name}</h4>
@@ -515,7 +513,6 @@ const MyRides = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <Footer />
     </>
   );
 };

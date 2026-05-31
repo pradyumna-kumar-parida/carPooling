@@ -6,8 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineSave } from "react-icons/md";
 import { RiUserLocationFill } from "react-icons/ri";
-import Header from "../../components/Nav";
-import Footer from "../../components/Footer";
+
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("personal");
@@ -105,7 +104,6 @@ const ProfilePage = () => {
 
   return (
     <>
-      <Header />
       <div className="profile-page">
         <div className="container">
           {/* Header Section */}
@@ -123,7 +121,7 @@ const ProfilePage = () => {
                         }
                         alt="Profile"
                         className="profile-avatar"
-                       loading="lazy"
+                        loading="lazy"
                       />
                       <label
                         htmlFor="profilePicture"
@@ -147,7 +145,7 @@ const ProfilePage = () => {
                       }
                       alt="Profile"
                       className="profile-avatar"
-                     loading="lazy"
+                      loading="lazy"
                     />
                   )}
                 </div>
@@ -561,9 +559,9 @@ const ProfilePage = () => {
                           {filePreview.driverLicense && (
                             <div className="file-preview">
                               {typeof filePreview.driverLicense === "string" &&
-                              filePreview.driverLicense.startsWith(
-                                "data:image",
-                              ) ? (
+                                filePreview.driverLicense.startsWith(
+                                  "data:image",
+                                ) ? (
                                 <img
                                   src={filePreview.driverLicense}
                                   alt="Preview"
@@ -656,14 +654,14 @@ const ProfilePage = () => {
                           {filePreview.aadhaarCard && (
                             <div className="file-preview">
                               {typeof filePreview.aadhaarCard === "string" &&
-                              filePreview.aadhaarCard.startsWith(
-                                "data:image",
-                              ) ? (
+                                filePreview.aadhaarCard.startsWith(
+                                  "data:image",
+                                ) ? (
                                 <img
                                   src={filePreview.aadhaarCard}
                                   alt="Preview"
                                   className="preview-image"
-                               loading="lazy"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">
@@ -751,12 +749,12 @@ const ProfilePage = () => {
                           {filePreview.panCard && (
                             <div className="file-preview">
                               {typeof filePreview.panCard === "string" &&
-                              filePreview.panCard.startsWith("data:image") ? (
+                                filePreview.panCard.startsWith("data:image") ? (
                                 <img
                                   src={filePreview.panCard}
                                   alt="Preview"
                                   className="preview-image"
-                                 loading="lazy"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">
@@ -847,7 +845,7 @@ const ProfilePage = () => {
                                 src={filePreview.passportPhoto}
                                 alt="Preview"
                                 className="preview-image"
-                               loading="lazy"
+                                loading="lazy"
                               />
                             </div>
                           )}
@@ -916,7 +914,7 @@ const ProfilePage = () => {
                               />
                             </svg>
                             {filePreview.bankAccountDetails ||
-                            editData.bankAccountDetails
+                              editData.bankAccountDetails
                               ? "Change File"
                               : "Upload File"}
                           </label>
@@ -933,14 +931,14 @@ const ProfilePage = () => {
                             <div className="file-preview">
                               {typeof filePreview.bankAccountDetails ===
                                 "string" &&
-                              filePreview.bankAccountDetails.startsWith(
-                                "data:image",
-                              ) ? (
+                                filePreview.bankAccountDetails.startsWith(
+                                  "data:image",
+                                ) ? (
                                 <img
                                   src={filePreview.bankAccountDetails}
                                   alt="Preview"
                                   className="preview-image"
-                                 loading="lazy"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <p className="file-name">
@@ -967,7 +965,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

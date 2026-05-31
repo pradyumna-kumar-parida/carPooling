@@ -4,111 +4,36 @@ import { MdMyLocation } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from "../../../utils/api";
-
+import { searchLocationsApi } from "../../../utils/api";
+import { IoLocationOutline } from "react-icons/io5";
+import { TbLocationShare } from "react-icons/tb";
+import { SlCalender } from "react-icons/sl";
+import { FiUser } from "react-icons/fi";
+import { FiMinus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
+import { IoSearchOutline } from "react-icons/io5";
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
 const PinIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="12" cy="10" r="3" />
-    <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z" />
-  </svg>
+  <IoLocationOutline />
 );
 const DestIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polygon points="3 11 22 2 13 21 11 13 3 11" />
-  </svg>
+  <TbLocationShare />
 );
 const CalIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="3" y="4" width="18" height="18" rx="2" />
-    <line x1="16" y1="2" x2="16" y2="6" />
-    <line x1="8" y1="2" x2="8" y2="6" />
-    <line x1="3" y1="10" x2="21" y2="10" />
-  </svg>
+  <SlCalender />
 );
 const UserIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
+  <FiUser />
 );
 const MinusIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
+  <FiMinus />
 );
 const PlusIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-  >
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
+  <FiPlus />
 );
 const SearchIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-  </svg>
+  <IoSearchOutline />
 );
 
 // ── Location Dropdown ─────────────────────────────────────────────────────────
@@ -162,18 +87,10 @@ function LocationDropdown({
     }
     setLoading(true);
     debounceRef.current = setTimeout(async () => {
+      const payload = { keyword: input.trim() };
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `${API_BASE_URL}search-locaton`,
-          { keyword: input.trim() },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            },
-          },
-        );
+        const response = await searchLocationsApi(payload);
         const results = Array.isArray(response.data) ? response.data : [];
         setSuggestions(results);
       } catch (err) {
@@ -343,26 +260,28 @@ function PassengerField({ count, setCount }) {
 
 // ── Date Field ────────────────────────────────────────────────────────────────
 function DateField({ name, value, onChange, icon }) {
-  const inputRef = useRef(null);
+  const pickerRef = useRef(null);
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="fr-field" onClick={() => inputRef.current?.showPicker?.()}>
+    <div className="fr-field" onClick={() => pickerRef.current?.showPicker?.()}>
       <span className="fr-field-icon">{icon}</span>
 
       <input
-        ref={inputRef}
-        type={value ? "date" : "text"}
-        placeholder="dd-mm-yyyy"
+        type="text"
+        placeholder="yyyy-mm-dd"
         name={name}
         className="fr-field-input fr-date-input"
-        value={value}
+        value={value || ""}
+        readOnly
+      />
+      <input
+        ref={pickerRef}
+        type="date"
+        value={value || ""}
         min={today}
-        onFocus={(e) => (e.target.type = "date")}
-        onBlur={(e) => {
-          if (!value) e.target.type = "text";
-        }}
         onChange={onChange}
+        className="date-picker-format"
       />
     </div>
   );
@@ -407,7 +326,6 @@ const FRSearchBar = ({
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    console.log("hello dostoo");
 
     if (!leaving || !going) {
       setError("Please select both departure and destination cities.");
