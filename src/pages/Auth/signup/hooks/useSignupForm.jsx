@@ -3,27 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getRolesApi, signupApi } from "../../../../utils/api";
+import { INITIAL_FORM } from "../constants/signupConstants";
 import {
-  INITIAL_FORM,
-} from "../constants/signupConstants";
-import {
-  isDriverRole, mapRole,
-  validateStep0, validateDriverStep, buildFormPayload,
+  isDriverRole,
+  mapRole,
+  validateStep0,
+  validateDriverStep,
+  buildFormPayload,
 } from "../utils/signupHelpers";
 import { useAuth } from "../../../../context/AuthContext";
 export function useSignupForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
-
   const fromLocation = location.state?.from || null;
   const redirectTo = fromLocation?.pathname || "/";
   const savedForm = location.state?.savedForm || null;
 
   const redirectState =
-    fromLocation?.state ||
-    (savedForm ? { savedForm } : undefined);
+    fromLocation?.state || (savedForm ? { savedForm } : undefined);
   const alertTimerRef = useRef(null);
   console.log("Signup Location State:", location.state);
   console.log("From Location:", fromLocation);
@@ -48,7 +46,7 @@ export function useSignupForm() {
 
   // ── Derived ───────────────────────────────────────────────────────────
   const isDriver = isDriverRole(formData.usertype, roles);
-  const totalSteps = isDriver ? 1 + 3 : 1;        // 3 = DRIVER_STEPS.length
+  const totalSteps = isDriver ? 1 + 3 : 1; // 3 = DRIVER_STEPS.length
   const isFinalStep = step === totalSteps - 1;
   const { setUser } = useAuth();
   // ── Fetch roles on mount ──────────────────────────────────────────────
@@ -59,7 +57,10 @@ export function useSignupForm() {
     return () => clearTimeout(alertTimerRef.current);
   }, []);
 
-  const roleOptions = roles.map((r) => ({ value: String(r.id), label: r.name }));
+  const roleOptions = roles.map((r) => ({
+    value: String(r.id),
+    label: r.name,
+  }));
 
   // ── Alert helpers ─────────────────────────────────────────────────────
   const showAlert = (severity, message) => {
@@ -93,7 +94,10 @@ export function useSignupForm() {
   };
 
   const handleVerifyOtp = () => {
-    if (!otp) { showAlert("error", "Please enter the OTP"); return; }
+    if (!otp) {
+      showAlert("error", "Please enter the OTP");
+      return;
+    }
     if (otp === generatedOtp) {
       setIsVerified(true);
       setPhoneVerified(true);
@@ -116,23 +120,34 @@ export function useSignupForm() {
       return;
     }
 
-    if (id === "usertype") { setStep(0); }
+    if (id === "usertype") {
+      setStep(0);
+    }
 
     setFormData((p) => ({
       ...p,
-      [id]: type === "checkbox" ? checked
-        : type === "file" ? files[0] || null
-          : value,
+      [id]:
+        type === "checkbox"
+          ? checked
+          : type === "file"
+            ? files[0] || null
+            : value,
     }));
   };
 
   // ── Step navigation ───────────────────────────────────────────────────
   const handleNext = (e) => {
     e.preventDefault();
-    const err = step === 0
-      ? validateStep0(formData)
-      : isDriver ? validateDriverStep(step - 1, formData) : null;
-    if (err) { showAlert("error", err); return; }
+    const err =
+      step === 0
+        ? validateStep0(formData)
+        : isDriver
+          ? validateDriverStep(step - 1, formData)
+          : null;
+    if (err) {
+      showAlert("error", err);
+      return;
+    }
     clearAlert();
     setStep((s) => s + 1);
   };
@@ -145,14 +160,23 @@ export function useSignupForm() {
   // ── Submit ────────────────────────────────────────────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFinalStep) { handleNext(e); return; }
+    if (!isFinalStep) {
+      handleNext(e);
+      return;
+    }
 
     if (isDriver) {
       const err = validateDriverStep(step - 1, formData);
-      if (err) { showAlert("error", err); return; }
+      if (err) {
+        showAlert("error", err);
+        return;
+      }
     }
     if (!formData.terms) {
-      showAlert("warning", "You must agree to the Terms & Conditions to proceed.");
+      showAlert(
+        "warning",
+        "You must agree to the Terms & Conditions to proceed.",
+      );
       return;
     }
 
@@ -162,7 +186,11 @@ export function useSignupForm() {
     try {
       const payload = buildFormPayload(formData, isDriver);
       const response = await signupApi(payload);
-      const { status, message = "Registration successful!", token } = response.data;
+      const {
+        status,
+        message = "Registration successful!",
+        token,
+      } = response.data;
 
       if (token) localStorage.setItem("token", token);
       showAlert(status === "success" ? "success" : "info", message);
@@ -176,7 +204,7 @@ export function useSignupForm() {
           token: token || null,
         };
 
-        setUser(userObj); // <-- IMPORTANT
+        // <-- IMPORTANT
 
         localStorage.setItem("authData", JSON.stringify(response.data));
 
@@ -189,16 +217,20 @@ export function useSignupForm() {
         setStep(0);
 
         setTimeout(() => {
+          setUser(userObj);
           navigate(redirectTo, {
             replace: true,
             state: redirectState,
           });
-        }, 1500);
+        }, 500);
       }
     } catch (err) {
       showAlert(
         err?.response?.data?.severity || "error",
-        err?.response?.data?.message || err?.response?.data?.error || err?.message || "Something went wrong.",
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Something went wrong.",
       );
     } finally {
       setLoading(false);
@@ -207,17 +239,32 @@ export function useSignupForm() {
 
   return {
     // form
-    formData, handleChange, roleOptions,
+    formData,
+    handleChange,
+    roleOptions,
     // stepper
-    step, totalSteps, isFinalStep, isDriver,
-    handleNext, handleBack, handleSubmit,
+    step,
+    totalSteps,
+    isFinalStep,
+    isDriver,
+    handleNext,
+    handleBack,
+    handleSubmit,
     // loading
     loading,
     // alert
-    openAlert, setOpenAlert, alertMessage, alertType,
+    openAlert,
+    setOpenAlert,
+    alertMessage,
+    alertType,
     // otp
-    openOtpModal, handleOpenOtpModal, handleCloseOtpModal,
+    openOtpModal,
+    handleOpenOtpModal,
+    handleCloseOtpModal,
     phoneVerified,
-    otp, setOtp, isVerified, handleVerifyOtp,
+    otp,
+    setOtp,
+    isVerified,
+    handleVerifyOtp,
   };
 }

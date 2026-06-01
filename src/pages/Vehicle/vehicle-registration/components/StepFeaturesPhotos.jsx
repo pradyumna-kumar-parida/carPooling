@@ -42,7 +42,7 @@ export default function StepFeaturesPhotos({
               key={key} fieldKey={key} label={label}
               file={vehicleData[key]} preview={filePreview[key]}
               error={errors[key]}
-              onChange={onChange} onRemove={onFileRemove}
+              onChange={onFileChange} onRemove={onFileRemove}
             />
           ))}
         </div>

@@ -36,8 +36,7 @@ export function validateStep(step, vehicleData) {
   return e;
 }
 
-export function buildVehiclePayload(vehicleData) {
-  const user = JSON.parse(localStorage.getItem("user")) || {};
+export function buildVehiclePayload(vehicleData, user) {
   const payload = new FormData();
 
   // ── Text fields ───────────────────────────────────────────────────────

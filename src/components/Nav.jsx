@@ -13,9 +13,22 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { useAuth } from "../context/AuthContext";
-import { FaUserCircle, FaRoute, FaCarSide, FaCar, FaSearchLocation } from "react-icons/fa";
-import { FiUser, FiSettings, FiLogOut, FiInfo, FiHelpCircle } from "react-icons/fi";
+import {
+  FaUserCircle,
+  FaRoute,
+  FaCarSide,
+  FaCar,
+  FaSearchLocation,
+} from "react-icons/fa";
+import {
+  FiUser,
+  FiSettings,
+  FiLogOut,
+  FiInfo,
+  FiHelpCircle,
+} from "react-icons/fi";
 import { CgMenuRightAlt } from "react-icons/cg";
+import { useVehicleList } from "../context/VehicleContext";
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -33,19 +46,23 @@ const getAccountLinks = (role) => [
   { label: "My Rides", path: "/my-rides", icon: <FaRoute /> },
   ...(role === "driver"
     ? [
-      { label: "Vehicle Registration", path: "/vehicle-registration", icon: <FaCarSide /> },
-      { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
-    ]
+        {
+          label: "Vehicle Registration",
+          path: "/vehicle-registration",
+          icon: <FaCarSide />,
+        },
+        { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
+      ]
     : []),
   { label: "Settings", path: "/settings", icon: <FiSettings /> },
 ];
 
 const Header = () => {
   const navigate = useNavigate();
- const { user, setUser } = useAuth();
-
-console.log("Auth User:", user);
-console.log("Is Logged In:", !!user);
+  const { user, setUser } = useAuth();
+  const { setvehicleList } = useVehicleList();
+  console.log("Auth User:", user);
+  console.log("Is Logged In:", !!user);
   const isLoggedIn = !!user;
   const role = user?.role;
   const firstName = user?.name?.split(" ")[0]; // ✅ safe chaining
@@ -57,6 +74,7 @@ console.log("Is Logged In:", !!user);
   const handleLogout = () => {
     localStorage.clear();
     setUser(null); // ✅ reset context so UI updates immediately
+    setvehicleList([]);
     setAnchorEl(null);
     setDrawerOpen(false);
     navigate("/login");
@@ -68,7 +86,7 @@ console.log("Is Logged In:", !!user);
     setDrawerOpen(false);
   };
 
-  const navLinks = getNavLinks(role, isLoggedIn);       // ✅ use role from context
+  const navLinks = getNavLinks(role, isLoggedIn); // ✅ use role from context
   const accountLinks = getAccountLinks(role);
 
   const DrawerContent = (
@@ -91,7 +109,10 @@ console.log("Is Logged In:", !!user);
         {navLinks.map((item) => (
           <div key={item.label}>
             <ListItem disablePadding>
-              <ListItemButton className="mobile-menu-sidebar" onClick={() => navTo(item.path)}>
+              <ListItemButton
+                className="mobile-menu-sidebar"
+                onClick={() => navTo(item.path)}
+              >
                 {item.icon}
                 <ListItemText primary={item.label} />
               </ListItemButton>
@@ -106,7 +127,10 @@ console.log("Is Logged In:", !!user);
           {accountLinks.map((item) => (
             <div key={item.label}>
               <ListItem disablePadding>
-                <ListItemButton className="mobile-menu-sidebar" onClick={() => navTo(item.path)}>
+                <ListItemButton
+                  className="mobile-menu-sidebar"
+                  onClick={() => navTo(item.path)}
+                >
                   {item.icon}
                   <ListItemText primary={item.label} />
                 </ListItemButton>
@@ -115,7 +139,11 @@ console.log("Is Logged In:", !!user);
             </div>
           ))}
           <ListItem disablePadding>
-            <ListItemButton className="mobile-menu-sidebar logout" onClick={handleLogout} sx={{ color: "error.main" }}>
+            <ListItemButton
+              className="mobile-menu-sidebar logout"
+              onClick={handleLogout}
+              sx={{ color: "error.main" }}
+            >
               <FiLogOut />
               <ListItemText primary="Logout" />
             </ListItemButton>
@@ -149,28 +177,44 @@ console.log("Is Logged In:", !!user);
       </Link>
 
       <nav className="menu-icon">
-        <CgMenuRightAlt onClick={() => setDrawerOpen(true)} style={{ cursor: "pointer" }} />
+        <CgMenuRightAlt
+          onClick={() => setDrawerOpen(true)}
+          style={{ cursor: "pointer" }}
+        />
       </nav>
 
-      <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
         {DrawerContent}
       </Drawer>
 
       <nav className="home-menus">
         {navLinks.map((item) => (
-          <Link key={item.label} to={item.path}>{item.label}</Link>
+          <Link key={item.label} to={item.path}>
+            {item.label}
+          </Link>
         ))}
       </nav>
 
       <div className="auth-buttons">
         {!isLoggedIn ? (
           <>
-            <Link className="header-login-btn" to="/login">Log in</Link>
-            <Link className="header-signup-btn" to="/signup">Sign up</Link>
+            <Link className="header-login-btn" to="/login">
+              Log in
+            </Link>
+            <Link className="header-signup-btn" to="/signup">
+              Sign up
+            </Link>
           </>
         ) : (
           <>
-            <Button onClick={(e) => setAnchorEl(e.currentTarget)} className="user-btn-logined">
+            <Button
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              className="user-btn-logined"
+            >
               <div className="user-profile-box">
                 <div className="user-profile-text">
                   <span className="user-greeting">Hi,</span>
@@ -189,7 +233,10 @@ console.log("Is Logged In:", !!user);
             >
               {accountLinks.map((item) => (
                 <div key={item.label}>
-                  <MenuItem className="drawer-menus" onClick={() => navTo(item.path)}>
+                  <MenuItem
+                    className="drawer-menus"
+                    onClick={() => navTo(item.path)}
+                  >
                     {item.icon} {item.label}
                   </MenuItem>
                   <Divider />

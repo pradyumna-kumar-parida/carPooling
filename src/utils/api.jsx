@@ -7,7 +7,6 @@ export const axiosInstance = axios.create({
   },
 });
 
-
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -15,7 +14,6 @@ axiosInstance.interceptors.request.use((config) => {
   }
   return config;
 });
-
 
 export function loginApi(data) {
   return axiosInstance.post("/login", data);
@@ -53,4 +51,7 @@ export function vehicleRegistrationApi(data) {
   return axiosInstance.post("/store-vehicle-data", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+}
+export function vehicleDetailUpadateApi(data) {
+  return axiosInstance.post("/upadte-vehicle-detail", data);
 }

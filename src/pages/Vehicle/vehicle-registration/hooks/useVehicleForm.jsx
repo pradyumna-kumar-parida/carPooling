@@ -3,10 +3,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { vehicleRegistrationApi } from "../../../../utils/api";
+import { useAuth } from "../../../../context/AuthContext";
 import { INITIAL_VEHICLE_DATA } from "../constants/vehicleConstants";
 import { validateStep, buildVehiclePayload } from "../utils/vehicleHelpers";
+import { useVehicleList } from "../../../../context/VehicleContext";
 
 export function useVehicleForm() {
+  const { fetchVehicleList } = useVehicleList();
   // ── Stepper ───────────────────────────────────────────────────────────
   const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
@@ -19,10 +22,15 @@ export function useVehicleForm() {
   // ── UI state ──────────────────────────────────────────────────────────
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [toast, setToast] = useState({ open: false, message: "", severity: "error" });
+  const [toast, setToast] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
   // ── Toast helpers ─────────────────────────────────────────────────────
-  const showToast = (message, severity = "error") => setToast({ open: true, message, severity });
+  const showToast = (message, severity = "error") =>
+    setToast({ open: true, message, severity });
   const closeToast = (_, reason) => {
     if (reason === "clickaway") return;
     setToast((p) => ({ ...p, open: false }));
@@ -31,7 +39,10 @@ export function useVehicleForm() {
   // ── Input change ──────────────────────────────────────────────────────
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setVehicleData((p) => ({ ...p, [name]: type === "checkbox" ? checked : value }));
+    setVehicleData((p) => ({
+      ...p,
+      [name]: type === "checkbox" ? checked : value,
+    }));
     if (errors[name]) setErrors((p) => ({ ...p, [name]: "" }));
   };
 
@@ -41,12 +52,16 @@ export function useVehicleForm() {
     console.log("FILE SAVED →", fieldName, file); // ← ADD THIS
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) {
-      setErrors((p) => ({ ...p, [fieldName]: "File size should not exceed 5MB" }));
+      setErrors((p) => ({
+        ...p,
+        [fieldName]: "File size should not exceed 5MB",
+      }));
       return;
     }
     setVehicleData((p) => ({ ...p, [fieldName]: file }));
     const reader = new FileReader();
-    reader.onloadend = () => setFilePreview((p) => ({ ...p, [fieldName]: reader.result }));
+    reader.onloadend = () =>
+      setFilePreview((p) => ({ ...p, [fieldName]: reader.result }));
     reader.readAsDataURL(file);
     if (errors[fieldName]) setErrors((p) => ({ ...p, [fieldName]: "" }));
   };
@@ -76,23 +91,34 @@ export function useVehicleForm() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const { user } = useAuth();
+
   // ── Submit ────────────────────────────────────────────────────────────
   const handleSubmit = async () => {
     if (!runValidation(activeStep)) return;
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-       console.log("vehicleData before submit →", vehicleData);
-      const payload = buildVehiclePayload(vehicleData);
+      console.log("vehicleData before submit →", vehicleData);
+      const payload = buildVehiclePayload(vehicleData, user);
       for (let [key, value] of payload.entries()) {
-        console.log(key, "→", value instanceof File ? `FILE: ${value.name} (${value.size} bytes)` : value);
+        console.log(
+          key,
+          "→",
+          value instanceof File
+            ? `FILE: ${value.name} (${value.size} bytes)`
+            : value,
+        );
       }
-      const response = await vehicleRegistrationApi(payload)
+      const response = await vehicleRegistrationApi(payload);
       if ([200, 201].includes(response.status)) {
         setIsSuccess(true);
+        await fetchVehicleList();
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        showToast(response.data?.message || "Submission failed. Please try again.");
+        showToast(
+          response.data?.message || "Submission failed. Please try again.",
+        );
       }
     } catch (err) {
       // ── ADD THIS ──────────────────────────────────────────
@@ -101,9 +127,9 @@ export function useVehicleForm() {
 
       showToast(
         err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        err?.message ||
-        "Something went wrong. Please try again."
+          err?.response?.data?.error ||
+          err?.message ||
+          "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -112,13 +138,23 @@ export function useVehicleForm() {
 
   return {
     // stepper
-    activeStep, completedSteps,
+    activeStep,
+    completedSteps,
     // form
-    vehicleData, filePreview, errors,
-    handleInputChange, handleFileChange, handleRemoveFile,
+    vehicleData,
+    filePreview,
+    errors,
+    handleInputChange,
+    handleFileChange,
+    handleRemoveFile,
     // navigation
-    handleNext, handleBack, handleSubmit,
+    handleNext,
+    handleBack,
+    handleSubmit,
     // ui
-    loading, isSuccess, toast, closeToast,
+    loading,
+    isSuccess,
+    toast,
+    closeToast,
   };
 }

@@ -51,7 +51,7 @@ export default function StepInsurance({
           fieldName="insuranceDocument"
           file={vehicleData.insuranceDocument} preview={filePreview.insuranceDocument}
           error={errors.insuranceDocument} accept="image/*,.pdf"
-          onChange={onChange} onRemove={onFileRemove}
+          onChange={onFileChange} onRemove={onFileRemove}
         />
         {errors.insuranceDocument && <span className="vehicledetails-error">{errors.insuranceDocument}</span>}
       </div>

@@ -1,14 +1,16 @@
 import React, { lazy, Suspense, useEffect } from "react";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import ScrollManager from "../ScrollPgesView";
 import NotFound from "../components/NotFound";
 import { useAuth } from "../context/AuthContext";
 import AppLayout from "../layout";
-
-// ✅ Loader is NOT lazy — it must be ready before anything else loads
 import ArcLoader from "../components/Loader";
-
-// ✅ Home is NOT lazy — first page must be instant
 import Home from "../pages/Home page/landingpage";
 
 const Login = lazy(() => import("../pages/Auth/Login"));
@@ -20,47 +22,145 @@ const RideConfirmation = lazy(() => import("../pages/Rides/RideBooking"));
 const ProfilePage = lazy(() => import("../pages/User/profile"));
 const MyRides = lazy(() => import("../pages/User/myRides"));
 const RidePayment = lazy(() => import("../pages/Rides/RidePayment"));
-const BookingConfirmation = lazy(() => import("../pages/Rides/BookingConfirmation"));
-const VehicleDetails = lazy(() => import("../pages/Vehicle/VehicleRegistration"));
+const BookingConfirmation = lazy(
+  () => import("../pages/Rides/BookingConfirmation"),
+);
+const VehicleRegistration = lazy(
+  () => import("../pages/Vehicle/VehicleRegistration"),
+);
+const VehicleDetails = lazy(() => import("../pages/Vehicle/VehicleDetails"));
 
-// ✅ Solid background so blank screen never shows
 const PageLoader = () => (
-  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#fff" }}>
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "100vh",
+      background: "#fff",
+    }}
+  >
     <ArcLoader />
   </div>
 );
 
 const routes = [
   { path: "/", element: <Home />, isProtected: false, permission: [] },
-  { path: "/login", element: <Login />, isProtected: false, permission: [], layout: "blankLayout" },
-  { path: "/signup", element: <Signup />, isProtected: false, permission: [], layout: "blankLayout" },
-  { path: "/offer-ride", element: <PublishRide />, isProtected: false, permission: [] },
-  { path: "/find-ride", element: <FindRide />, isProtected: false, permission: [] },
-  { path: "/all-rides", element: <RideDetails />, isProtected: false, permission: [] },
-  { path: "/ride-book/:rideId", element: <RideConfirmation />, isProtected: false, permission: [] },
-  { path: "/vehicle-registration", element: <VehicleDetails />, isProtected: true, permission: ["driver"] },
-  { path: "/profile", element: <ProfilePage />, isProtected: true, permission: ["driver", "passenger"] },
-  { path: "/my-rides", element: <MyRides />, isProtected: true, permission: ["driver", "passenger"] },
-  { path: "/booking-payment", element: <RidePayment />, isProtected: true, permission: ["driver", "passenger"] },
-  { path: "/booking-confirmation", element: <BookingConfirmation />, isProtected: true, permission: ["driver", "passenger"] },
+  {
+    path: "/login",
+    element: <Login />,
+    isProtected: false,
+    permission: [],
+    layout: "blankLayout",
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+    isProtected: false,
+    permission: [],
+    layout: "blankLayout",
+  },
+  {
+    path: "/offer-ride",
+    element: <PublishRide />,
+    isProtected: false,
+    permission: [],
+  },
+  {
+    path: "/find-ride",
+    element: <FindRide />,
+    isProtected: false,
+    permission: [],
+  },
+  {
+    path: "/all-rides",
+    element: <RideDetails />,
+    isProtected: false,
+    permission: [],
+  },
+  {
+    path: "/ride-book/:rideId",
+    element: <RideConfirmation />,
+    isProtected: false,
+    permission: [],
+  },
+  {
+    path: "/vehicle-registration",
+    element: <VehicleRegistration />,
+    isProtected: true,
+    permission: ["driver"],
+  },
+  {
+    path: "/vehicle-details",
+    element: <VehicleDetails />,
+    isProtected: true,
+    permission: ["driver"],
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+    isProtected: true,
+    permission: ["driver", "passenger"],
+  },
+  {
+    path: "/my-rides",
+    element: <MyRides />,
+    isProtected: true,
+    permission: ["driver", "passenger"],
+  },
+  {
+    path: "/booking-payment",
+    element: <RidePayment />,
+    isProtected: true,
+    permission: ["driver", "passenger"],
+  },
+  {
+    path: "/booking-confirmation",
+    element: <BookingConfirmation />,
+    isProtected: true,
+    permission: ["driver", "passenger"],
+  },
 ];
 
 const ProtectedRoute = ({ route }) => {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
-  if (!route.permission.includes(user.role)) return <Navigate to="/" replace />;
-  return route.layout === "blankLayout" ? route.element : <AppLayout>{route.element}</AppLayout>;
+  const location = useLocation();
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (route.permission.length > 0 && !route.permission.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return route.layout === "blankLayout" ? (
+    route.element
+  ) : (
+    <AppLayout>{route.element}</AppLayout>
+  );
 };
 
 const PublicRoute = ({ route }) => {
-  const { user } = useAuth();
-  if (user && route.layout === "blankLayout") return <Navigate to="/" replace />;
-  return route.layout === "blankLayout" ? route.element : <AppLayout>{route.element}</AppLayout>;
-};
+  const { user, pendingRedirect } = useAuth();
 
+  if (user && route.layout === "blankLayout") {
+    if (pendingRedirect?.current) {
+      const { pathname, state } = pendingRedirect.current;
+      pendingRedirect.current = null;
+      return <Navigate to={pathname} state={state} replace />;
+    }
+
+    return <Navigate to="/" replace />;
+  }
+
+  return route.layout === "blankLayout" ? (
+    route.element
+  ) : (
+    <AppLayout>{route.element}</AppLayout>
+  );
+};
 function App() {
-  // ✅ Preload all lazy chunks in the background after app mounts
-  // So when user navigates, the chunk is already downloaded — instant render
   useEffect(() => {
     const preload = [
       () => import("../pages/Auth/Login"),
@@ -75,7 +175,6 @@ function App() {
       () => import("../pages/Rides/BookingConfirmation"),
       () => import("../pages/Vehicle/VehicleRegistration"),
     ];
-    // Stagger preloads so they don't compete with the initial render
     preload.forEach((fn, i) => setTimeout(fn, i * 300));
   }, []);
 
@@ -89,9 +188,11 @@ function App() {
               key={route.path}
               path={route.path}
               element={
-                route.isProtected
-                  ? <ProtectedRoute route={route} />
-                  : <PublicRoute route={route} />
+                route.isProtected ? (
+                  <ProtectedRoute route={route} />
+                ) : (
+                  <PublicRoute route={route} />
+                )
               }
             />
           ))}

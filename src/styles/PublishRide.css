@@ -661,7 +661,7 @@ html {
 /* Vehicle select */
 .prh-select {
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--pr-text-gray);
 }

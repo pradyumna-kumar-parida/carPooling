@@ -36,7 +36,7 @@ export default function StepDocuments({
           fieldName="rcDocument"
           file={vehicleData.rcDocument} preview={filePreview.rcDocument}
           error={errors.rcDocument} accept="image/*,.pdf"
-         onChange={onChange} onRemove={onFileRemove}
+         onChange={onFileChange} onRemove={onFileRemove}
         />
         {errors.rcDocument && <span className="vehicledetails-error">{errors.rcDocument}</span>}
       </div>
