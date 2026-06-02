@@ -1,8 +1,8 @@
 // src/pages/Auth/login/components/PasswordField.jsx
 
 import { useState } from "react";
-import { RxLockClosed }                    from "react-icons/rx";
-import { IoEyeOutline, IoEyeOffOutline }   from "react-icons/io5";
+import { RxLockClosed } from "react-icons/rx";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export default function PasswordField({ value, onChange }) {
   const [visible, setVisible] = useState(false);
@@ -11,7 +11,9 @@ export default function PasswordField({ value, onChange }) {
     <div className="form-group">
       <label htmlFor="password">Password</label>
       <div className="input-wrapper" style={{ position: "relative" }}>
-        <span className="input-icon"><RxLockClosed /></span>
+        <span className="input-icon">
+          <RxLockClosed />
+        </span>
         <input
           type={visible ? "text" : "password"}
           id="password"
@@ -28,9 +30,7 @@ export default function PasswordField({ value, onChange }) {
           tabIndex={-1}
           aria-label={visible ? "Hide password" : "Show password"}
         >
-          {visible
-            ? <IoEyeOffOutline size={16} />
-            : <IoEyeOutline    size={16} />}
+          {visible ? <IoEyeOffOutline size={16} /> : <IoEyeOutline size={16} />}
         </button>
       </div>
     </div>

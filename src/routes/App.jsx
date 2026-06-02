@@ -20,7 +20,7 @@ const FindRide = lazy(() => import("../pages/Rides/FindRide"));
 const RideDetails = lazy(() => import("../pages/Rides/RideDetails"));
 const RideConfirmation = lazy(() => import("../pages/Rides/RideBooking"));
 const ProfilePage = lazy(() => import("../pages/User/profile"));
-const MyRides = lazy(() => import("../pages/User/myRides"));
+const MyRides = lazy(() => import("../pages/User/myRide"));
 const RidePayment = lazy(() => import("../pages/Rides/RidePayment"));
 const BookingConfirmation = lazy(
   () => import("../pages/Rides/BookingConfirmation"),
@@ -170,7 +170,7 @@ function App() {
       () => import("../pages/Rides/RideDetails"),
       () => import("../pages/Rides/RideBooking"),
       () => import("../pages/User/profile"),
-      () => import("../pages/User/myRides"),
+      () => import("../pages/User/myRide"),
       () => import("../pages/Rides/RidePayment"),
       () => import("../pages/Rides/BookingConfirmation"),
       () => import("../pages/Vehicle/VehicleRegistration"),

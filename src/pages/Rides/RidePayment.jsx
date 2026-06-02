@@ -1,135 +1,146 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  TextField,
-  Alert,
-  CircularProgress,
-} from "@mui/material";
-import {
-  FaCreditCard,
-  FaMoneyBillWave,
   FaCheckCircle,
-  FaLock,
+  FaMapMarkerAlt,
+  FaCar,
+  FaUser,
+  FaPhone,
+  FaCalendarAlt,
+  FaClock,
+  FaRoad,
+  FaLeaf,
+  FaSmoking,
+  FaChair,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
 import { ImArrowRight } from "react-icons/im";
+import ArcLoader from "../../components/Loader";
+import RazorpayImg from "../../assets/Images/razorpay.svg";
+const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID";
 const RidePayment = () => {
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const location = useLocation();
+
+  const { ride, noOfSIt, booking } = location.state || {};
+
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
-  // Card Details State
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: "",
-    cardHolder: "",
-    expiryDate: "",
-    cvv: "",
-  });
+  const totalAmount = ride?.price_per_seat
+    ? (parseFloat(ride.price_per_seat) * (noOfSIt || 1)).toFixed(2)
+    : 0;
 
-  // Ride Details (would come from props/context in real app)
-  const rideDetails = {
-    from: "Mumbai",
-    to: "Pune",
-    date: "April 25, 2026",
-    time: "11:00 AM",
-    passengers: 2,
-    driverName: "Suraj Kumar",
-    carModel: "Maruti Swift Dzire - White",
-    price: 600,
+  // Load Razorpay script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => setRazorpayLoaded(true);
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const formatTime = (time) => {
+    if (!time) return "-";
+    const [h, m] = time.split(":");
+    const date = new Date();
+    date.setHours(h, m);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  const handlePaymentMethodChange = (event) => {
-    setPaymentMethod(event.target.value);
-    setPaymentSuccess(false);
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    return new Date(dateStr).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   };
 
-  const handleCardInputChange = (e) => {
-    const { name, value } = e.target;
+  const formatDistance = (meters) => {
+    if (!meters) return "-";
+    return meters >= 1000 ? `${(meters / 1000).toFixed(1)} km` : `${meters} m`;
+  };
 
-    // Format card number with spaces
-    if (name === "cardNumber") {
-      const formatted = value
-        .replace(/\s/g, "")
-        .replace(/(\d{4})/g, "$1 ")
-        .trim();
-      if (formatted.replace(/\s/g, "").length <= 16) {
-        setCardDetails({ ...cardDetails, [name]: formatted });
-      }
+  const handlePayNow = () => {
+    if (!razorpayLoaded) {
+      alert("Razorpay SDK not loaded. Please refresh.");
       return;
     }
 
-    // Format expiry date
-    if (name === "expiryDate") {
-      const formatted = value
-        .replace(/\D/g, "")
-        .replace(/(\d{2})(\d{0,2})/, "$1/$2")
-        .substr(0, 5);
-      setCardDetails({ ...cardDetails, [name]: formatted });
-      return;
-    }
-
-    // CVV - only numbers, max 3 digits
-    if (name === "cvv") {
-      if (value.length <= 3 && /^\d*$/.test(value)) {
-        setCardDetails({ ...cardDetails, [name]: value });
-      }
-      return;
-    }
-
-    setCardDetails({ ...cardDetails, [name]: value });
-  };
-
-  const handlePayNow = (e) => {
-    e.preventDefault();
-
-    if (paymentMethod === "card") {
-      // Validate card details
-      if (
-        !cardDetails.cardNumber ||
-        !cardDetails.cardHolder ||
-        !cardDetails.expiryDate ||
-        !cardDetails.cvv
-      ) {
-        alert("Please fill all card details");
-        return;
-      }
-    }
-
-    // Simulate payment processing
     setProcessing(true);
 
-    setTimeout(() => {
-      setProcessing(false);
-      setPaymentSuccess(true);
-    }, 2000);
-  };
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: Math.round(parseFloat(totalAmount) * 100),
+      currency: "INR",
+      name: "CarpoolApp",
+      description: `${ride?.source_address || "Source"} → ${ride?.destination_address || "Destination"}`,
+      image: ride?.driver_profile_picture || "",
+      prefill: {
+        name: booking?.passenger_name || "",
+        email: booking?.passenger_email || "",
+        contact: booking?.passenger_phone || "",
+      },
+      notes: {
+        booking_id: booking?.id || "",
+        ride_id: ride?.id || "",
+      },
+      theme: { color: "#1a56db" },
+      handler: function (response) {
+        setProcessing(false);
+        setPaymentSuccess(true);
+        setTimeout(() => {
+          navigate("/booking-confirmation", {
+            state: {
+              ride,
+              noOfSIt,
+              booking,
+              paymentId: response.razorpay_payment_id,
+            },
+          });
+        }, 2000);
+      },
+      modal: {
+        ondismiss: function () {
+          setProcessing(false);
+        },
+      },
+    };
 
-  const handleConfirmBooking = () => {
-    // Navigate to booking confirmation page
-    navigate("/booking-confirmation", {
-      state: { rideDetails, paymentMethod },
+    const rzp = new window.Razorpay(options);
+
+    rzp.on("payment.failed", function (response) {
+      setProcessing(false);
+      alert(`Payment failed: ${response.error.description}`);
     });
+
+    setTimeout(() => rzp.open(), 100);
   };
 
   return (
     <>
+      {processing && (
+        <div className="ridepay-loader-overlay">
+          <ArcLoader />
+        </div>
+      )}
+
       <div className="ridepay-page">
         <div className="ridepay-container">
+          <h2 className="ride-confirm-title">Ride Summary</h2>
           <div className="ridepay-content">
-            {/* Left Section - Ride Summary */}
             <div className="ridepay-summary">
-              <h2 className="ridepay-summary-title">Ride Summary</h2>
-
               <div className="ridepay-summary-card">
                 <div className="ridepay-route">
                   <div className="ridepay-route-item">
                     <span className="ridepay-route-label">From</span>
                     <span className="ridepay-route-value">
-                      {rideDetails.from}
+                      {ride?.source_address || "-"}
                     </span>
                   </div>
                   <div className="ridepay-route-arrow">
@@ -138,213 +149,129 @@ const RidePayment = () => {
                   <div className="ridepay-route-item">
                     <span className="ridepay-route-label">To</span>
                     <span className="ridepay-route-value">
-                      {rideDetails.to}
+                      {ride?.destination_address || "-"}
                     </span>
                   </div>
                 </div>
 
+                {/* Trip Details */}
                 <div className="ridepay-info-grid">
                   <div className="ridepay-info-item">
-                    <span className="ridepay-info-label">Date</span>
+                    <span className="ridepay-info-label">
+                      <FaCalendarAlt /> Date
+                    </span>
                     <span className="ridepay-info-value">
-                      {rideDetails.date}
+                      {formatDate(ride?.ride_date)}
                     </span>
                   </div>
                   <div className="ridepay-info-item">
-                    <span className="ridepay-info-label">Time</span>
+                    <span className="ridepay-info-label">
+                      <FaClock /> Departure
+                    </span>
                     <span className="ridepay-info-value">
-                      {rideDetails.time}
+                      {formatTime(ride?.departure_time)}
+                    </span>
+                  </div>
+
+                  <div className="ridepay-info-item">
+                    <span className="ridepay-info-label">
+                      <FaRoad /> Distance
+                    </span>
+                    <span className="ridepay-info-value">
+                      {formatDistance(ride?.distance_meters)}
                     </span>
                   </div>
                   <div className="ridepay-info-item">
-                    <span className="ridepay-info-label">Passengers</span>
+                    <span className="ridepay-info-label">
+                      <FaChair /> Seats Booked
+                    </span>
                     <span className="ridepay-info-value">
-                      {rideDetails.passengers} seats
+                      {noOfSIt || 1} seat{noOfSIt > 1 ? "s" : ""}
                     </span>
                   </div>
                 </div>
 
+                {/* Driver Details */}
                 <div className="ridepay-driver">
                   <h4 className="ridepay-driver-title">Driver Details</h4>
-                  <p className="ridepay-driver-name">
-                    {rideDetails.driverName}
-                  </p>
-                  <p className="ridepay-driver-car">{rideDetails.carModel}</p>
-                </div>
+                  <div className="ridepay-driver-info">
+                    {ride?.driver_profile_picture && (
+                      <img
+                        src={ride.driver_profile_picture}
+                        alt={ride.driver_name}
+                        className="ridepay-driver-avatar"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                        }}
+                      />
+                    )}
+                    <div>
+                      <p className="ridepay-driver-name">
+                        {ride?.driver_name || "-"}
+                      </p>
 
-                <div className="ridepay-price-section">
-                  <span className="ridepay-price-label">Total Amount</span>
-                  <span className="ridepay-price-value">
-                    ₹{rideDetails.price}
-                  </span>
+                      <p className="ridepay-driver-car">
+                        {ride?.brand} {ride?.model} ({ride?.manufacture_year}) ·{" "}
+                        {ride?.fuel_type}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Section - Payment */}
             <div className="ridepay-payment">
               {!paymentSuccess ? (
                 <>
-                  <h2 className="ridepay-payment-title">Payment Method</h2>
+                  <h2 className="ridepay-payment-title">Complete Payment</h2>
 
-                  <FormControl component="fieldset" fullWidth>
-                    <RadioGroup
-                      value={paymentMethod}
-                      onChange={handlePaymentMethodChange}
-                      className="ridepay-radio-group"
-                    >
-                      <div
-                        className={`ridepay-method-card ${paymentMethod === "cash" ? "active" : ""}`}
-                        onClick={() => setPaymentMethod("cash")}
-                      >
-                        <FormControlLabel
-                          value="cash"
-                          control={<Radio />}
-                          label={
-                            <div className="ridepay-method-content">
-                              <FaMoneyBillWave className="ridepay-method-icon" />
-                              <div className="ridepay-method-text">
-                                <span className="ridepay-method-name">
-                                  Cash Payment
-                                </span>
-                                <span className="ridepay-method-desc">
-                                  Pay directly to driver
-                                </span>
-                              </div>
-                            </div>
-                          }
-                        />
-                      </div>
-
-                      <div
-                        className={`ridepay-method-card ${paymentMethod === "card" ? "active" : ""}`}
-                        onClick={() => setPaymentMethod("card")}
-                      >
-                        <FormControlLabel
-                          value="card"
-                          control={<Radio />}
-                          label={
-                            <div className="ridepay-method-content">
-                              <FaCreditCard className="ridepay-method-icon" />
-                              <div className="ridepay-method-text">
-                                <span className="ridepay-method-name">
-                                  Card Payment
-                                </span>
-                                <span className="ridepay-method-desc">
-                                  Pay securely with card
-                                </span>
-                              </div>
-                            </div>
-                          }
-                        />
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-
-                  {/* Card Payment Form */}
-                  {paymentMethod === "card" && (
-                    <div className="ridepay-card-form">
-                      <div className="ridepay-secure-badge">
-                        <FaLock className="ridepay-lock-icon" />
-                        <span>Secure Payment</span>
-                      </div>
-
-                      <form onSubmit={handlePayNow}>
-                        <TextField
-                          fullWidth
-                          label="Card Number"
-                          name="cardNumber"
-                          value={cardDetails.cardNumber}
-                          onChange={handleCardInputChange}
-                          placeholder="1234 5678 9012 3456"
-                          className="ridepay-input"
-                          required
-                          sx={{ mb: 2 }}
-                        />
-
-                        <TextField
-                          fullWidth
-                          label="Cardholder Name"
-                          name="cardHolder"
-                          value={cardDetails.cardHolder}
-                          onChange={handleCardInputChange}
-                          placeholder="John Doe"
-                          className="ridepay-input"
-                          required
-                          sx={{ mb: 2 }}
-                        />
-
-                        <div className="ridepay-input-row">
-                          <TextField
-                            label="Expiry Date"
-                            name="expiryDate"
-                            value={cardDetails.expiryDate}
-                            onChange={handleCardInputChange}
-                            placeholder="MM/YY"
-                            className="ridepay-input"
-                            required
-                            sx={{ flex: 1 }}
-                          />
-
-                          <TextField
-                            label="CVV"
-                            name="cvv"
-                            value={cardDetails.cvv}
-                            onChange={handleCardInputChange}
-                            placeholder="123"
-                            type="password"
-                            className="ridepay-input"
-                            required
-                            sx={{ flex: 1 }}
-                          />
-                        </div>
-                      </form>
+                  <div className="ridepay-razorpay-info">
+                    <div className="ridepay-razorpay-logo">
+                      <img
+                        src={RazorpayImg}
+                        alt="Razorpay"
+                        width="30%"
+                        height="100%"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                        }}
+                      />
                     </div>
-                  )}
+                    <p className="ridepay-razorpay-desc">
+                      Pay securely using UPI, Cards, Net Banking, or Wallets.
+                    </p>
+                  </div>
 
-                  {/* Pay Now Button */}
+                  <div className="ridepay-amount-display">
+                    <span className="ridepay-amount-label">You Pay</span>
+                    <span className="ridepay-amount-value">₹{totalAmount}</span>
+                  </div>
+
                   <button
                     className="ridepay-btn-primary"
                     onClick={handlePayNow}
-                    disabled={processing}
+                    disabled={processing || !razorpayLoaded}
                   >
-                    {processing ? (
-                      <>
-                        <CircularProgress size={20} color="inherit" />
-                        <span>Processing...</span>
-                      </>
-                    ) : (
-                      <>
-                        {paymentMethod === "cash"
-                          ? "Confirm Cash Payment"
-                          : "Pay Now"}
-                      </>
-                    )}
+                    {processing ? "Opening Payment..." : `Pay ₹${totalAmount}`}
                   </button>
+
+                  <p className="ridepay-secure-note">
+                    <FaLock /> 256-bit SSL encrypted | Secured by Razorpay
+                  </p>
                 </>
               ) : (
-                /* Success State */
                 <div className="ridepay-success">
                   <div className="ridepay-success-icon">
                     <FaCheckCircle />
                   </div>
                   <h2 className="ridepay-success-title">Payment Successful!</h2>
                   <p className="ridepay-success-text">
-                    {paymentMethod === "cash"
-                      ? "Your booking is confirmed. Please pay cash to the driver."
-                      : "Your payment has been processed successfully."}
+                    Your booking is confirmed. Redirecting…
                   </p>
-
-                  <Alert severity="success" className="ridepay-success-alert">
-                    Amount Paid: ₹{rideDetails.price}
-                  </Alert>
-
-                  <button
-                    className="ridepay-btn-primary"
-                    onClick={handleConfirmBooking}
-                  >
-                    Confirm Booking
-                  </button>
+                  <div className="ridepay-success-amount">
+                    ₹{totalAmount} Paid
+                  </div>
+                  <ArcLoader />
                 </div>
               )}
             </div>

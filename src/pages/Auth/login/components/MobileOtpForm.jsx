@@ -1,7 +1,7 @@
 // src/pages/Auth/login/components/MobileOtpForm.jsx
 
-import { Input }           from "antd";
-import { LiaPhoneSolid }   from "react-icons/lia";
+import { Input } from "antd";
+import { LiaPhoneSolid } from "react-icons/lia";
 
 export default function MobileOtpForm({
   mobileNumber,
@@ -16,12 +16,13 @@ export default function MobileOtpForm({
 }) {
   return (
     <form onSubmit={onSubmit}>
-
       {/* ── Mobile number ── */}
       <div className="form-group">
         <label htmlFor="mobileNumber">Mobile Number</label>
         <div className="input-wrapper" style={{ position: "relative" }}>
-          <span className="input-icon"><LiaPhoneSolid /></span>
+          <span className="input-icon">
+            <LiaPhoneSolid />
+          </span>
           <input
             type="tel"
             id="mobileNumber"
@@ -46,10 +47,14 @@ export default function MobileOtpForm({
               onChange={(val) => setEnteredOtp(val)}
             />
           </div>
-          <div className="resend-otp" style={{ marginTop: 10, fontSize: 12, color: "#6b7280" }}>
+          <div
+            className="resend-otp"
+            style={{ marginTop: 10, fontSize: 12, color: "#6b7280" }}
+          >
             {resendTimer > 0 ? (
               <span>
-                Resend OTP in <strong style={{ color: "#0033a1" }}>{resendTimer}s</strong>
+                Resend OTP in{" "}
+                <strong style={{ color: "#0033a1" }}>{resendTimer}s</strong>
               </span>
             ) : (
               <span>
@@ -58,8 +63,13 @@ export default function MobileOtpForm({
                   type="button"
                   onClick={onSendOtp}
                   style={{
-                    background: "none", border: "none", cursor: "pointer",
-                    color: "#0033a1", fontWeight: 700, fontSize: 12, padding: 0,
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#0033a1",
+                    fontWeight: 700,
+                    fontSize: 12,
+                    padding: 0,
                   }}
                 >
                   Resend OTP

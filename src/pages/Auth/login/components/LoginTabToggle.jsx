@@ -1,8 +1,8 @@
 // src/pages/Auth/login/components/LoginTabToggle.jsx
 
 const TABS = [
-  { id: "email",  label: "Email & Password" },
-  { id: "mobile", label: "Mobile OTP"       },
+  { id: "email", label: "Email & Password" },
+  { id: "mobile", label: "Mobile OTP" },
 ];
 
 export default function LoginTabToggle({ activeTab, onSwitch }) {

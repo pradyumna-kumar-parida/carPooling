@@ -22,10 +22,16 @@ export default function RideBooking() {
   const noOfSIt = state?.noOfSIt ?? null;
 
   const {
-    openPriceModal, setOpenPriceModal,
-    openDriverModal, setOpenDriverModal,
-    bookingLoading, handleBookRide,
-    openAlert, setOpenAlert, alertMessage, alertType,
+    openPriceModal,
+    setOpenPriceModal,
+    openDriverModal,
+    setOpenDriverModal,
+    bookingLoading,
+    handleBookRide,
+    openAlert,
+    setOpenAlert,
+    alertMessage,
+    alertType,
   } = useBooking();
 
   const pricePerSeat = ride ? Number(ride.price_per_seat).toFixed(2) : "0.00";
@@ -34,10 +40,11 @@ export default function RideBooking() {
   // ── Error state ───────────────────────────────────────────────────────
   if (!ride) {
     return (
-      <div style={{ padding: "60px 20px", textAlign: "center", color: "#e53e3e" }}>
-        <p style={{ marginBottom: 16, fontSize: 16 }}>
+      <div className="ride-not-found">
+        <p className="error-happens">
           Ride data not found. Please go back and select a ride.
         </p>
+
         <button className="btn register-btn" onClick={() => navigate(-1)}>
           Go Back
         </button>
@@ -81,13 +88,15 @@ export default function RideBooking() {
       />
 
       <div className="ride-confirm-page">
+        <h1 className="ride-confirm-title">Ride details</h1>
         <div className="ride-confirm-container">
-
           {/* ── Left: main content ── */}
           <div className="ride-confirm-main">
-            <h1 className="ride-confirm-title">Ride details</h1>
             <TripTimeline ride={ride} />
-            <DriverCard ride={ride} onDriverClick={() => setOpenDriverModal(true)} />
+            <DriverCard
+              ride={ride}
+              onDriverClick={() => setOpenDriverModal(true)}
+            />
             <PassengersCard ride={ride} />
           </div>
 
@@ -101,9 +110,10 @@ export default function RideBooking() {
             bookingLoading={bookingLoading}
             onPriceClick={() => setOpenPriceModal(true)}
             onBookClick={() => handleBookRide({ ride, noOfSIt, navigate })}
-            onLoginClick={() => navigate("/login", { state: { from: location } })}
+            onLoginClick={() =>
+              navigate("/login", { state: { from: location } })
+            }
           />
-
         </div>
       </div>
     </>

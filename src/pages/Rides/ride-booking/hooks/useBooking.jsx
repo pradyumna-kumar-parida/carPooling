@@ -23,39 +23,60 @@ export function useBooking() {
   };
 
   // ── Book ride handler ─────────────────────────────────────────────────
-  const handleBookRide = async ({ ride, noOfSIt, navigate }) => {
-    setBookingLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const payload = {
-        ride_id: ride.id,
-        seats: noOfSIt,
-      };
-      const response = await bookRideApi(payload)
-      if (response.data?.success) {
-        navigate("/booking-payment", { state: { ride, noOfSIt, booking: response.data.booking } });
-      } else {
-        showAlert("error", response.data?.message || "Booking failed. Please try again.");
-      }
-    } catch (err) {
-      console.error("Booking error:", err);
-      const message =
-        err.response?.data?.message || "Something went wrong. Please try again.";
-      showAlert("error", message);
-    } finally {
-      setBookingLoading(false);
-    }
-  };
+  // const handleBookRide = async ({ ride, noOfSIt, navigate }) => {
 
+  //   setBookingLoading(true);
+  //   try {
+
+  //     const token = localStorage.getItem("token");
+  //     const payload = {
+  //       ride_id: ride.id,
+  //       seats: noOfSIt,
+  //     };
+  //     console.log(ride);
+
+  //     const response = await bookRideApi(payload);
+
+  //     if (response.data?.success) {
+  //       navigate("/booking-payment", {
+  //         state: { ride, noOfSIt, booking: response.data.booking },
+  //       });
+  //     } else {
+  //       showAlert(
+  //         "error",
+  //         response.data?.message || "Booking failed. Please try again.",
+  //       );
+  //     }
+  //   } catch (err) {
+  //     console.error("Booking error:", err);
+  //     const message =
+  //       err.response?.data?.message ||
+  //       "Something went wrong. Please try again.";
+  //     showAlert("error", message);
+  //   } finally {
+  //     setBookingLoading(false);
+  //   }
+  // };
+
+  const handleBookRide = async ({ ride, noOfSIt, navigate }) => {
+    navigate("/booking-payment", {
+      state: { ride, noOfSIt},
+    });
+  };
   return {
     // modals
-    openPriceModal, setOpenPriceModal,
-    openDriverModal, setOpenDriverModal,
+    openPriceModal,
+    setOpenPriceModal,
+    openDriverModal,
+    setOpenDriverModal,
     // booking
     bookingLoading,
     handleBookRide,
     // snackbar
-    openAlert, setOpenAlert, alertMessage, alertType,
+    openAlert,
+    setOpenAlert,
+    alertMessage,
+    alertType,
     showAlert,
   };
 }

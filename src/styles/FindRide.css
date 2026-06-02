@@ -1145,10 +1145,26 @@
 .ride-confirm-title {
   font-size: 2rem;
   font-weight: 700;
+  max-width: 1200px;
   color: var(--fr-text-dark);
-  margin: 0 0 0.5rem 0;
+  margin: 0 auto 0.9rem auto;
+}
+.ride-not-found {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
 }
 
+.error-happens {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000000;
+  border-radius: 12px;
+}
 .ride-confirm-card {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -1182,7 +1198,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  color: var(--fr-secondary);
+  color: var(--fr-primary-light);
   font-weight: 900;
   font-size: 1.4rem;
 }
@@ -1300,8 +1316,8 @@
 
 .detail-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .detail-icon {
@@ -1318,10 +1334,11 @@
 
 .detail-text {
   flex: 1;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--fr-text-gray);
+  font-weight: 400;
   line-height: 1.6;
-  padding-top: 0.625rem;
+  font-family: sans-serif;
 }
 
 /* Passengers card */
@@ -1375,6 +1392,9 @@
 .passenger-route {
   font-size: 0.875rem;
   color: var(--fr-text-gray);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Impact card */
@@ -1426,19 +1446,6 @@
   gap: 1rem;
 }
 
-.ride-status-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: var(--fr-bg-white);
-  border: 1px solid var(--fr-border);
-  border-radius: var(--fr-radius);
-  font-size: 1rem;
-  font-weight: 500;
-  box-shadow: var(--fr-shadow);
-}
-
 /* Summary card */
 .ride-summary-card {
   position: sticky;
@@ -1452,76 +1459,6 @@
   margin: 0 0 1.5rem 0;
   font-family: sans-serif;
 }
-.summary-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--fr-border);
-}
-
-.summary-feature {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--fr-text-gray);
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.summary-feature svg {
-  color: var(--fr-primary);
-  flex-shrink: 0;
-}
-
-.driver-infos {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--fr-border);
-}
-
-.summary-driver {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.summary-driver-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.summary-driver-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--fr-text-dark);
-}
-
-.driver-detl {
-  margin: 0;
-  color: var(--fr-text-gray);
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-.summary-pricing {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.summary-passengers {
-  font-size: 1rem;
-  color: var(--fr-text-gray);
-  flex: 1;
-  font-family: sans-serif;
-}
 
 .summary-price {
   display: flex;
@@ -1532,31 +1469,15 @@
 .price-currency {
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 25px;
   color: var(--fr-text-dark);
 }
 
 .price-amount {
-  font-size: 1.5rem;
+  font-size: 20px;
   color: var(--fr-text-dark);
   font-weight: 900;
   font-family: sans-serif;
-}
-
-.summary-arrow {
-  background: none;
-  border: none;
-  color: var(--fr-text-gray);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  transition: color 0.2s ease;
-  font-size: 1rem;
-}
-
-.summary-arrow:hover {
-  color: var(--fr-text-dark);
 }
 
 /* ==========================================
@@ -1624,26 +1545,16 @@
   align-items: center;
   font-family: "Vollkorn", serif;
 }
+.book-rides-now {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .ride-price-total span:first-child {
   font-size: 17px;
   font-weight: 800;
   color: var(--fr-text-dark);
-}
-
-.ride-price-amount {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--fr-text-dark);
-  font-family: sans-serif;
-  display: flex;
-  align-items: center;
-}
-
-.book-rides-now {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 /* ==========================================
@@ -1664,19 +1575,6 @@
 .myride-header {
   margin-bottom: 2rem;
   text-align: center;
-}
-
-.myride-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--fr-text-dark);
-  margin: 0 0 0.5rem 0;
-}
-
-.myride-subtitle {
-  font-size: 0.9375rem;
-  color: var(--fr-text-gray);
-  margin: 0;
 }
 
 .myride-tabs {
@@ -2210,13 +2108,6 @@
   gap: 1.5rem;
 }
 
-.ridepay-summary-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--fr-text-dark);
-  margin: 0;
-}
-
 .ridepay-summary-card {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -2276,6 +2167,9 @@
   font-size: 0.875rem;
   color: var(--fr-text-light);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .ridepay-info-value {
@@ -2284,21 +2178,15 @@
   font-family: sans-serif;
 }
 
-.ridepay-driver {
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--fr-border);
-  margin-bottom: 1.5rem;
-}
-
 .ridepay-driver-title {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--fr-text-dark);
   margin: 0 0 0.75rem 0;
 }
 
 .ridepay-driver-name {
-  font-size: 0.9375rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--fr-text-dark);
   margin: 0 0 0.25rem 0;
@@ -2310,28 +2198,6 @@
   margin: 0;
 }
 
-.ridepay-price-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background: var(--fr-bg-light);
-  border-radius: var(--fr-radius);
-}
-
-.ridepay-price-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--fr-text-dark);
-}
-
-.ridepay-price-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--fr-text-dark);
-  font-family: sans-serif;
-}
-
 .ridepay-payment {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
@@ -2339,7 +2205,7 @@
   box-shadow: var(--fr-shadow);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .ridepay-payment-title {
@@ -3953,10 +3819,6 @@
     gap: 1rem;
   }
 
-  .summary-pricing {
-    flex-wrap: wrap;
-  }
-
   .price-amount {
     font-size: 1.25rem;
   }
@@ -3973,10 +3835,6 @@
   /* My rides */
   .myride-page {
     padding: 1rem 0.5rem;
-  }
-
-  .myride-title {
-    font-size: 1.5rem;
   }
 
   .myride-tabs {
@@ -4191,6 +4049,7 @@
   text-transform: capitalize;
   color: #1f2937;
   font-family: sans-serif;
+  letter-spacing: 0.02rem;
 }
 
 /* ── Preference chips ── */
@@ -4877,4 +4736,111 @@
     width: 100%;
     text-align: center;
   }
+}
+/* ── RidePayment Extra Styles ──
+   Add these to your existing ridepay CSS file (e.g. RidePayment.css or styles/ridepay.css)
+   All existing .ridepay-* classes remain untouched.
+*/
+
+/* Loader overlay while Razorpay modal opens */
+.ridepay-loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Driver card with avatar */
+.ridepay-driver-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.ridepay-driver-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* Razorpay info block */
+.ridepay-razorpay-info {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.ridepay-razorpay-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.ridepay-razorpay-desc {
+  font-size: 15px;
+  color: #64748b;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+/* Amount display */
+.ridepay-amount-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  font-family: sans-serif;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+
+.ridepay-amount-label {
+  font-size: 14px;
+  color: var(--fr-primary-light);
+  font-weight: 700;
+}
+
+.ridepay-amount-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--fr-primary-light);
+}
+
+/* Secure note below button */
+.ridepay-secure-note {
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+  font-family: sans-serif;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+}
+
+/* Success amount pill */
+.ridepay-success-amount {
+  display: inline-block;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 8px 24px;
+  border-radius: 999px;
+  margin: 12px 0 20px;
 }

@@ -1,7 +1,7 @@
 // src/pages/Auth/login/components/EmailLoginForm.jsx
 
-import { CiMail }      from "react-icons/ci";
-import PasswordField   from "./PasswordField";
+import { CiMail } from "react-icons/ci";
+import PasswordField from "./PasswordField";
 
 export default function EmailLoginForm({
   formData,
@@ -13,12 +13,13 @@ export default function EmailLoginForm({
 }) {
   return (
     <form onSubmit={onSubmit}>
-
       {/* ── Identifier ── */}
       <div className="form-group">
         <label htmlFor="identifier">Email</label>
         <div className="input-wrapper">
-          <span className="input-icon"><CiMail /></span>
+          <span className="input-icon">
+            <CiMail />
+          </span>
           <input
             type="text"
             id="identifier"
@@ -31,10 +32,7 @@ export default function EmailLoginForm({
       </div>
 
       {/* ── Password ── */}
-      <PasswordField
-        value={formData.password}
-        onChange={onChange}
-      />
+      <PasswordField value={formData.password} onChange={onChange} />
 
       {/* ── Remember me + Forgot ── */}
       <div className="forgot-password">

@@ -28,12 +28,12 @@ export default function DriverCard({ ride, onDriverClick }) {
             style={{ objectFit: "cover" }}
           />
           <span className="driver-name" style={{ textTransform: "capitalize" }}>
-            {ride?.driver_name}
+            {ride?.driver_name} <b style={{ fontSize: "14px",color:"#6b6969" }}>(Driver)</b>
           </span>
         </div>
         <button className="driver-arrow" >
           <FaAngleRight />
-        </button>
+        </button> 
       </div>
 
       <hr />

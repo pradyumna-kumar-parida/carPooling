@@ -15,7 +15,7 @@ function Landingpage() {
   return (
     <div className="App">
       <Hero />
-      <div className="landingpage-search">
+      <div className={role !== "driver"? "landingpage-search": "search-disappear"}>
         {role !== "driver" && <SearchRide />}
       </div>
       <div className="container" id="find">

@@ -2,6 +2,7 @@
 
 import { FaAngleRight } from "react-icons/fa6";
 import Avatar from "./Avatar";
+import { TbArrowBigRightLinesFilled } from "react-icons/tb";
 
 export default function PassengersCard({ ride }) {
   return (
@@ -19,12 +20,12 @@ export default function PassengersCard({ ride }) {
           <div className="passenger-details">
             <span className="passenger-name">You</span>
             <span className="passenger-route">
-              {ride?.source_address?.split(",")[0]} →{" "}
+              {ride?.source_address?.split(",")[0]}{" "}
+              <TbArrowBigRightLinesFilled />{" "}
               {ride?.destination_address?.split(",")[0]}
             </span>
           </div>
         </div>
-       
       </div>
     </div>
   );
