@@ -172,6 +172,14 @@ const RidePayment = () => {
                       {formatTime(ride?.departure_time)}
                     </span>
                   </div>
+                  <div className="ridepay-info-item">
+                    <span className="ridepay-info-label">
+                      <FaClock /> Estimated Arrival
+                    </span>
+                    <span className="ridepay-info-value">
+                      {formatTime(ride?.estimated_reach_time)}
+                    </span>
+                  </div>
 
                   <div className="ridepay-info-item">
                     <span className="ridepay-info-label">

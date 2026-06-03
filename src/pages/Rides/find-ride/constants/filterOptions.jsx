@@ -7,10 +7,10 @@ export const SORT_OPTIONS = [
 ];
 
 export const DEPART_SLOTS = [
-  { id: "before6", label: "Before 06:00"   },
-  { id: "6to12",   label: "06:00 - 12:00"  },
-  { id: "12to18",  label: "12:01 - 18:00"  },
-  { id: "after18", label: "After 18:00"    },
+  { id: "before6", label: "Before 6:00 am"   },
+  { id: "6to12",   label: "6:00 am - 12:00 pm"  },
+  { id: "12to18",  label: "12:01 pm - 6:00 pm"  },
+  { id: "after18", label: "After 6:00 pm"    },
 ];
 
 export const AMENITIES = [
@@ -21,10 +21,10 @@ export const AMENITIES = [
 ];
 
 export const SLOT_MAP = {
-  before6: "Before 06:00",
-  "6to12": "06:00 - 12:00",
-  "12to18": "12:01 - 18:00",
-  after18: "After 18:00",
+  before6: "Before 6:00 am",
+  "6to12": "6:00 am - 12:00 pm",
+  "12to18": "12:01 pm - 6:00 pm",
+  after18: "After 6:00 pm",
 };
 
 export const DEFAULT_AMENITY_CHECKS = {

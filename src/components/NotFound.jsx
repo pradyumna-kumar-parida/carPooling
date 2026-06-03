@@ -1,5 +1,5 @@
 import React from "react";
-import notFoundImg from "../../public/404.jpg";
+import notFoundImg from "../assets/Images/404.jpg";
 import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {

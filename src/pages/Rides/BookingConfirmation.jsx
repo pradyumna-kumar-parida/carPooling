@@ -10,13 +10,14 @@ import {
   FaDownload,
   FaShare,
 } from "react-icons/fa";
+import { TbRoute } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { Chip } from "@mui/material";
-import Header from "../../components/Nav";
-import Footer from "../../components/Footer";
+import sucessBedge from "../../assets/Images/sucess-bedge.png";
+import { IoCallOutline } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
-import profile from "../../assets/Images/offer-ride-profile-1.jpg"
+import profile from "../../assets/Images/offer-ride-profile-1.jpg";
 const BookingConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -62,13 +63,18 @@ const BookingConfirmation = () => {
 
   return (
     <>
-      <Header />
       <div className="bookconf-page">
         <div className="bookconf-container">
           {/* Success Header */}
           <div className="bookconf-success-header">
-            <div className="bookconf-success-icon">
-              <FaCheckCircle />
+            <div className="sucessBedge">
+              <img
+                src={sucessBedge}
+                alt="success-badge"
+                height="100%"
+                width="100%"
+                loading="lazy"
+              />
             </div>
             <h1 className="bookconf-success-title">Booking Confirmed!</h1>
             <p className="bookconf-success-text">
@@ -179,7 +185,7 @@ const BookingConfirmation = () => {
                     src={profile}
                     alt={rideDetails.driverName}
                     className="bookconf-driver-avatar"
-                  loading="lazy"
+                    loading="lazy"
                   />
                   <div className="bookconf-driver-info">
                     <h4 className="bookconf-driver-name">
@@ -188,11 +194,11 @@ const BookingConfirmation = () => {
                     <div className="bookconf-driver-meta">
                       <span className="bookconf-driver-rating">
                         <FaStar /> <FaStar /> <FaStar /> <FaStar />{" "}
-                        {rideDetails.driverRating}
+                        <span>{rideDetails.driverRating}</span>
                       </span>
-                      <span className="bookconf-driver-phone">
-                        {rideDetails.driverPhone}
-                      </span>
+                    </div>
+                    <div className="bookconf-driver-phone">
+                      <IoCallOutline /> {rideDetails.driverPhone}
                     </div>
                     <div className="bookconf-driver-car">
                       <FaCar className="bookconf-car-icon" />
@@ -210,13 +216,9 @@ const BookingConfirmation = () => {
                 <h3 className="bookconf-card-title">Payment Summary</h3>
 
                 <div className="bookconf-payment-status">
-                  <Chip
-                    label={
-                      paymentMethod === "cash" ? "Cash Payment" : "Paid Online"
-                    }
-                    color={paymentMethod === "cash" ? "warning" : "success"}
-                    className="bookconf-payment-chip"
-                  />
+                  <button color="success" className="bookconf-payment-chip">
+                    Paid Online
+                  </button>
                 </div>
 
                 <div className="bookconf-price-breakdown">
@@ -287,6 +289,13 @@ const BookingConfirmation = () => {
                   Share Booking
                 </button>
                 <button
+                  className="bookconf-btn-secondary track-chat-btn"
+                  onClick={() => navigate("/track-chat")}
+                >
+                  <TbRoute size={20} />
+                  Track & Chat
+                </button>
+                <button
                   className="bookconf-btn-primary"
                   onClick={handleBackHome}
                 >
@@ -297,7 +306,6 @@ const BookingConfirmation = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

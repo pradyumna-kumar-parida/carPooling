@@ -156,12 +156,17 @@ const Header = () => {
       {isLoggedIn && (
         <>
           <List>
-            <ListItem>
-              <div className="user-profile-text">
-                <span className="user-greeting">Hi,</span>
-                <span className="user-role">{firstName}</span>
+            <ListItemButton>
+              <div className="mob-logined-pic">
+                <div className="user-profile-text">
+                  <span className="user-greeting">Hi,</span>
+                  <span className="user-role">{firstName}</span>
+                </div>
+                <div className="profile-img">
+                  <img src={img1} alt="" height="100%" width="100%" />
+                </div>
               </div>
-            </ListItem>
+            </ListItemButton>
           </List>
           <Divider />
         </>

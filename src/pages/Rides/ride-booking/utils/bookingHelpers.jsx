@@ -1,6 +1,18 @@
-// src/pages/Rides/find-ride/ride-booking/utils/bookingHelpers.js
-
-export const formatTime = (t) => (t ? t.slice(0, 5) : "--:--");
+export const formatTime = (t) => {
+  if (!t) return "--:--";
+  try {
+    const parts = t.split(":");
+    const hh = parseInt(parts[0], 10);
+    const mm = (parts[1] || "00").slice(0, 2);
+    if (Number.isNaN(hh)) return t.slice(0, 5);
+    const ampm = hh >= 12 ? "pm" : "am";
+    let hour12 = hh % 12;
+    if (hour12 === 0) hour12 = 12;
+    return `${hour12}:${mm} ${ampm}`;
+  } catch (err) {
+    return t.slice(0, 5);
+  }
+};
 
 export const secondsToHM = (secs) => {
   const h = Math.floor(secs / 3600);
@@ -12,14 +24,13 @@ export const formatDate = (dateStr) => {
   if (!dateStr) return "";
   return new Date(dateStr).toLocaleDateString("en-IN", {
     weekday: "long",
-    day:     "numeric",
-    month:   "long",
-    year:    "numeric",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 };
 
-export const metersToKm = (m) =>
-  m ? `${(m / 1000).toFixed(1)} km` : "";
+export const metersToKm = (m) => (m ? `${(m / 1000).toFixed(1)} km` : "");
 
 const AVATAR_COLORS = [
   ["#dbeafe", "#1e40af"],

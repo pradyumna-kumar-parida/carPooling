@@ -29,6 +29,7 @@ const VehicleRegistration = lazy(
   () => import("../pages/Vehicle/VehicleRegistration"),
 );
 const VehicleDetails = lazy(() => import("../pages/Vehicle/VehicleDetails"));
+const TrackChat = lazy(() => import("../pages/Rides/track-chat/TrackChat"));
 
 const PageLoader = () => (
   <div
@@ -63,26 +64,26 @@ const routes = [
   {
     path: "/offer-ride",
     element: <PublishRide />,
-    isProtected: false,
-    permission: [],
+    isProtected: false, // ← anyone can view
+    blockRole: ["passenger"], // ← logged-in passengers get redirected
   },
   {
     path: "/find-ride",
     element: <FindRide />,
-    isProtected: false,
-    permission: [],
+    isProtected: false, // ← anyone can view
+    blockRole: ["driver"], // ← logged-in drivers get redirected
   },
   {
     path: "/all-rides",
     element: <RideDetails />,
     isProtected: false,
-    permission: [],
+    blockRole: ["driver"],
   },
   {
     path: "/ride-book/:rideId",
     element: <RideConfirmation />,
     isProtected: false,
-    permission: [],
+    blockRole: ["driver"],
   },
   {
     path: "/vehicle-registration",
@@ -112,13 +113,19 @@ const routes = [
     path: "/booking-payment",
     element: <RidePayment />,
     isProtected: true,
-    permission: ["driver", "passenger"],
+    permission: ["passenger"],
   },
   {
     path: "/booking-confirmation",
     element: <BookingConfirmation />,
     isProtected: true,
-    permission: ["driver", "passenger"],
+    permission: ["passenger"],
+  },
+  {
+    path: "/track-chat",
+    element: <TrackChat />,
+    isProtected: true,
+    permission: ["passenger"],
   },
 ];
 
@@ -143,6 +150,11 @@ const ProtectedRoute = ({ route }) => {
 
 const PublicRoute = ({ route }) => {
   const { user, pendingRedirect } = useAuth();
+
+  // Block specific roles
+  if (user && route.blockRole && route.blockRole.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
 
   if (user && route.layout === "blankLayout") {
     if (pendingRedirect?.current) {
