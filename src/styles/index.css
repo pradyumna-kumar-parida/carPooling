@@ -37,8 +37,8 @@ header {
   position: sticky !important;
   top: 0 !important;
   background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding: 16px 50px;
   display: flex;
@@ -219,26 +219,50 @@ nav a:hover::after {
    HERO
    =========================== */
 .hero {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.08) 5px, transparent 0px),
-    linear-gradient(135deg, #fdfdfd 0%, #c0c6d2 50%, #036aa19d 100%);
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.22) 2px, transparent 2px),
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(255, 255, 255, 0.35),
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 82% 22%,
+      rgba(255, 255, 255, 0.28),
+      transparent 20%
+    ),
+    var(
+      --hero-bg,
+      linear-gradient(135deg, #eaf2ff 0%, #d4e6ff 48%, #a6c8ff 100%)
+    );
   background-size:
     20px 20px,
+    320px 320px,
+    280px 280px,
     cover;
   background-position:
     0 0,
+    top left,
+    top right,
     center;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 120px;
+  padding-top: 60px;
+}
+
+.hero::before {
+  display: none;
 }
 
 .hero-content {
   max-width: 1200px;
   width: 100%;
-  padding: 50px;
+  padding: 0px 50px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
@@ -293,6 +317,9 @@ nav a:hover::after {
 
 .hero-image img {
   filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.3));
+  width: 100%;
+  max-width: 550px;
+  object-fit: contain;
   transition:
     transform 0.3s ease,
     filter 0.3s ease;
@@ -302,15 +329,34 @@ nav a:hover::after {
   transform: scale(1.03);
 }
 
-/* ===========================
-   SEARCH SECTION
-   =========================== */
-.search-section {
-  position: relative;
-  z-index: 10;
-  padding: 0 50px;
-  margin-top: -61px;
-  margin-bottom: 80px;
+.hero-slide {
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.hero-cta {
+  background: var(--btn-bg);
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(30, 64, 175, 0.15);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(30, 64, 175, 0.2);
+}
+
+.hero {
+  transition: background 0.8s ease;
 }
 
 .search-container {
@@ -433,7 +479,7 @@ nav a:hover::after {
 
 .card-content {
   flex: 1;
-  min-width: 200px;
+  /* min-width: 200px; */
 }
 
 .card-image {
@@ -600,7 +646,6 @@ nav a:hover::after {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  justify-content: center;
 }
 
 .why-card {
@@ -2509,6 +2554,9 @@ footer {
     max-height: 300px !important;
     max-width: 300px !important;
   }
+  .hero{
+    min-height: 50vh;
+  }
   .notification-item-body {
     font-size: 13px !important;
   }
@@ -3024,10 +3072,9 @@ footer {
   object-fit: cover;
 }
 
-.mob-logined-pic{
+.mob-logined-pic {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-
 }

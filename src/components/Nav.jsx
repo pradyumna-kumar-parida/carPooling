@@ -17,7 +17,7 @@ import Divider from "@mui/material/Divider";
 import { useAuth } from "../context/AuthContext";
 import notification from "../assets/Images/notification-icon.png";
 import NotificationPanel from "./NotificationPanel.jsx";
-
+import { RiLoginCircleLine } from "react-icons/ri";
 import {
   FaUserCircle,
   FaRoute,
@@ -25,6 +25,8 @@ import {
   FaCar,
   FaSearchLocation,
 } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa6";
+
 import {
   FiUser,
   FiSettings,
@@ -219,13 +221,21 @@ const Header = () => {
       ) : (
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navTo("/login")}>
+            <ListItemButton
+              onClick={() => navTo("/login")}
+              className="mobile-menu-sidebar"
+            >
+              <RiLoginCircleLine />
               <ListItemText primary="Log in" />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navTo("/signup")}>
+            <ListItemButton
+              onClick={() => navTo("/signup")}
+              className="mobile-menu-sidebar"
+            >
+              <FaUserPlus />
               <ListItemText primary="Sign up" />
             </ListItemButton>
           </ListItem>

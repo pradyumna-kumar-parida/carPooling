@@ -1790,10 +1790,12 @@
 
 .myride-modal-title {
   font-size: 1.5rem !important;
+   font-family: "Vollkorn", serif !important;
   font-weight: 700 !important;
   color: var(--fr-text-dark) !important;
   border-bottom: 1px solid var(--fr-border) !important;
   position: relative !important;
+
 }
 
 .myride-modal-close {

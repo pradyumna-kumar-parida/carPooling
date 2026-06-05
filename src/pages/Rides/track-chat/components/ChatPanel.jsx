@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaPaperclip, FaPaperPlane, FaTimes } from "react-icons/fa";
-import { BiSolidPhoneCall } from "react-icons/bi";
 import chatIcon from "../../../../assets/Images/chat-icon.png";
+import { BiSolidPhoneCall } from "react-icons/bi";
+import { RxCross2 } from "react-icons/rx";
+import { TbSend } from "react-icons/tb";
+
+
 const INITIAL_MESSAGES = [
   {
     id: 1,
@@ -66,32 +69,31 @@ const ChatPanel = ({ driver }) => {
 
   return (
     <>
+      {/* Chat Panel */}
       <div className={`chat-panel-shell${isVisible ? " chat-visible" : ""}`}>
-        <div className={`cp-container${isVisible ? " cp-open" : ""}${isOpen ? " cp-open--active" : isVisible ? " cp-open--hidden" : ""}`}>
+        <div
+          className={`cp-container${isVisible ? " cp-open" : ""}${
+            isOpen ? " cp-open--active" : isVisible ? " cp-open--hidden" : ""
+          }`}
+        >
           {/* Header */}
-          
           <div className="cp-header">
-            
             <img
               src={driver.driver_profile_picture}
               alt={driver.driver_name}
               className="cp-driver-avatar"
               onError={(e) => {
-                e.target.src =
-                  "https://ui-avatars.com/api/?name=" +
-                  encodeURIComponent(driver.driver_name) +
-                  "&background=1a56db&color=fff";
+                e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(driver.driver_name)}&background=1a56db&color=fff`;
               }}
             />
             <div className="cp-driver-meta">
-              <p className="cp-driver-name">{driver.driver_name}</p>
+              <p className="cp-driver-name">Chat with {driver.driver_name}</p>
               <div className="cp-online-row">
                 <span className="cp-online-dot" />
                 <span className="cp-online-text">Online</span>
               </div>
             </div>
             <div className="cp-header-actions">
-             
               <a
                 href={`tel:${driver.driver_phone}`}
                 className="cp-call-btn"
@@ -99,67 +101,83 @@ const ChatPanel = ({ driver }) => {
               >
                 <BiSolidPhoneCall size={22} />
               </a>
+              <button
+                className="chat-close-btn"
+                onClick={handleClose}
+                title="Close"
+              >
+                <RxCross2  size={18}/>
+              </button>
             </div>
           </div>
 
-        {/* Messages */}
-        <div className="cp-messages">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`cp-msg-row ${msg.sender === "passenger" ? "cp-msg-right" : "cp-msg-left"}`}
-            >
-              {msg.sender === "driver" && (
-                <img
-                  src={driver.driver_profile_picture}
-                  alt=""
-                  className="cp-msg-avatar"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://ui-avatars.com/api/?name=" +
-                      encodeURIComponent(driver.driver_name) +
-                      "&background=1a56db&color=fff&size=32";
-                  }}
-                />
-              )}
+          {/* Messages */}
+          <div className="cp-messages">
+            {messages.map((msg) => (
               <div
-                className={`cp-bubble ${msg.sender === "passenger" ? "cp-bubble-passenger" : "cp-bubble-driver"}`}
+                key={msg.id}
+                className={`cp-msg-row ${
+                  msg.sender === "passenger" ? "cp-msg-right" : "cp-msg-left"
+                }`}
               >
-                <p className="cp-bubble-text">{msg.text}</p>
-                <span className="cp-bubble-time">{msg.time}</span>
+                {msg.sender === "driver" && (
+                  <img
+                    src={driver.driver_profile_picture}
+                    alt=""
+                    className="cp-msg-avatar"
+                    onError={(e) => {
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(driver.driver_name)}&background=1a56db&color=fff&size=32`;
+                    }}
+                  />
+                )}
+                <div
+                  className={`cp-bubble ${
+                    msg.sender === "passenger"
+                      ? "cp-bubble-passenger"
+                      : "cp-bubble-driver"
+                  }`}
+                >
+                  <p className="cp-bubble-text">{msg.text}</p>
+                  <span className="cp-bubble-time">{msg.time}</span>
+                </div>
               </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Bar */}
+          <div className="cp-input-bar">
+            <input
+              type="text"
+              className="cp-input"
+              placeholder="Type a message…"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <button
+              className={`cp-send-btn ${inputText.trim() ? "active" : ""}`}
+              onClick={handleSend}
+              title="Send"
+            >
+           <TbSend  size={22}/>
+
+            </button>
+          </div>
         </div>
 
-        {/* Input */}
-        <div className="cp-input-bar">
-          <button className="cp-attach-btn" title="Attach file">
-            <FaPaperclip />
-          </button>
-          <input
-            type="text"
-            className="cp-input"
-            placeholder="Type a message…"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            className={`cp-send-btn ${inputText.trim() ? "active" : ""}`}
-            onClick={handleSend}
-            title="Send"
-          >
-            <FaPaperPlane />
-          </button>
-        </div>
-        </div>
-        {isVisible && <div className="chat-panel-overlay" onClick={handleClose} />}
+        {isVisible && (
+          <div className="chat-panel-overlay" onClick={handleClose} />
+        )}
       </div>
+
+      {/* Floating Chat Button */}
       {!isVisible && (
         <button className="chat-bar-showup" type="button" onClick={handleOpen}>
-          <img src={chatIcon} alt="chat-img" height="100%" width="100%" />
+          <img src={chatIcon} alt="chat" height="100%" width="100%" />
+          {messages.length > 0 && (
+            <span className="chat-badge">{messages.length}</span>
+          )}
         </button>
       )}
     </>

@@ -13,6 +13,7 @@ import AppLayout from "../layout";
 import ArcLoader from "../components/Loader";
 import Home from "../pages/Home page/landingpage";
 
+const RatingModal = lazy(() => import("../components/RatingModal"));
 const Login = lazy(() => import("../pages/Auth/Login"));
 const Signup = lazy(() => import("../pages/Auth/Signup"));
 const PublishRide = lazy(() => import("../pages/Publish ride/PublishRide"));
@@ -126,6 +127,12 @@ const routes = [
     element: <TrackChat />,
     isProtected: true,
     permission: ["passenger"],
+  },
+  {
+    path: "/rate",
+    element: <RatingModal />,
+    isProtected: false,
+    permission: [],
   },
 ];
 

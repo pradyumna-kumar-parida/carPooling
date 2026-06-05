@@ -1,162 +1,500 @@
-/* ── Page Shell ── */
-.tc-page {
-  background: #f8fafc;
+/* ─────────────────────────────────────────────────────────────────────────────
+   TrackChat.css — Complete styles for TrackChat page & all components
+   Covers: TrackChat.jsx, MapPanel.jsx, ChatPanel.jsx, RideDetailsCard.jsx,
+           DriverDetailsCard.jsx, RideStatusCard.jsx, PaymentInfoCard.jsx,
+           HelpSupportCard.jsx
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
   padding: 0;
+}
+
+/* ── CSS Variables ──────────────────────────────────────────────────────────── */
+:root {
+  --blue: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+  --blue-dark: #1648c0;
+  --blue-light: #eff6ff;
+  --blue-mid: #dbeafe;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --green-mid: #dcfce7;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --red-mid: #fecaca;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --text: #1e293b;
+  --text-2: #374151;
+  --text-3: #64748b;
+  --text-4: #94a3b8;
+  --border: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TRACKCHAT.JSX — Page Shell & Layout
+══════════════════════════════════════════════════════════════════════════════ */
+
+.tc-page {
+  background: var(--bg);
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  position: relative;
 }
 
 .tc-wrapper {
   display: grid;
-  grid-template-columns: 75% 1fr;
-  height: calc(100vh - 64px);
+  font-family: sans-serif;
+  grid-template-columns: 70% 30%;
+  height: 100%;
   overflow: hidden;
+  transition: grid-template-columns 0.3s ease;
 }
 
-.tc-map-fullscreen .tc-map-col {
-  grid-column: 1 / -1;
+.tc-fullscreen {
+  grid-template-columns: 1fr;
 }
 
-@media (max-width: 1300px) {
-  .tc-wrapper {
-    grid-template-columns: 65% 1fr;
-  }
-}
-
-/* ── Columns ── */
+/* Map column */
 .tc-map-col {
   height: 100%;
   overflow: hidden;
+  position: relative;
 }
 
-.tc-map-expanded {
-  grid-column: 1 / -1;
-  width: 100%;
-}
-
-.tc-chat-col {
-  display: flex;
-  flex-direction: column;
+/* Right details column */
+.tc-right-col {
+  border-left: 1px solid var(--border);
+  background: var(--bg);
   height: 100%;
   overflow: hidden;
-  border-left: 1px solid #e2e8f0;
-  background: #f8fafc;
-}
-
-/* ══ Ride Info Card ══ */
-.tc-info-card {
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 14px 18px;
-  flex-shrink: 0;
-}
-
-.tc-info-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: sans-serif;
-  margin-bottom: 10px;
-}
-
-.tc-booking-id {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1a56db;
-  background: #dde9fa;
-  padding: 5px 10px;
-  border-radius: 999px;
-  letter-spacing: 0.5px;
-}
-
-.tc-amount-paid {
-  font-size: 13px;
-  font-weight: 600;
-  color: #16a34a;
-  background: #e3f5e8;
-  padding: 5px 10px;
-  border-radius: 999px;
-}
-
-.tc-info-route {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin: 20px 0;
 }
 
-.tc-info-route-point {
+.tc-right-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tc-right-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.tc-right-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tc-right-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHARED CARD STYLES — used by all 5 right-panel card components
+══════════════════════════════════════════════════════════════════════════════ */
+
+.chatpanel-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: "Vollkorn", serif;
+}
+
+/* Badges */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+.badge-blue {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+.badge-green {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+/* Shared meta label */
+.meta-label {
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RIDEDETAILSCARD.JSX
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* Booking ID row */
+.ride-id-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.booking-id {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.copy-btn:hover {
+  opacity: 1;
+}
+
+.amount-paid {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* Route section */
+.route-section {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+}
+
+.route-point {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 20px;
 }
 
-.tc-dot {
+.route-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
-.tc-dot-green {
-  background: #16a34a;
+.route-dot-green {
+  background: var(--green);
 }
-.tc-dot-red {
-  background: #dc2626;
+.route-dot-red {
+  background: var(--red);
 }
 
-.tc-info-route-line {
+.route-line-v {
   width: 2px;
-  height: 15px;
-  background: #e2e8f0;
-  margin-left: 4px;
+  height: 14px;
+  background: var(--border);
+  margin: 4px 0 4px 4px;
 }
 
-.tc-info-addr {
+.route-label {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 2px;
+}
+
+.route-address {
   font-size: 15px;
-  color: #374151;
+  font-weight: 600;
+  color: var(--text);
   line-height: 1.4;
 }
 
-.tc-info-meta {
-  display: flex;
-  gap: 16px;
+.route-time {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
 }
 
-.tc-meta-item {
+/* Stats row */
+.stats-row {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.stat-item {
+  flex: 1;
+  padding: 10px 12px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 7px;
+}
+
+.stat-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   DRIVERDETAILSCARD.JSX
+══════════════════════════════════════════════════════════════════════════════ */
+
+.driver-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.driver-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.driver-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.driver-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.driver-rating {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 3px;
+}
+
+.driver-vehicle-info {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.driver-actions {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
-.tc-meta-label {
-  font-size: 11px;
-  color: #575f69;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.tc-meta-value {
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  color: #1e293b;
-  font-family: sans-serif;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
 }
 
-/* ══ MAP PANEL ══ */
-.mp-container {
+.action-btn-blue {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.action-btn-outline {
+  background: var(--white);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.action-btn-outline:hover {
+  background: var(--bg);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RIDESTATUSCARD.JSX — Horizontal Stepper
+══════════════════════════════════════════════════════════════════════════════ */
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.step-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+.step-active {
+  background: var(--blue);
+  box-shadow: 0 0 0 4px var(--blue-mid);
+}
+.step-done {
+  background: var(--green);
+}
+.step-pending {
+  background: var(--bg);
+  border: 2px solid var(--border);
+}
+
+.step-label {
+  font-size: 10px;
+  color: var(--text-4);
+  margin-top: 8px;
+  text-align: center;
+  line-height: 1.3;
+  padding: 0 2px;
+}
+
+.step-label-active {
+  color: var(--blue);
+  font-weight: 700;
+}
+.step-label-done {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.support-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.support-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  flex: 1;
+  white-space: nowrap;
+}
+
+.support-btn-outline {
+  background: var(--bg);
+
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+
+.support-btn-danger {
+  background: var(--white);
+  color: var(--red);
+  border: 1px solid var(--red-mid);
+}
+.support-btn-danger:hover {
+  background: var(--red-light);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MAPPANEL.JSX
+══════════════════════════════════════════════════════════════════════════════ */
+
+.ms-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.mp-map {
+.ms-map {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-/* Status Badge */
-.mp-status-badge {
+/* Status badge */
+.ms-status-badge {
   position: absolute;
   top: 14px;
   left: 14px;
@@ -164,22 +502,24 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  background: var(--white);
+  padding: 7px 14px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: var(--text);
+  box-shadow: var(--shadow-md);
   pointer-events: none;
 }
 
-.mp-status-dot {
+.ms-status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  animation: pulse-dot 1.5s ease-in-out infinite;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
-@keyframes pulse-dot {
+@keyframes pulse {
   0%,
   100% {
     opacity: 1;
@@ -191,121 +531,155 @@
   }
 }
 
-/* Fullscreen Button */
-.mp-fullscreen-btn {
+.ms-status-sep {
+  color: var(--text-4);
+  font-weight: 400;
+}
+
+.ms-status-sub {
+  color: var(--text-3);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+/* Fullscreen/expand button */
+.ms-expand-btn {
   position: absolute;
   top: 80px;
-  right: 9px;
+  right: 10px;
   z-index: 10;
   width: 36px;
   height: 36px;
-  background: #fff;
+  background: var(--white);
   border: none;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  color: #374151;
-  font-size: 15px;
+  box-shadow: var(--shadow-md);
+  color: var(--text-2);
   transition:
     background 0.2s,
     transform 0.15s;
 }
-
-.mp-fullscreen-btn:hover {
-  background: #f1f5f9;
+.ms-expand-btn:hover {
+  background: var(--bg);
   transform: scale(1.05);
 }
 
 /* Tracking disabled overlay */
-.mp-tracking-overlay {
+.ms-tracking-overlay {
   position: absolute;
   inset: 0;
   z-index: 8;
   background: rgba(248, 250, 252, 0.82);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.mp-tracking-msg {
-  background: #fff;
+.ms-tracking-msg {
+  background: var(--white);
   border-radius: 16px;
   padding: 28px 32px;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  max-width: 280px;
+  box-shadow: var(--shadow-lg);
+  max-width: 300px;
+  animation: fadeIn 0.3s ease;
 }
 
-.mp-tracking-icon {
-  font-size: 32px;
-  color: #1a56db;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ms-tracking-icon {
+  display: flex;
+  justify-content: center;
   margin-bottom: 12px;
 }
 
-.mp-tracking-title {
+.ms-tracking-title {
   font-size: 15px;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 6px;
+  color: var(--text);
+  margin-bottom: 6px;
 }
 
-.mp-tracking-sub {
+.ms-tracking-sub {
   font-size: 13px;
-  color: #64748b;
-  margin: 0;
+  color: var(--text-3);
   line-height: 1.5;
 }
 
-/* Driver Card (floating bottom of map) */
-.mp-driver-card {
+/* Floating driver card (bottom of map) */
+.ms-driver-card {
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  background: #fff;
-  border-radius: 14px;
-  padding: 12px 18px;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.14);
-  min-width: 260px;
+  gap: 14px;
+  box-shadow: var(--shadow-lg);
+  min-width: 280px;
   max-width: 90%;
+  border: 1px solid var(--border);
 }
 
-.mp-driver-avatar {
-  width: 44px;
-  height: 44px;
+.ms-driver-avatar {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border);
   flex-shrink: 0;
 }
 
-.mp-driver-info {
+.ms-driver-info {
   flex: 1;
   min-width: 0;
 }
 
-.mp-driver-name {
-  font-size: 14px;
+.ms-driver-name {
+  font-size: 15px;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--text);
+  margin-bottom: 2px;
 }
 
-.mp-driver-vehicle {
+.ms-driver-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.ms-online-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.ms-driver-vehicle {
   font-size: 12px;
-  color: #64748b;
-  margin: 0;
+  color: var(--text-3);
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -313,58 +687,93 @@
   text-overflow: ellipsis;
 }
 
-.mp-eta {
+.ms-eta-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
   flex-shrink: 0;
 }
 
-.mp-eta-label {
+.ms-eta-label {
   font-size: 10px;
-  color: #94a3b8;
+  color: var(--text-4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.mp-eta-value {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1a56db;
+.ms-eta-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--blue);
+  line-height: 1.1;
 }
 
-/* ══ CHAT PANEL SHELL ══ */
-/* FIX: shell must fill tc-chat-col and be a flex column */
+/* ══════════════════════════════════════════════════════════════════════════════
+   CHATPANEL.JSX — Floating FAB + Slide-in Panel
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* Shell that wraps panel + overlay */
 .chat-panel-shell {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
+  position: relative;
 }
 
-/* ══ CHAT PANEL ══ */
-/* FIX: cp-container fills shell, min-height:0 prevents flex blowout */
+/* The actual chat panel — hidden on desktop until opened */
 .cp-container {
-  flex: 1;
-  display: flex;
+  display: none;
   flex-direction: column;
-  min-height: 0;
+  background: var(--white);
   overflow: hidden;
-  width: 100%;
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Header */
+/* When open on desktop — fixed floating card */
+.cp-container.cp-open {
+  display: flex;
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 380px;
+  height: 520px;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  z-index: 10001;
+  border: 1px solid var(--border);
+  transform: translateY(20px);
+  opacity: 0;
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.cp-container.cp-open.cp-open--active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cp-container.cp-open.cp-open--hidden {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+/* Dark backdrop */
+.chat-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.2);
+}
+
+/* ── Chat Header ── */
 .cp-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 14px 16px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  border-radius: 18px 18px 0 0;
 }
 
 .cp-driver-avatar {
@@ -372,7 +781,8 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
 }
 
 .cp-driver-meta {
@@ -380,53 +790,73 @@
 }
 
 .cp-driver-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 2px;
+  color: var(--text);
+  margin-bottom: 2px;
 }
 
 .cp-online-row {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
 .cp-online-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #16a34a;
+  background: var(--green);
 }
 
 .cp-online-text {
   font-size: 11px;
-  color: #16a34a;
-  font-weight: 500;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.cp-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .cp-call-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #eff6ff;
+  background: var(--blue-light);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1a56db;
-  font-size: 14px;
+  color: var(--blue);
   cursor: pointer;
   text-decoration: none;
   transition: background 0.2s;
 }
-
 .cp-call-btn:hover {
-  background: #dbeafe;
+  background: var(--blue-mid);
 }
 
-/* Messages area */
-/* FIX: flex:1 + min-height:0 makes it fill space and scroll properly */
+.chat-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-close-btn:hover {
+  background: var(--border);
+}
+
+/* ── Messages area ── */
 .cp-messages {
   flex: 1;
   min-height: 0;
@@ -435,17 +865,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #f8fafc;
+  background: var(--bg);
 }
 
 .cp-messages::-webkit-scrollbar {
-  width: 4px;
-}
-.cp-messages::-webkit-scrollbar-track {
-  background: transparent;
+  width: 3px;
 }
 .cp-messages::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--border);
   border-radius: 4px;
 }
 
@@ -474,32 +901,30 @@
   max-width: 72%;
   padding: 10px 13px;
   border-radius: 16px;
-  position: relative;
 }
 
 .cp-bubble-driver {
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
 }
 
 .cp-bubble-passenger {
-  background: #1a56db;
+  background: var(--blue);
   border-bottom-right-radius: 4px;
 }
 
 .cp-bubble-text {
   font-size: 13px;
   line-height: 1.5;
-  margin: 0 0 4px;
-  color: inherit;
+  margin-bottom: 4px;
 }
 
 .cp-bubble-driver .cp-bubble-text {
-  color: #1e293b;
+  color: var(--text);
 }
 .cp-bubble-passenger .cp-bubble-text {
-  color: #fff;
+  color: var(--white);
 }
 
 .cp-bubble-time {
@@ -509,73 +934,53 @@
 }
 
 .cp-bubble-driver .cp-bubble-time {
-  color: #94a3b8;
+  color: var(--text-4);
 }
 .cp-bubble-passenger .cp-bubble-time {
   color: rgba(255, 255, 255, 0.65);
 }
 
-/* Input bar */
-/* FIX: padding reduced from 30px to 10px, flex-shrink:0 keeps it at bottom */
+/* ── Input bar ── */
 .cp-input-bar {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding:35px 14px;
-  background: #fff;
-  border-top: 1px solid #e2e8f0;
+  padding: 12px 14px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
   flex-shrink: 0;
-}
-
-.cp-attach-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #f1f5f9;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #64748b;
-  font-size: 18px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.2s;
-}
-
-.cp-attach-btn:hover {
-  background: #e2e8f0;
 }
 
 .cp-input {
   flex: 1;
-  height: 50px;
-  border: 1px solid #e2e8f0;
+  height: 44px;
+  border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0 14px;
-  font-size: 15px;
-  color: #1e293b;
-  background: #f8fafc;
+  padding: 0 16px;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
   outline: none;
-  transition: border-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .cp-input:focus {
-  border-color: #1a56db;
-  background: #fff;
+  border-color: var(--blue);
+  background: var(--white);
 }
 
 .cp-send-btn {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #e2e8f0;
+  background: var(--border);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
-  font-size: 18px;
+  color: var(--text-4);
   cursor: pointer;
   flex-shrink: 0;
   transition:
@@ -584,125 +989,214 @@
 }
 
 .cp-send-btn.active {
-  background: #1a56db;
-  color: #fff;
+  background: var(--blue);
+  color: var(--white);
 }
-
 .cp-send-btn.active:hover {
-  background: #1648c0;
+  background: var(--blue-dark);
 }
 
-.cp-header-actions {
+/* ── Floating Chat FAB ── */
+.chat-bar-showup {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+  background: #ffffff;
+  padding: 8px;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-}
-
-.chat-close-btn {
-  border: none;
-  background: transparent;
-  color: #334155;
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
   transition:
-    background 0.2s,
-    color 0.2s;
+    transform 0.18s,
+    box-shadow 0.18s;
+  animation: chat-float 3.2s ease-in-out infinite;
 }
 
-.chat-close-btn:hover {
-  background: rgba(15, 23, 42, 0.08);
+.chat-bar-showup img {
+  width: 36px;
+  height: 36px;
+  display: block;
 }
 
-.chat-panel-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: rgba(15, 23, 42, 0.28);
+.chat-bar-showup:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
 }
 
-.chat-bar-showup {
-  display: none;
+@keyframes chat-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
-/* ══ RESPONSIVE ══ */
-@media (max-width: 768px) {
+.chat-badge {
+  position: absolute;
+  top: -5px;
+  right: 3px;
+  min-width: 18px;
+  height: 20px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fb0000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(25, 118, 210, 0.28);
+}
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
   .tc-wrapper {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 65% 35%;
   }
-
-  .cp-input-bar {
-    padding: 10px;
-  }
-
-  .cp-container {
+  .ms-status-sub {
     display: none;
   }
+}
 
+@media (max-width: 900px) {
+  .tc-wrapper {
+    grid-template-columns: 60% 40%;
+  }
+  .driver-actions {
+    flex-direction: row;
+  }
+  .support-btns {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Page becomes scrollable on mobile */
+  .tc-page {
+    height: auto;
+    overflow: auto;
+  }
+
+  .tc-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+  }
+
+  .tc-map-col {
+    height: 55vw;
+    min-height: 300px;
+    max-height: 420px;
+  }
+
+  .tc-right-col {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    height: auto;
+    overflow: visible;
+  }
+
+  .tc-right-scroll {
+    overflow: visible;
+    height: auto;
+    padding: 12px;
+  }
+
+  /* Map panel */
+  .ms-status-sub {
+    display: none;
+  }
+  .ms-driver-card {
+    bottom: 10px;
+    min-width: 240px;
+    padding: 10px 14px;
+  }
+  .ms-eta-value {
+    font-size: 18px;
+  }
+
+  /* Cards */
+  .driver-actions {
+    flex-direction: row;
+  }
+  .support-btns {
+    flex-wrap: wrap;
+  }
+  .support-btn {
+    flex: 1;
+    min-width: 100px;
+  }
+  .stepper {
+    gap: 0;
+  }
+  .step-circle {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Chat panel — becomes bottom sheet on mobile */
   .cp-container.cp-open {
-    display: flex !important;
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    width: min(92vw, 360px);
-    height: calc(100vh - 32px);
-    max-height: calc(100vh - 32px);
-    z-index: 10001;
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 22px 60px rgba(15, 23, 42, 0.18);
-    overflow: hidden;
-    transform: translateX(110%);
-    opacity: 0;
-    pointer-events: auto;
-    transition:
-      transform 0.28s ease,
-      opacity 0.28s ease;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 90vh;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
   }
 
   .cp-container.cp-open.cp-open--active {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 
   .cp-container.cp-open.cp-open--hidden {
-    transform: translateX(110%);
+    transform: translateY(100%);
     opacity: 0;
   }
 
-  .cp-container.cp-open .cp-messages {
-    min-height: 0;
-    overflow-y: auto;
-  }
-
+  /* FAB */
   .chat-bar-showup {
-    display: block;
-    position: fixed;
-    z-index: 9999 !important;
-    bottom: 40px;
-    right: 20px;
-    height: 60px;
-    width: 60px;
+    bottom: 20px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
   }
+}
 
+@media (max-width: 400px) {
   .tc-map-col {
-    height: 55vh;
+    height: 50vw;
+    min-height: 260px;
   }
-
-  .tc-chat-col {
-    border-left: none;
-    border-top: 1px solid #e2e8f0;
-    overflow: scroll !important;
+  .ms-driver-card {
+    flex-wrap: wrap;
+    justify-content: center;
   }
-
-  .tc-map-fullscreen .tc-map-col {
-    height: 100vh;
+  .ms-eta-block {
+    flex-direction: row;
+    gap: 6px;
+    width: 100%;
+    justify-content: center;
   }
-
-  .mp-driver-card {
-    bottom: 10px;
-    padding: 10px 14px;
+  .stats-row {
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    min-width: 30%;
   }
 }
