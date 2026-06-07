@@ -12,7 +12,7 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import ListItemText from "@mui/material/ListItemText"; 
 import Divider from "@mui/material/Divider";
 import { useAuth } from "../context/AuthContext";
 import notification from "../assets/Images/notification-icon.png";
