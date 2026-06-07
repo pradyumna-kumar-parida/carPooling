@@ -2704,7 +2704,7 @@ footer {
     max-width: calc(100vw - 24px) !important;
     right: 12px !important;
     left: 12px !important;
-    width: auto !important;
+    width: auto !important; 
   }
   .fr-field:first-of-type {
     border-radius: 14px 14px 0 0 !important;
