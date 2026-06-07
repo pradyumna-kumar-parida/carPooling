@@ -1,11 +1,4 @@
-/* ─────────────────────────────────────────────────────────────────────────────
-   TrackChat.css — Complete styles for TrackChat page & all components
-   Covers: TrackChat.jsx, MapPanel.jsx, ChatPanel.jsx, RideDetailsCard.jsx,
-           DriverDetailsCard.jsx, RideStatusCard.jsx, PaymentInfoCard.jsx,
-           HelpSupportCard.jsx
-───────────────────────────────────────────────────────────────────────────── */
 
-/* ── Reset ──────────────────────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {

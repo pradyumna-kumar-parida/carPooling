@@ -31,21 +31,33 @@ body {
 }
 
 /* ===========================
-   HEADER
+   HEADER — FIX 1: blur + solid fallback
    =========================== */
 header {
   position: sticky !important;
   top: 0 !important;
-  background: rgba(255, 255, 255, 0.45);
+  /* Solid fallback so the header is never invisible */
+  background: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(18px) !important;
   -webkit-backdrop-filter: blur(18px) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   padding: 16px 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  /* Force GPU layer so backdrop-filter works on live hosts */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Browsers that don't support backdrop-filter: show solid white */
+@supports not (backdrop-filter: blur(1px)) {
+  header {
+    background: rgba(255, 255, 255, 0.97) !important;
+  }
 }
 
 .header-logo {
@@ -114,6 +126,7 @@ nav a::after {
 nav a:hover::after {
   width: 100%;
 }
+
 .right-side-nav,
 .auth-buttons {
   display: flex;
@@ -220,7 +233,7 @@ nav a:hover::after {
    =========================== */
 .hero {
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.22) 2px, transparent 2px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.22) 10px, transparent 10px),
     radial-gradient(
       circle at 15% 18%,
       rgba(255, 255, 255, 0.35),
@@ -233,7 +246,7 @@ nav a:hover::after {
     ),
     var(
       --hero-bg,
-      linear-gradient(135deg, #eaf2ff 0%, #d4e6ff 48%, #a6c8ff 100%)
+      linear-gradient(135deg, #eaf2ff 0%, #d4e6ff 48%, #ffa6fb 100%)
     );
   background-size:
     20px 20px,
@@ -312,27 +325,61 @@ nav a:hover::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeInRight 0.8s ease-out;
+  animation: heroFloat 8s ease-in-out infinite;
+  overflow: visible;
+  width: 480px;
+  height: 480px;
+  border-radius: 0;
+  background: transparent;
 }
 
 .hero-image img {
-  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.3));
   width: 100%;
-  max-width: 550px;
-  object-fit: contain;
-  transition:
-    transform 0.3s ease,
-    filter 0.3s ease;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%;
+  animation: blobShapeImg 12s ease-in-out infinite;
+  transition: transform 0.4s ease;
 }
 
 .hero-image:hover img {
-  transform: scale(1.03);
+  transform: translateY(-8px) scale(1.02);
 }
 
 .hero-slide {
   transition:
     opacity 0.6s ease,
     transform 0.6s ease;
+}
+
+@keyframes blobShapeImg {
+  0% {
+    border-radius: 48% 52% 50% 50% / 50% 50% 48% 52%;
+  }
+  12% {
+    border-radius: 52% 48% 45% 55% / 48% 52% 45% 55%;
+  }
+  24% {
+    border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%;
+  }
+  36% {
+    border-radius: 55% 45% 50% 50% / 45% 55% 52% 48%;
+  }
+  48% {
+    border-radius: 50% 50% 45% 55% / 55% 45% 48% 52%;
+  }
+  60% {
+    border-radius: 52% 48% 50% 50% / 50% 50% 55% 45%;
+  }
+  72% {
+    border-radius: 45% 55% 52% 48% / 48% 52% 50% 50%;
+  }
+  84% {
+    border-radius: 55% 45% 48% 52% / 52% 48% 45% 55%;
+  }
+  100% {
+    border-radius: 48% 52% 50% 50% / 50% 50% 48% 52%;
+  }
 }
 
 .hero-cta {
@@ -444,11 +491,12 @@ nav a:hover::after {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 30px;
-  /* padding-top: 50px; */
 }
+
 .search-disappear {
   margin-bottom: 40px;
 }
+
 .card {
   background: linear-gradient(135deg, #e8f0f8 0%, #f0f8ff 100%);
   border-radius: var(--radius);
@@ -479,7 +527,6 @@ nav a:hover::after {
 
 .card-content {
   flex: 1;
-  /* min-width: 200px; */
 }
 
 .card-image {
@@ -2168,15 +2215,28 @@ footer {
   background-color: rgb(243, 243, 243) !important;
 }
 
-/* MUI overrides */
+/* ===========================
+   MUI OVERRIDES — FIX 2: dropdown width
+   Use robust attribute + class selectors instead
+   of fragile generated MUI class names
+   =========================== */
 .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root,
 .css-1rju2q6-MuiButtonBase-root-MuiMenuItem-root,
 .css-10hburv-MuiTypography-root {
   font-family: "Vollkorn", serif !important;
 }
 
-.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+/* Profile dropdown: force a fixed min-width regardless of MUI version */
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper,
+[role="presentation"] .MuiPaper-root.MuiMenu-paper,
+[role="presentation"] .MuiPaper-root.MuiPopover-paper {
+  min-width: 210px !important;
   width: 210px !important;
+}
+
+/* Also target via data attribute that MUI adds */
+.MuiMenu-paper {
+  min-width: 210px !important;
 }
 
 /* ===========================
@@ -2339,25 +2399,27 @@ footer {
 }
 
 /* ===========================
-   RESPONSIVE — ≤ 767px
+   RESPONSIVE — ≤ 767px — FIX 3
    =========================== */
 @media (max-width: 767px) {
   /* Header */
   header {
-    padding: 16px 20px;
+    padding: 12px 16px !important;
   }
+
   .notification > img {
     height: 30px !important;
     width: 30px !important;
   }
+
   .notification > .count {
     bottom: 22px !important;
     right: -3px !important;
-
     height: 15px !important;
     font-size: 10px !important;
     width: 15px !important;
   }
+
   .auth-buttons,
   .home-menus {
     display: none !important;
@@ -2372,15 +2434,32 @@ footer {
     gap: 24px;
   }
 
-  /* Hero */
+  /* Hero — full width single column */
+  .hero {
+    padding-bottom: 60px;
+    padding-top: 30px;
+  }
+
   .hero-content {
     grid-template-columns: 1fr;
-    padding: 30px 20px;
+    padding: 24px 16px;
     gap: 20px;
   }
 
   .hero-text h1 {
-    font-size: 44px;
+    font-size: 36px;
+  }
+
+  .hero-text p {
+    font-size: 17px;
+    margin-bottom: 20px;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 320px;
+    height: 280px;
+    margin: 0 auto;
   }
 
   .slide {
@@ -2389,20 +2468,30 @@ footer {
 
   /* Search */
   .search-section {
-    padding: 0 20px;
-    margin-bottom: 40px;
+    padding: 0 16px;
+    margin-bottom: 30px;
+  }
+
+  .search-container {
+    padding: 20px 16px;
   }
 
   .search-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   /* Cards */
+  .detailed-container {
+    grid-template-columns: 1fr;
+  }
+
   .card {
     flex-direction: column;
     gap: 20px;
     text-align: center;
     align-items: center;
+    padding: 24px 20px;
   }
 
   .card-image {
@@ -2421,7 +2510,8 @@ footer {
 
   /* Why */
   .why-section {
-    padding: 26px 20px;
+    padding: 26px 16px;
+    margin: 30px 0;
   }
 
   .why-grid {
@@ -2429,22 +2519,57 @@ footer {
     overflow-x: auto;
     gap: 16px;
     padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
   }
 
   .why-card {
-    min-width: 250px;
+    min-width: 240px;
     flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  /* Features bar — stack vertically */
+  .features-bar {
+    flex-direction: column;
+    margin: 30px 0;
+  }
+
+  .feat-item:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .feat-icon-wrap {
+    width: 100%;
+    max-width: 180px;
+    height: 120px;
+  }
+
+  /* How it works — stack vertically */
+  .hiw-steps {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hiw-step {
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+  }
+
+  .hiw-arrow {
+    transform: rotate(90deg);
   }
 
   /* Testimonials */
   .testimonials-wrapper {
-    padding: 0 20px;
+    padding: 0 10px;
     gap: 10px;
   }
 
   .testimonial-card {
     flex: 1;
-    max-width: 350px;
+    max-width: 100%;
     width: 100%;
   }
 
@@ -2459,6 +2584,7 @@ footer {
 
   .auth-container {
     height: auto;
+    min-height: 100vh;
   }
 
   .signup-wrapper {
@@ -2466,13 +2592,30 @@ footer {
   }
 
   /* Footer */
+  footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 22px 16px !important;
+  }
+
   .footer-copy {
     display: none;
   }
 
   .footer-copys {
     display: flex;
-    justify-self: center;
+    justify-content: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .footer-social {
+    justify-content: center;
   }
 
   /* Profile */
@@ -2542,53 +2685,68 @@ footer {
   }
 
   .documents-grid {
-    grid-column: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
 /* ===========================
-   RESPONSIVE — ≤ 480px
+   RESPONSIVE — ≤ 480px — FIX 3 (mobile)
    =========================== */
 @media (max-width: 480px) {
+  /* Notification panel */
   .notification-dialog-paper {
-    max-height: 300px !important;
-    max-width: 300px !important;
+    max-height: 320px !important;
+    max-width: calc(100vw - 24px) !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
   }
-  .hero{
-    min-height: 50vh;
-  }
+
   .notification-item-body {
     font-size: 13px !important;
   }
+
   .notification-item-time {
     font-size: 10px !important;
   }
+
   .notification-item {
     padding: 10px 16px !important;
   }
+
   /* Header */
   header {
-    padding: 16px 14px !important;
+    padding: 12px 14px !important;
+  }
+
+  .header-logo {
+    font-size: 20px;
+  }
+
+  .header-logo-icon {
+    width: 28px;
+    height: 28px;
   }
 
   /* Hero */
   .hero {
-    height: 40vh !important;
+    padding-top: 24px;
+    padding-bottom: 40px;
   }
 
   .hero-content {
-    padding: 26px 25px !important;
-    gap: 0 !important;
+    padding: 20px 14px !important;
+    gap: 16px;
   }
 
   .hero-text h1 {
-    font-size: 35px !important;
-    margin-bottom: 13px;
+    font-size: 30px !important;
+    margin-bottom: 12px;
   }
 
   .hero-text p {
-    font-size: 17px !important;
-    margin-bottom: 10px !important;
+    font-size: 15px !important;
+    margin-bottom: 16px !important;
   }
 
   .hero-image {
@@ -2606,12 +2764,17 @@ footer {
 
   .landingpage-search {
     margin-bottom: 0 !important;
-    padding: 16px 14px !important;
+    padding: 14px !important;
+  }
+
+  .search-container {
+    padding: 16px 12px;
+    border-radius: 8px;
   }
 
   /* Why */
   .why-section {
-    padding: 26px 15px !important;
+    padding: 22px 12px !important;
   }
 
   .why-card h3 {
@@ -2619,37 +2782,37 @@ footer {
   }
 
   .icon-wrap {
-    height: 140px;
-    width: 140px;
+    height: 100px;
+    width: 100px;
   }
 
   /* Testimonials */
   .testimonials-wrapper {
-    gap: 10px;
+    padding: 0 8px;
+    gap: 8px;
   }
 
   .testimonial-card {
     padding: 12px;
-    font-size: 12px;
   }
 
   .testimonial-card p {
-    font-size: 15px !important;
+    font-size: 14px !important;
   }
 
   .avatar-circle {
-    height: 40px;
-    width: 40px;
+    height: 38px;
+    width: 38px;
   }
 
   .arrow-btn {
-    height: 27px;
-    width: 27px;
+    height: 28px;
+    width: 28px;
     font-size: 13px;
   }
 
   .reviewer-info .name {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .reviewer-info .stars {
@@ -2662,7 +2825,8 @@ footer {
   .pr-support-title,
   .pr-faq-title,
   .testimonials-section h2,
-  .why-section h2 {
+  .why-section h2,
+  .hiw-title {
     font-size: 1.4rem !important;
   }
 
@@ -2679,20 +2843,19 @@ footer {
 
   /* Footer */
   footer {
-    display: flex;
-    justify-content: center !important;
-    padding: 22px !important;
+    padding: 18px 14px !important;
   }
 
   .footer-links {
     justify-content: center;
-    column-gap: 16px !important;
-    gap: 0;
+    column-gap: 12px !important;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   /* Auth */
   .form-section {
-    padding: 30px 20px;
+    padding: 24px 16px;
   }
 
   .image-overlay h1 {
@@ -2702,7 +2865,7 @@ footer {
   /* Signup */
   .signup-form-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 
   .signup-title {
@@ -2710,16 +2873,16 @@ footer {
   }
 
   .signup-wrapper {
-    padding: 15px;
+    padding: 12px !important;
   }
 
   .field-input,
   .field-select {
-    padding: 13px 13px 13px 41px;
+    padding: 12px 12px 12px 40px;
   }
 
   .checkbox-text {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
   }
 
   /* Profile */
@@ -2805,6 +2968,10 @@ footer {
     box-shadow: none;
   }
 }
+
+/* ===========================
+   MISC / UTILITY
+   =========================== */
 .password-toggle-btn {
   position: absolute;
   right: 10px;
@@ -2818,6 +2985,7 @@ footer {
   display: flex;
   align-items: center;
 }
+
 .fields-input-suffix {
   position: absolute;
   right: 10px;
@@ -2826,6 +2994,7 @@ footer {
   pointer-events: auto;
   user-select: none;
 }
+
 .passowrd-field-toggle-icon {
   position: absolute;
   right: 10px;
@@ -2839,12 +3008,14 @@ footer {
   display: flex;
   align-items: center;
 }
+
 .file-upload-field-icon {
   display: flex;
   align-items: center;
   font-size: 14px;
   user-select: none;
 }
+
 .file-upload-suggestation {
   position: absolute;
   inset: 0;
@@ -2861,6 +3032,7 @@ footer {
   gap: 8px;
   margin-bottom: 16px;
 }
+
 .loader-back-wrapper {
   position: fixed;
   inset: 0;
@@ -2871,6 +3043,7 @@ footer {
   align-items: center;
   justify-content: center;
 }
+
 .register-back-btn {
   flex: 0 0 auto;
   width: auto;
@@ -2882,6 +3055,7 @@ footer {
   color: #0033a1;
   font-weight: 700;
 }
+
 .date-picker-format {
   position: absolute;
   opacity: 0;
@@ -2892,6 +3066,8 @@ footer {
   padding: 0;
   margin: 0;
 }
+
+/* Notification bell */
 .notification {
   position: relative;
   display: flex;
@@ -2900,10 +3076,12 @@ footer {
   margin-right: 10px;
   cursor: pointer;
 }
+
 .notification > img {
   height: 37px;
   width: 37px;
 }
+
 .notification > .count {
   position: absolute;
   bottom: 26px;
@@ -2921,11 +3099,14 @@ footer {
   justify-content: center;
   align-items: center;
 }
+
 .panel-bedge-count {
   color: #f0e9e9;
   font-size: 95%;
   font-weight: 400;
 }
+
+/* Notification panel */
 .notification-dialog-paper {
   position: fixed !important;
   padding-bottom: 10px;
@@ -3039,6 +3220,8 @@ footer {
   background: #0d6efd;
   margin-top: 4px;
 }
+
+/* Profile picture in header */
 .profile-img {
   height: 55px;
   width: 55px;
@@ -3047,19 +3230,15 @@ footer {
   overflow: hidden;
   position: relative;
   cursor: pointer;
-
-  /* Right-side premium shadow */
   box-shadow:
     6px 0 15px rgba(0, 0, 0, 0.25),
     10px 0 25px rgba(13, 110, 253, 0.18),
     0 4px 10px rgba(0, 0, 0, 0.12);
-
   transition: all 0.3s ease;
 }
 
 .profile-img:hover {
   transform: translateY(-2px) scale(1.05);
-
   box-shadow:
     8px 0 20px rgba(0, 0, 0, 0.3),
     14px 0 35px rgba(13, 110, 253, 0.25),

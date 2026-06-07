@@ -1069,11 +1069,23 @@
 /* Mobile overlay */
 .ridetail-overlay,
 .ridetail-mobile-overlay {
-  display: none;
   position: fixed;
   inset: 0;
   z-index: 100;
   background: rgba(11, 22, 41, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+  pointer-events: none;
+}
+
+.ridetail-overlay.open,
+.ridetail-mobile-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .ridetail-mobile-sidebar {
@@ -1086,6 +1098,13 @@
   z-index: 101;
   overflow-y: auto;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  transform: translateX(-100%);
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+
+.ridetail-mobile-sidebar.open {
+  transform: translateX(0);
 }
 
 .ridetail-mobile-sidebar-head {
@@ -1790,12 +1809,11 @@
 
 .myride-modal-title {
   font-size: 1.5rem !important;
-   font-family: "Vollkorn", serif !important;
+  font-family: "Vollkorn", serif !important;
   font-weight: 700 !important;
   color: var(--fr-text-dark) !important;
   border-bottom: 1px solid var(--fr-border) !important;
   position: relative !important;
-
 }
 
 .myride-modal-close {
@@ -2620,7 +2638,7 @@
   color: rgb(233, 191, 3);
   font-size: 1.2rem;
 }
-.bookconf-driver-rating>span{
+.bookconf-driver-rating > span {
   color: var(--fr-text-dark);
 }
 .bookconf-driver-phone {
@@ -2640,8 +2658,6 @@
   font-size: 0.9375rem;
   color: var(--fr-text-gray);
 }
-
-
 
 .bookconf-payment-card {
   background: linear-gradient(
@@ -3498,16 +3514,15 @@
   .mobile-search-drawer-body {
     padding: 8px 0 16px;
   }
-
   .ridetail-mobile-sidebar {
     position: fixed;
-    top: 0 !important;
-    left: 0;
-    height: 100vh;
+    top: 0;
+    right: 0;
+    width: 260px;
+    max-width: 90vw;
     overflow-y: auto;
-    z-index: 9999 !important;
+    z-index: 9999;
   }
-
   .ridetail-mobile-sidebar-head {
     position: sticky;
     top: 0;

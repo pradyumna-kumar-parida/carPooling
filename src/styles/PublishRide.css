@@ -152,6 +152,12 @@ html {
   border: 1.5px solid var(--pr-border);
   border-radius: 14px;
   overflow: visible;
+  transition: border-color 0.2s;
+}
+
+/* ── FOCUS: blue border on the route-wrap when a child input is focused ── */
+.prh-route-wrap:focus-within {
+  border-color: var(--pr-primary);
 }
 
 .prh-field {
@@ -167,6 +173,22 @@ html {
 }
 .prh-field:last-child {
   border-top: 1.5px solid var(--pr-border);
+}
+
+/* ── Blue border on individual focusable fields ── */
+.prh-field--vehicle,
+.prh-field--inline,
+.prh-field--price {
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.prh-field--vehicle:focus-within,
+.prh-field--inline:focus-within,
+.prh-field--price:focus-within {
+  border-color: var(--pr-primary) !important;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
 .prh-field--vehicle {
@@ -196,6 +218,11 @@ html {
 
 .prh-field--loc {
   position: relative;
+}
+
+/* ── Blue border on loc field (inside route-wrap) when focused ── */
+.prh-field--loc.prh-field--focused {
+  background: #f8fbff;
 }
 
 .prh-field-icon {
@@ -1128,29 +1155,45 @@ html {
   /* Hero */
   .prh-root {
     padding: 48px 16px 56px;
+    /* FIX: prevent horizontal overflow on mobile */
+    overflow-x: hidden;
   }
 
   .prh-inner {
     grid-template-columns: 1fr;
     gap: 40px;
+    /* FIX: ensure inner never exceeds viewport */
+    width: 100%;
+    min-width: 0;
   }
+
   .prh-copy {
     order: -1;
     align-items: center;
     text-align: center;
+    /* FIX: constrain copy so text wraps instead of overflowing */
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .prh-tag {
     align-self: center;
   }
   .prh-headline {
     font-size: 2rem;
+    /* FIX: ensure headline wraps on narrow screens */
+    width: 100%;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
   .prh-headline-accent::after {
     left: 50%;
     transform: translateX(-50%);
   }
   .prh-desc {
-    max-width: 560px;
+    max-width: 100%;
+    width: 100%;
   }
   .prh-stats {
     justify-content: center;
@@ -1167,6 +1210,10 @@ html {
     padding: 24px 20px 20px;
     gap: 14px;
     border-radius: 18px;
+    /* FIX: card must not overflow */
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
   }
 
   /* Sections */
@@ -1218,11 +1265,26 @@ html {
 
 @media (max-width: 480px) {
   /* Hero */
+  .prh-root {
+    padding: 40px 14px 48px;
+  }
+
   .prh-headline {
     font-size: 1.7rem;
   }
   .prh-card {
-    padding: 20px 16px;
+    padding: 20px 14px;
+  }
+
+  /* FIX: route-wrap and fields must not overflow on small screens */
+  .prh-route-wrap,
+  .prh-field--vehicle,
+  .prh-field--inline,
+  .prh-field--price,
+  .prh-seats-row {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
   }
 
   /* Preferences & datetime stay 2-col on small screens */

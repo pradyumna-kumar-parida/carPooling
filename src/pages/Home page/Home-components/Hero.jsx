@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import heroImg from "../../../assets/Images/hero-Img.png";
+import findRide from "../../../assets/Images/find-ride-carosel.jpg";
+import offerRide from "../../../assets/Images/offer-ride-carosel.jpg";
+import bookSeat from "../../../assets/Images/book-seat-carosel.jpg";
+import startTrip from "../../../assets/Images/start-trip-carosel.jpg";
 
 const slides = [
   {
@@ -13,10 +16,11 @@ const slides = [
     buttonPath: "/find-ride",
     bg:
       "linear-gradient(135deg, rgba(18, 100, 210, 0.12), rgba(7, 82, 170, 0.28)), linear-gradient(180deg, #dbeffc 0%, #f1f8ff 100%)",
+    img: findRide,
   },
   {
     id: 2,
-    title: "Drive with purpose",
+    title: "Drive purpose",
     subtitle: "Earn from empty seats.",
     description:
       "Publish your ride, choose your price, and welcome passengers on every route.",
@@ -24,10 +28,11 @@ const slides = [
     buttonPath: "/offer-ride",
     bg:
       "linear-gradient(135deg, rgba(194, 242, 228, 0.4), rgba(120, 205, 187, 0.35)), linear-gradient(180deg, #eefcf6 0%, #f9fffb 100%)",
+    img: offerRide,
   },
   {
     id: 3,
-    title: "Safe shared journeys",
+    title: "Safe journeys",
     subtitle: "Verified drivers, real reviews.",
     description:
       "Book confidently with trusted profiles, secure payments and smooth pickup experiences.",
@@ -35,6 +40,7 @@ const slides = [
     buttonPath: "/find-ride",
     bg:
       "linear-gradient(135deg, rgba(244, 219, 255, 0.4), rgba(192, 145, 255, 0.25)), linear-gradient(180deg, #fcf4ff 0%, #f5f0ff 100%)",
+    img: bookSeat,
   },
   {
     id: 4,
@@ -46,6 +52,7 @@ const slides = [
     buttonPath: "/find-ride",
     bg:
       "linear-gradient(135deg, rgba(255, 243, 205, 0.5), rgba(255, 210, 118, 0.3)), linear-gradient(180deg, #fff9ec 0%, #fffdf5 100%)",
+    img: startTrip,
   },
 ];
 
@@ -56,7 +63,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 2000);
+    }, 7000);
 
     return () => clearInterval(interval);
   }, []);
@@ -81,7 +88,7 @@ const Hero = () => {
         </div>
 
         <div key={`image-${slide.id}`} className="hero-image hero-slide">
-          <img src={heroImg} alt="Hero Car" loading="lazy" />
+          <img src={slide.img} alt="Hero Car" loading="eager" />
         </div>
       </div>
     </section>

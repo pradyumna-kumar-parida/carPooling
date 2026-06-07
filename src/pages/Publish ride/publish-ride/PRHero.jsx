@@ -633,7 +633,7 @@ const PRHero = () => {
                     <span className="prh-pref-icon">{icon}</span>
                     <span className="prh-pref-text">{label}</span>
                     <span className="prh-pref-tick">
-                      <FaCheck />
+                      <FaCheck size={10} />
                     </span>
                   </label>
                 ))}
