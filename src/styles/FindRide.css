@@ -93,8 +93,9 @@
 
 .fr-field:focus-within {
   background: #fff;
-  box-shadow: 0 0 0 2px var(--fr-secondary);
+  outline : 2px solid  var(--fr-primary-light);
   z-index: 10;
+  outline-offset: -2px;
 }
 
 .fr-field-passenger {
@@ -3708,7 +3709,9 @@
   .fr-page-title {
     font-size: 1.9rem;
   }
-
+  .fr-field:first-of-type {
+    border-radius: 14px 14px 0 0 !important;
+  }
   .fr-field {
     min-width: 100%;
     border-right: none;

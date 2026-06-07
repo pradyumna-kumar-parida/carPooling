@@ -2706,9 +2706,7 @@ footer {
     left: 12px !important;
     width: auto !important; 
   }
-  .fr-field:first-of-type {
-    border-radius: 14px 14px 0 0 !important;
-  }
+ 
   .hero-cta {
     padding: 11px 24px;
     font-size: 13px;
