@@ -16,6 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { useAuth } from "../context/AuthContext";
 import notification from "../assets/Images/notification-icon.png";
+import notificationVibrate from "../assets/Images/notification-icon-vibrate.png";
 import NotificationPanel from "./NotificationPanel.jsx";
 import { RiLoginCircleLine } from "react-icons/ri";
 import {
@@ -53,13 +54,13 @@ const getAccountLinks = (role) => [
   { label: "My Rides", path: "/my-rides", icon: <FaRoute /> },
   ...(role === "driver"
     ? [
-        {
-          label: "Vehicle Registration",
-          path: "/vehicle-registration",
-          icon: <FaCarSide />,
-        },
-        { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
-      ]
+      {
+        label: "Vehicle Registration",
+        path: "/vehicle-registration",
+        icon: <FaCarSide />,
+      },
+      { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
+    ]
     : []),
   { label: "Settings", path: "/settings", icon: <FiSettings /> },
 ];
@@ -137,7 +138,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    setUser(null); // ✅ reset context so UI updates immediately
+    setUser(null);
     setvehicleList([]);
     setAnchorEl(null);
     setDrawerOpen(false);
@@ -150,7 +151,7 @@ const Header = () => {
     setDrawerOpen(false);
   };
 
-  const navLinks = getNavLinks(role, isLoggedIn); // ✅ use role from context
+  const navLinks = getNavLinks(role, isLoggedIn);
   const accountLinks = getAccountLinks(role);
 
   const DrawerContent = (
@@ -268,6 +269,7 @@ const Header = () => {
           </Link>
         ))}
       </nav>
+
       <div className="right-side-nav">
         {isLoggedIn && (
           <div className="notification" onClick={handleNotification}>
@@ -284,6 +286,7 @@ const Header = () => {
             style={{ cursor: "pointer" }}
           />
         </nav>
+
         <div className="auth-buttons">
           {!isLoggedIn ? (
             <>
@@ -305,19 +308,26 @@ const Header = () => {
                     <span className="user-greeting">Hi,</span>
                     <span className="user-role">{firstName}</span>
                   </div>
-                  {/* <FaUserCircle size={42} /> */}
                   <div className="profile-img">
                     <img src={img1} alt="" height="100%" width="100%" />
                   </div>
                 </div>
               </Button>
 
+              {/* FIX: PaperProps forces 230px width — overrides MUI's inline JS style */}
               <Menu
                 anchorEl={anchorEl}
                 open={menuOpen}
                 onClose={() => setAnchorEl(null)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 transformOrigin={{ vertical: "top", horizontal: "right" }}
+                PaperProps={{
+                  style: {
+                    minWidth: "250px",
+                    width: "250px",
+                    fontFamily: "'Vollkorn', serif",
+                  },
+                }}
               >
                 {accountLinks.map((item) => (
                   <div key={item.label}>
@@ -341,6 +351,7 @@ const Header = () => {
           )}
         </div>
       </div>
+
       <NotificationPanel
         open={panelOpen}
         onClose={handleClosePanel}

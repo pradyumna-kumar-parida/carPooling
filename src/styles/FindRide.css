@@ -91,7 +91,6 @@
   border-right: none;
 }
 
-
 .fr-field:focus-within {
   background: #fff;
   box-shadow: 0 0 0 2px var(--fr-secondary);
@@ -328,7 +327,7 @@
   font-family: "Vollkorn", serif;
   border: none;
   padding: 0 32px;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 8px 8px 0;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -3357,7 +3356,7 @@
     width: calc(100% - 16px);
     justify-content: center;
     padding: 14px;
-    border-radius: 20px;
+    border-radius: 8px;
   }
 
   .fr-search-container {
@@ -4707,6 +4706,9 @@
 @media (max-width: 768px) {
   .vehicle-detl-page {
     padding: 20px 16px;
+  }
+  .MuiStepLabel-labelContainer {
+    display: none !important;
   }
   .vehicle-detl-layout {
     grid-template-columns: 1fr;
