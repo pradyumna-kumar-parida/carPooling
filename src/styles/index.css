@@ -618,7 +618,7 @@ nav a:hover::after {
   height: 20px;
   border-radius: 50%;
   background-color: #000000;
-  display: flex;  
+  display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 12px;
@@ -2706,6 +2706,9 @@ footer {
     left: 12px !important;
     width: auto !important;
   }
+  .fr-field:first-of-type {
+    border-radius: 14px 14px 0 0 !important;
+  }
   .hero-cta {
     padding: 11px 24px;
     font-size: 13px;
@@ -3090,7 +3093,9 @@ footer {
   height: 30px;
   width: 30px;
 }
-
+.fr-field:first-of-type {
+  border-radius: 14px 0 0 14px;
+}
 .notification > .count {
   position: absolute;
   bottom: 17px;
