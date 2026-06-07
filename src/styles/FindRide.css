@@ -91,9 +91,6 @@
   border-right: none;
 }
 
-.fr-field:first-of-type {
-  border-radius: 14px 0 0 14px;
-}
 
 .fr-field:focus-within {
   background: #fff;
@@ -2880,7 +2877,9 @@
   background: var(--fr-primary);
   border-radius: 4px;
 }
-
+.css-2fdkz6 {
+  display: none;
+}
 .vehicledetails-content {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);

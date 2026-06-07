@@ -2856,6 +2856,7 @@ footer {
   /* Auth */
   .form-section {
     padding: 24px 16px;
+    align-items: baseline !important;
   }
 
   .image-overlay h1 {
