@@ -20,6 +20,7 @@ body {
   --section-cardBg: #f7f9fb;
   --heading: "Vollkorn", serif;
   --custom-one: #1e40af;
+  --black: #000000;
   --desc: #666;
   --radius: 10px;
   --fr-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -259,33 +260,19 @@ nav a:hover::after {
    HERO
    =========================== */
 .hero {
-  background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.22) 10px, transparent 10px),
-    radial-gradient(
-      circle at 15% 18%,
-      rgba(255, 255, 255, 0.35),
-      transparent 18%
+  background:
+    linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(216, 214, 214, 0.637) 25%,
+      rgba(216, 214, 214, 0.637) 35%,
+      rgba(0, 0, 0, 0) 55%,
+      rgba(0, 0, 0, 0) 100%
     ),
-    radial-gradient(
-      circle at 82% 22%,
-      rgba(255, 255, 255, 0.28),
-      transparent 20%
-    ),
-    var(
-      --hero-bg,
-      linear-gradient(135deg, #eaf2ff 0%, #d4e6ff 48%, #ffa6fb 100%)
-    );
-  background-size:
-    20px 20px,
-    320px 320px,
-    280px 280px,
-    cover;
-  background-position:
-    0 0,
-    top left,
-    top right,
-    center;
-  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+    url("../assets/Images/bannerImg-carRide.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -302,7 +289,6 @@ nav a:hover::after {
 .hero-content {
   max-width: 1200px;
   width: 100%;
-  padding: 0px 50px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
@@ -312,16 +298,17 @@ nav a:hover::after {
 }
 
 .hero-text {
-  color: #000000;
+  color: var(--black);
 }
 
 .hero-text h1 {
-  font-size: 58px;
+  font-size: 42px;
   font-weight: 800;
   line-height: 1.15;
   margin-bottom: 24px;
   letter-spacing: -1px;
-  font-family: var(--heading);
+  font-family: "Goblin One", serif;
+  font-weight: 400;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease-out 0.3s forwards;
@@ -338,7 +325,7 @@ nav a:hover::after {
 }
 
 .hero-text p {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 400;
   margin-bottom: 40px;
   opacity: 0;
@@ -347,66 +334,10 @@ nav a:hover::after {
   animation: fadeInUp 0.8s ease-out 0.9s forwards;
 }
 
-.hero-image {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: heroFloat 8s ease-in-out infinite;
-  overflow: visible;
-  width: 480px;
-  height: 480px;
-  border-radius: 0;
-  background: transparent;
-}
-
-.hero-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%;
-  animation: blobShapeImg 12s ease-in-out infinite;
-  transition: transform 0.4s ease;
-}
-
-.hero-image:hover img {
-  transform: translateY(-8px) scale(1.02);
-}
-
 .hero-slide {
   transition:
     opacity 0.6s ease,
     transform 0.6s ease;
-}
-
-@keyframes blobShapeImg {
-  0% {
-    border-radius: 48% 52% 50% 50% / 50% 50% 48% 52%;
-  }
-  12% {
-    border-radius: 52% 48% 45% 55% / 48% 52% 45% 55%;
-  }
-  24% {
-    border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%;
-  }
-  36% {
-    border-radius: 55% 45% 50% 50% / 45% 55% 52% 48%;
-  }
-  48% {
-    border-radius: 50% 50% 45% 55% / 55% 45% 48% 52%;
-  }
-  60% {
-    border-radius: 52% 48% 50% 50% / 50% 50% 55% 45%;
-  }
-  72% {
-    border-radius: 45% 55% 52% 48% / 48% 52% 50% 50%;
-  }
-  84% {
-    border-radius: 55% 45% 48% 52% / 52% 48% 45% 55%;
-  }
-  100% {
-    border-radius: 48% 52% 50% 50% / 50% 50% 48% 52%;
-  }
 }
 
 .hero-cta {
@@ -430,7 +361,7 @@ nav a:hover::after {
 }
 
 .hero {
-  transition: background 0.8s ease;
+  transition: none;
 }
 
 .search-container {
@@ -2406,7 +2337,7 @@ footer {
 /* ===========================
    RESPONSIVE — ≤ 767px — FIX 3
    =========================== */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   /* Header */
   header {
     padding: 12px 16px !important;
@@ -2443,10 +2374,23 @@ footer {
   .hero {
     padding-bottom: 60px;
     padding-top: 30px;
+    background:
+      linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.514) 0%,
+        rgba(255, 255, 255, 0.514) 25%,
+        rgba(255, 255, 255, 0.473) 45%,
+        rgba(255, 255, 255, 0.35) 65%,
+        rgba(255, 255, 255, 0.185) 100%
+      ),
+      url("../assets/Images/bannerImg-carRide.png");
+
+    background-size: cover;
+    background-position: center;
   }
 
   .hero-content {
-    grid-template-columns: 1fr;
+    grid-template-columns: 480px;
     padding: 24px 16px;
     gap: 20px;
   }
@@ -2704,9 +2648,9 @@ footer {
     max-width: calc(100vw - 24px) !important;
     right: 12px !important;
     left: 12px !important;
-    width: auto !important; 
+    width: auto !important;
   }
- 
+
   .hero-cta {
     padding: 11px 24px;
     font-size: 13px;
@@ -2742,7 +2686,11 @@ footer {
     padding-top: 24px;
     padding-bottom: 40px;
   }
-
+  .hero-content {
+    grid-template-columns: 280px;
+    padding: 24px 16px;
+    gap: 20px;
+  }
   .hero-content {
     padding: 20px 14px !important;
     gap: 16px;

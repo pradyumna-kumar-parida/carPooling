@@ -199,13 +199,14 @@ function App() {
 
   return (
     <Suspense fallback={<PageLoader />}>
-      <BrowserRouter >
-      {/* <BrowserRouter basename="carpooling"> */}
+      {/* <BrowserRouter > */}
+      <BrowserRouter basename="carpooling">
         <ScrollManager />
         <Routes>
           {routes.map((route) => (
             <Route
               key={route.path}
+              
               path={route.path}
               element={
                 route.isProtected ? (
