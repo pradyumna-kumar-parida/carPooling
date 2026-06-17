@@ -45,7 +45,7 @@ export function findRidesApi(data) {
 }
 
 export function bookRideApi(data) {
-  return axiosInstance.post("/create-booking-request", data);
+  return axiosInstance.post("/create-booking", data);
 }
 export function vehicleRegistrationApi(data) {
   return axiosInstance.post("/store-vehicle-data", data, {

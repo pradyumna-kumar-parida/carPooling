@@ -532,14 +532,7 @@ import {
 import { ImArrowRight } from "react-icons/im";
 import { ImInfo } from "react-icons/im";
 import { IoLocationOutline } from "react-icons/io5";
-import {
-  FaCar,
-  FaCalendarAlt,
-  FaClock,
-  FaUser,
-
-  FaStar,
-} from "react-icons/fa";
+import { FaCar, FaCalendarAlt, FaClock, FaUser, FaStar } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineCall } from "react-icons/md";
 
@@ -939,19 +932,21 @@ const MyRides = () => {
                         loading="lazy"
                       />
                       <div className="driver-details">
-                        <h4 className="driver-name">
-                          {selectedRide.driver.name}
-                        </h4>
-                        <div className="driver-meta">
+                        <div className="my-rides-driver-meta">
+                          <h4 className="driver-name">
+                            {selectedRide.driver.name}
+                          </h4>
+
                           <span className="driver-rating">
                             <FaStar className="star-icon" />{" "}
                             {selectedRide.driver.rating}
                           </span>
-                          <span className="driver-phone">
-                          <MdOutlineCall  className="phone-icon" />{" "}
-                            {selectedRide.driver.phone}
-                          </span>
                         </div>
+                        <span className="driver-phone">
+                          <MdOutlineCall className="phone-icon" />{" "}
+                          {selectedRide.driver.phone}
+                        </span>
+
                         <div className="driver-car">
                           <FaCar className="car-icon" />
                           <span>{selectedRide.driver.car}</span>
@@ -1016,7 +1011,9 @@ const MyRides = () => {
 
                 {/* Action Buttons */}
                 <div className="myride-modal-actions">
-                  <button className="action-btn chat-btn">Contact Driver</button>
+                  <button className="action-btn chat-btn">
+                    Contact Driver
+                  </button>
                   <button className="action-btn ticket-btn">
                     Download Ticket
                   </button>

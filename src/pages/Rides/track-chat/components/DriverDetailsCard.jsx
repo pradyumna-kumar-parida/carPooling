@@ -26,7 +26,7 @@ const DriverDetailsCard = ({ driver }) => (
       <div className="driver-actions">
         <a
           href={`tel:${driver.driver_phone}`}
-          className="action-btn action-btn-blue"
+          className="chat-action-btn action-btn-blue"
           title="Call driver"
         >
           <BiSolidPhoneCall size={18}/>

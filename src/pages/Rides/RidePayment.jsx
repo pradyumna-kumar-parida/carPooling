@@ -17,12 +17,15 @@ import { FaLock } from "react-icons/fa";
 import { ImArrowRight } from "react-icons/im";
 import ArcLoader from "../../components/Loader";
 import RazorpayImg from "../../assets/Images/razorpay.svg";
-const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID";
 const RidePayment = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const { ride, noOfSIt, booking } = location.state || {};
+  console.log("location", location);
+  console.log("location.state", location.state);
+  const RAZORPAY_KEY = booking?.razorpay_key;
+  console.log("booking-paytment", booking);
 
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -76,21 +79,22 @@ const RidePayment = () => {
 
     const options = {
       key: RAZORPAY_KEY,
-      amount: Math.round(parseFloat(totalAmount) * 100),
-      currency: "INR",
-      name: "CarpoolApp",
-      description: `${ride?.source_address || "Source"} → ${ride?.destination_address || "Destination"}`,
-      image: ride?.driver_profile_picture || "",
-      prefill: {
-        name: booking?.passenger_name || "",
-        email: booking?.passenger_email || "",
-        contact: booking?.passenger_phone || "",
-      },
-      notes: {
-        booking_id: booking?.id || "",
-        ride_id: ride?.id || "",
-      },
-      theme: { color: "#1a56db" },
+      amount: booking?.amount * 100,
+      order_id: booking?.order_id,
+      // currency: "INR",
+      // name: "CarpoolApp",
+      // description: `${ride?.source_address || "Source"} → ${ride?.destination_address || "Destination"}`,
+      // image: ride?.driver_profile_picture || "",
+      // prefill: {
+      //   name: booking?.passenger_name || "",
+      //   email: booking?.passenger_email || "",
+      //   contact: booking?.passenger_phone || "",
+      // },
+      // notes: {
+      //   booking_id: booking?.booking_id || "",
+      //   ride_id: ride?.id || "",
+      // },
+      // theme: { color: "#1a56db" },
       handler: function (response) {
         setProcessing(false);
         setPaymentSuccess(true);
@@ -116,7 +120,7 @@ const RidePayment = () => {
 
     rzp.on("payment.failed", function (response) {
       setProcessing(false);
-      alert(`Payment failed: ${response.error.description}`);
+      // alert(`Payment failed: ${response.error.description}`);
     });
 
     setTimeout(() => rzp.open(), 100);

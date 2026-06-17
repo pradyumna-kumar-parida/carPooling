@@ -1856,8 +1856,10 @@ footer {
   border-radius: var(--fr-radius);
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
+
   transition: all 0.3s ease;
-  font-family: inherit;
+
+  font-family: sans-serif;
 }
 
 .form-input:focus,
@@ -1874,8 +1876,14 @@ footer {
 
 .form-value {
   padding: 0.75rem 0;
+  font-family: sans-serif;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  opacity: 0.6;
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
+  border: 1.5px solid var(--fr-border);
+  border-radius: var(--fr-radius);
   margin: 0;
 }
 

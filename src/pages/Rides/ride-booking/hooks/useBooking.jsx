@@ -23,46 +23,47 @@ export function useBooking() {
   };
 
   // ── Book ride handler ─────────────────────────────────────────────────
-  // const handleBookRide = async ({ ride, noOfSIt, navigate }) => {
-
-  //   setBookingLoading(true);
-  //   try {
-
-  //     const token = localStorage.getItem("token");
-  //     const payload = {
-  //       ride_id: ride.id,
-  //       seats: noOfSIt,
-  //     };
-  //     console.log(ride);
-
-  //     const response = await bookRideApi(payload);
-
-  //     if (response.data?.success) {
-  //       navigate("/booking-payment", {
-  //         state: { ride, noOfSIt, booking: response.data.booking },
-  //       });
-  //     } else {
-  //       showAlert(
-  //         "error",
-  //         response.data?.message || "Booking failed. Please try again.",
-  //       );
-  //     }
-  //   } catch (err) {
-  //     console.error("Booking error:", err);
-  //     const message =
-  //       err.response?.data?.message ||
-  //       "Something went wrong. Please try again.";
-  //     showAlert("error", message);
-  //   } finally {
-  //     setBookingLoading(false);
-  //   }
-  // };
-
   const handleBookRide = async ({ ride, noOfSIt, navigate }) => {
-    navigate("/booking-payment", {
-      state: { ride, noOfSIt},
-    });
+    setBookingLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        ride_id: ride.id,
+        seats: noOfSIt,
+      };
+      console.log(ride);
+
+      const response = await bookRideApi(payload);
+      console.log("response", response);
+      console.log("response-ststua", response.status);
+      console.log("response-data", response.data);
+
+      if (response.data?.status === "success") {
+        navigate("/booking-payment", {
+          state: { ride, noOfSIt, booking: response.data },
+        });
+      } else {
+        showAlert(
+          "error",
+          response.data?.message || "Booking failed. Please try again.",
+        );
+      }
+    } catch (err) {
+      console.error("Booking error:", err);
+      const message =
+        err.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      showAlert("error", message);
+    } finally {
+      setBookingLoading(false);
+    }
   };
+
+  // const handleBookRide = async ({ ride, noOfSIt, navigate }) => {
+  //   navigate("/booking-payment", {
+  //     state: { ride, noOfSIt},
+  //   });
+  // };
   return {
     // modals
     openPriceModal,

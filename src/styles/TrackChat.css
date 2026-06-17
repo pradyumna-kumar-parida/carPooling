@@ -1,4 +1,3 @@
-
 *,
 *::before,
 *::after {
@@ -337,7 +336,7 @@
   flex-shrink: 0;
 }
 
-.action-btn {
+.chat-action-btn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -982,12 +981,10 @@
 }
 
 .cp-send-btn.active {
-  background: var(--blue);
+  background: var(--text);
   color: var(--white);
 }
-.cp-send-btn.active:hover {
-  background: var(--blue-dark);
-}
+
 
 /* ── Floating Chat FAB ── */
 .chat-bar-showup {

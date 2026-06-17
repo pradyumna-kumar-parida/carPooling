@@ -12,7 +12,7 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText"; 
+import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { useAuth } from "../context/AuthContext";
 import notification from "../assets/Images/notification-icon.png";
@@ -54,13 +54,13 @@ const getAccountLinks = (role) => [
   { label: "My Rides", path: "/my-rides", icon: <FaRoute /> },
   ...(role === "driver"
     ? [
-      {
-        label: "Vehicle Registration",
-        path: "/vehicle-registration",
-        icon: <FaCarSide />,
-      },
-      { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
-    ]
+        {
+          label: "Vehicle Registration",
+          path: "/vehicle-registration",
+          icon: <FaCarSide />,
+        },
+        { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
+      ]
     : []),
   { label: "Settings", path: "/settings", icon: <FiSettings /> },
 ];
@@ -74,7 +74,7 @@ const Header = () => {
   const isLoggedIn = !!user;
   const role = user?.role;
   const firstName = user && user.name ? user.name.split(" ")[0] : "";
-
+  const profileImage = user.user_details?.profile_picture || <FaUserCircle />;
   const [anchorEl, setAnchorEl] = useState(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [notifications, setNotifications] = useState([
@@ -166,7 +166,7 @@ const Header = () => {
                   <span className="user-role">{firstName}</span>
                 </div>
                 <div className="profile-img">
-                  <img src={img1} alt="" height="100%" width="100%" />
+                  <img src={profileImage} alt="" height="100%" width="100%" />
                 </div>
               </div>
             </ListItemButton>
@@ -309,7 +309,7 @@ const Header = () => {
                     <span className="user-role">{firstName}</span>
                   </div>
                   <div className="profile-img">
-                    <img src={img1} alt="" height="100%" width="100%" />
+                    <img src={profileImage} alt="" height="100%" width="100%" />
                   </div>
                 </div>
               </Button>

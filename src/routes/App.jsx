@@ -65,14 +65,14 @@ const routes = [
   {
     path: "/offer-ride",
     element: <PublishRide />,
-    isProtected: false, // ← anyone can view
-    blockRole: ["passenger"], // ← logged-in passengers get redirected
+    isProtected: false,
+    blockRole: ["passenger"],
   },
   {
     path: "/find-ride",
     element: <FindRide />,
-    isProtected: false, // ← anyone can view
-    blockRole: ["driver"], // ← logged-in drivers get redirected
+    isProtected: false,
+    blockRole: ["driver"],
   },
   {
     path: "/all-rides",
@@ -158,7 +158,6 @@ const ProtectedRoute = ({ route }) => {
 const PublicRoute = ({ route }) => {
   const { user, pendingRedirect } = useAuth();
 
-  // Block specific roles
   if (user && route.blockRole && route.blockRole.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
@@ -199,14 +198,12 @@ function App() {
 
   return (
     <Suspense fallback={<PageLoader />}>
-      {/* <BrowserRouter > */}
       <BrowserRouter basename="carpooling">
         <ScrollManager />
         <Routes>
           {routes.map((route) => (
             <Route
               key={route.path}
-              
               path={route.path}
               element={
                 route.isProtected ? (
